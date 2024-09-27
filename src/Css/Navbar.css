@@ -1,0 +1,66 @@
+img {
+    width: 40%;
+    margin: 10px;
+}
+
+@media screen and (min-width: 600px) and (max-width: 1100px) {
+    img {
+        width: 70%;
+    }
+
+    .css-95f9g5-MuiToolbar-root {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .css-130f8nx {
+        display: flex;
+    }
+    
+}
+
+@media screen and (min-width: 0px) and (max-width: 599px) {
+
+    img {
+        width: 100% !important;
+        background-color: #27337F;
+        margin: 0px;
+    }
+
+    .css-1ftvkgj {
+        width: 100%;
+    }
+
+    .css-95f9g5-MuiToolbar-root {
+        min-height: 80px !important;
+    }
+
+    .css-1c2fe0u {
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+        background-color: #27337F;
+    }
+
+    .css-1u169s7-MuiList-root {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    a:-webkit-any-link {
+        color: -webkit-link;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: bolder;
+    }
+
+    .css-1edfpdg-MuiTypography-root {
+        color: #27337F;
+        margin: 0;
+        font-weight: 400;
+        font-size: 1.2rem !important;
+        letter-spacing: 0.00938em;
+    }
+}

@@ -1,0 +1,57 @@
+.Container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.card {
+  width: 340px;
+  margin: 30px 20px;
+  padding: 25px 10px;
+  background-color: rgba(151, 143, 143, 0.5);
+  border-radius: 20px;
+}
+
+.iconos{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+h6, h4{
+  margin: 5px !important;
+}
+
+.price{
+  color: #27337F;
+}
+
+.ContainerDetails{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttonCard{
+  display: flex;
+  align-items: flex-start;
+  text-align: center;
+  width: 100%;
+  padding: 10px 25px;
+  border-radius: 40px;
+  background-color: #27337F;
+  color: white;
+  text-decoration-line: none !important;
+}
+
+a:-webkit-any-link {
+  color: -webkit-link;
+  cursor: pointer;
+  text-decoration: none;
+}
