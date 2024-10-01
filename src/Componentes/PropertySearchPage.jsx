@@ -10,7 +10,9 @@ const PropertySearch = ({ tipo }) => {
         try {
             const response = await axios.get('http://localhost:4000/api/properties', {
                 params: { ciudad, tipo: tipoPropiedad, estado }
+                
             });
+            console.log(response)
             // Manejar los resultados de la búsqueda (puede redirigir o actualizar el estado)
         } catch (error) {
             console.error('Error al buscar propiedades:', error);

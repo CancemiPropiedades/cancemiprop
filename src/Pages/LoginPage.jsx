@@ -1,5 +1,5 @@
+import React, { useState } from 'react';
 import axios from 'axios';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
@@ -13,15 +13,17 @@ const LoginPage = () => {
         try {
             const response = await axios.post('http://localhost:4000/api/usuarios/login', { email, password });
             console.log('Login exitoso:', response.data);
-    
+
+            // Almacena el token en localStorage
             localStorage.setItem('token', response.data.token);
-    
-            navigate('/admin');
+
+            // Redirige a la vista de administración
+            navigate('/admin'); // Este debería funcionar
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
             setError('Error al iniciar sesión. Verifica tus credenciales.');
         }
-    };    
+    };
 
     return (
         <div>

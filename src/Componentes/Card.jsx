@@ -49,7 +49,7 @@ function Card() {
               <h4>{property.description}</h4> {/* Muestra la descripción de la propiedad */}
             </div>
             <div className="ContainerDetails">
-              <LinkRouter to={'../Pages/PropertyDetails' + property._id}>
+              <LinkRouter to={'../Pages/PropertyDetails/' + property._id}>
                 <div className="buttonCard">VER MÁS</div>
               </LinkRouter>
             </div>

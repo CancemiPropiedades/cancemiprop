@@ -2,49 +2,63 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const CityManager = () => {
-  const [cityData, setCityData] = useState({ name: '' });
-  const [cities, setCities] = useState([]);
+    const [cities, setCities] = useState([]);
+    const [newCity, setNewCity] = useState('');
 
-  const fetchCities = async () => {
-    const response = await axios.get('http://localhost:4000/api/cities');
-    setCities(response.data);
-  };
+    useEffect(() => {
+        const fetchCities = async () => {
+            try {
+                const response = await axios.get('http://localhost:4000/api/cities');
+                setCities(response.data);
+            } catch (error) {
+                console.error('Error al cargar las ciudades:', error);
+            }
+        };
 
-  const handleChange = (e) => {
-    setCityData({ ...cityData, [e.target.name]: e.target.value });
-  };
+        fetchCities();
+    }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await axios.post('http://localhost:4000/api/cities', cityData);
-    fetchCities(); // Actualiza la lista
-  };
+    const handleAddCity = async () => {
+        if (!newCity) return;
+        try {
+            const response = await axios.post('http://localhost:4000/api/cities', { name: newCity });
+            setCities([...cities, response.data]);
+            setNewCity(''); // Limpiar el input
+        } catch (error) {
+            console.error('Error al agregar la ciudad:', error);
+        }
+    };
 
-  useEffect(() => {
-    fetchCities();
-  }, []);
+    const handleDeleteCity = async (id) => {
+        try {
+            await axios.delete(`http://localhost:4000/api/cities/${id}`);
+            setCities(cities.filter(city => city._id !== id)); // Remover ciudad eliminada
+        } catch (error) {
+            console.error('Error al eliminar la ciudad:', error);
+        }
+    };
 
-  return (
-    <div>
-      <h2>Gestión de Ciudades</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          value={cityData.name}
-          onChange={handleChange}
-          placeholder="Nombre de la Ciudad"
-          required
-        />
-        <button type="submit">Agregar Ciudad</button>
-      </form>
-      <ul>
-        {cities.map((city) => (
-          <li key={city._id}>{city.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
+    return (
+        <div>
+            <h2>Gestionar Ciudades</h2>
+            <input
+                type="text"
+                value={newCity}
+                onChange={e => setNewCity(e.target.value)}
+                placeholder="Nueva Ciudad"
+            />
+            <button onClick={handleAddCity}>Agregar Ciudad</button>
+
+            <ul>
+                {cities.map(city => (
+                    <li key={city._id}>
+                        {city.name}
+                        <button onClick={() => handleDeleteCity(city._id)}>Eliminar</button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 };
 
 export default CityManager;

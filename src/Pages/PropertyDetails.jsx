@@ -1,19 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; // Para obtener el ID de la propiedad
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 const PropertyDetails = () => {
-  const { id } = useParams(); // Obtener el ID de la propiedad de la URL
-  const [property, setProperty] = useState(null); // Almacenar los detalles de la propiedad
+  const { id } = useParams();
+  const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [location, setLocation] = useState(null); // Estado para las coordenadas de la propiedad
 
-  // Cargar los detalles de la propiedad cuando el componente se monta
+  // Función para obtener las coordenadas de una dirección
+  const fetchCoordinates = async (ubicacion) => {
+    const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+    try {
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
+        params: {
+          address: ubicacion,
+          key: apiKey,
+        },
+      });
+  
+      
+      // Comprobar si hay resultados
+      if (response.data.status === 'OK' && response.data.results.length > 0) {
+        const { lat, lng } = response.data.results[0].geometry.location;
+        return { lat, lng };
+      } else {
+        console.error('No se encontraron resultados para la dirección:', ubicacion);
+        return null;
+      }
+    } catch (error) {
+      console.error('Error al obtener las coordenadas:', error);
+      return null;
+    }
+  };
+  
   useEffect(() => {
     const fetchPropertyDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/propiedades/${id}`);
+        const response = await axios.get(`http://localhost:4000/api/propiedades/${id}`);
         setProperty(response.data);
+
+        // Obtener las coordenadas de la dirección de la propiedad
+        const coords = await fetchCoordinates(response.data.ubicacion);
+        console.log('Dirección utilizada para geocodificación:', response.data.ubicacion);        
+        setLocation(coords); // Establecer las coordenadas en el estado
         setLoading(false);
       } catch (error) {
         console.error('Error al cargar los detalles de la propiedad:', error);
@@ -37,12 +68,6 @@ const PropertyDetails = () => {
     height: '400px',
   };
 
-  // Ubicación obtenida de los detalles de la propiedad (latitud y longitud)
-  const location = {
-    lat: property.latitud,
-    lng: property.longitud,
-  };
-
   return (
     <div>
       <h1>{property.titulo}</h1>
@@ -50,21 +75,20 @@ const PropertyDetails = () => {
       <p>Precio: ${property.precio}</p>
       <p>Descripción: {property.descripcion}</p>
 
-      {/* Mapa de Google con la ubicación de la propiedad */}
-      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
-  <GoogleMap
-    mapContainerStyle={containerStyle}
-    center={location}
-    zoom={15}
-  >
-    <Marker
-      position={location}
-      onClick={() => {
-        window.open(`https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`);
-      }}
-    />
-  </GoogleMap>
-</LoadScript>
+      {location ? (
+  <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+    <GoogleMap mapContainerStyle={containerStyle} center={location} zoom={15}>
+      <Marker
+        position={location}
+        onClick={() => {
+          window.open(`https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`);
+        }}
+      />
+    </GoogleMap>
+  </LoadScript>
+) : (
+  <p>No se pudo cargar el mapa para la dirección proporcionada.</p>
+)}
     </div>
   );
 };
