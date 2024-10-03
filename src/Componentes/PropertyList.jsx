@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import PropertyList from '../Componentes/PaginatedPropertyList'; 
+import PropertyList from '../Componentes/PropertyList'; // Asegúrate de que esto sea la ruta correcta
 import FormularioBusqueda from '../Componentes/FormularioBusqueda';
 import ImgInicio from '../Imagenes/inicio.png';
 import '../Css/Home.css';
@@ -22,7 +22,7 @@ function Home() {
       <h1>Bienvenido a Inmobiliaria</h1>
       <FormularioBusqueda />
       <img src={ImgInicio} alt="Imagen de inicio" />
-      <PropertyList properties={properties} /> {/* O PaginatedPropertyList */}
+      <PropertyList properties={properties} /> {/* Asegúrate de que aquí estés pasando las propiedades */}
     </div>
   );
 }

@@ -14,7 +14,7 @@ function Cancemi() {
   // Función para verificar si el usuario está autenticado
   const isAuthenticated = () => {
     return localStorage.getItem('token') !== null;
-};
+  };
 
   // Configurar interceptor de Axios para manejar el token y redirigir en caso de error de autenticación
   useEffect(() => {
@@ -46,7 +46,7 @@ function Cancemi() {
           <Route path="/Alquiler" element={<Alquiler />} />
           <Route path="/Venta" element={<Venta />} />
           <Route path="/Login" element={<LoginPage />} />
-          <Route path="/Admin" element={isAuthenticated() ? <AdminDashboard /> : <Navigate to="/login" />} />
+          <Route path="/admin" element={isAuthenticated() ? <AdminDashboard /> : <Navigate to="/login" />} />
         </Routes>
       </div>
     </Router>

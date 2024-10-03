@@ -7,6 +7,7 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    console.log(navigate)
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -14,11 +15,19 @@ const LoginPage = () => {
             const response = await axios.post('http://localhost:4000/api/usuarios/login', { email, password });
             console.log('Login exitoso:', response.data);
 
-            // Almacena el token en localStorage
+            // Almacenar el token en localStorage
             localStorage.setItem('token', response.data.token);
 
-            // Redirige a la vista de administración
-            navigate('/admin'); // Este debería funcionar
+            const storedToken = localStorage.getItem('token');
+            console.log("Token almacenado:", storedToken);
+
+            console.log("Redirigiendo al panel de administración...");
+
+            // Redirigir manualmente con window.location.href
+            setTimeout(() => {
+                console.log("Intentando redirigir...");
+                window.location.href = '/admin'; // Cambio a window.location.href
+            }, 500); // Esperar 500 ms antes de redirigir para asegurar que el token se almacene correctamente
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
             setError('Error al iniciar sesión. Verifica tus credenciales.');
