@@ -59,3 +59,12 @@
   justify-content: center !important;
   align-items: center !important;
 }
+
+@media (max-width: 680px) {
+
+  .css-nd0xiu-MuiStep-root {
+    padding-left: 8px !important; 
+    padding-right: 8px !important; 
+  }
+  
+  }

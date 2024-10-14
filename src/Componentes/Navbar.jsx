@@ -20,8 +20,7 @@ import '../Css/Navbar.css';
 const drawerWidth = 240;
 const navItems = ['Alquiler', 'Venta', 'Emprendimiento', 'Quienes somos', 'Contacto'];
 
-function DrawerAppBar(props) {
-  const { window } = props;
+function DrawerAppBar({ onFilterChange }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const navigate = useNavigate();
 
@@ -30,6 +29,11 @@ function DrawerAppBar(props) {
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+  };
+
+  const handleFilterChange = (filterType) => {
+    onFilterChange(filterType); // Aplica el filtro
+    navigate(`/${filterType}`); // Navegar a la página correspondiente
   };
 
   const handleLogout = () => {
@@ -67,7 +71,7 @@ function DrawerAppBar(props) {
     </Box>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? window.document.body : undefined;
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -93,11 +97,13 @@ function DrawerAppBar(props) {
           </Box>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
-              <LinkRouter to={`/${item}`} key={item}>
-                <Button sx={{ color: '#fff', fontSize: '15px' }}>
-                  {item}
-                </Button>
-              </LinkRouter>
+              <Button
+                key={item}
+                sx={{ color: '#fff', fontSize: '15px' }}
+                onClick={() => handleFilterChange(item.toLowerCase())}
+              >
+                {item}
+              </Button>
             ))}
             {/* Mostrar botón de "Cerrar Sesión" solo si el usuario está autenticado */}
             {isAuthenticated && (
@@ -133,7 +139,7 @@ function DrawerAppBar(props) {
 }
 
 DrawerAppBar.propTypes = {
-  window: PropTypes.func,
+  onFilterChange: PropTypes.func.isRequired,
 };
 
 export default DrawerAppBar;

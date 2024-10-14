@@ -3,6 +3,7 @@ import axios from 'axios';
 import Modal from 'react-modal'; // Para el modal
 import PropertyStepper from '../Componentes/Admin/PropertyStepper'; 
 import PropertyManager from '../Componentes/Admin/PropertyManager'
+import TypeManager from '../Componentes/Admin/TypeManager';
 import CityManager from '../Componentes/Admin/CityManager';
 import { Box, Drawer, Button, List, Divider, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import InboxIcon from '@mui/icons-material/MoveToInbox'; // O cualquier icono que quieras usar
@@ -69,6 +70,8 @@ const AdminDashboard = () => {
             return <CityManager />;
         case 'Gestionar Propiedades':
             return <PropertyManager />;
+        case 'Gestionar Tipos': // Añadir la nueva vista para gestionar tipos
+            return <TypeManager />;
         default:
             return <PropertyStepper onPropertyAdded={setProperties} />;
     }
@@ -80,7 +83,7 @@ const AdminDashboard = () => {
       <Drawer anchor="left" open={openDrawer} onClose={toggleDrawer(false)}>
         <Box sx={{ width: 250 }} role="presentation">
           <List>
-            {['Agregar Propiedad', 'Gestionar Ciudades', 'Gestionar Propiedades'].map((text, index) => (
+            {['Agregar Propiedad', 'Gestionar Ciudades', 'Gestionar Propiedades', 'Gestionar Tipos'].map((text, index) => (
               <ListItem button key={text} onClick={() => handleDrawerItemClick(text)}>
                 <ListItemIcon>
                   <InboxIcon /> {/* Cambia el icono según la opción */}

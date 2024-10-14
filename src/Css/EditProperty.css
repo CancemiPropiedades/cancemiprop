@@ -1,0 +1,50 @@
+.edit-property-container {
+    width: 80%;
+    margin: auto;
+    max-width: 600px;
+    padding: 20px;
+  }
+  
+  .edit-property-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .update-button {
+    background-color: #1976d2;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1rem;
+    font-size: 1rem;
+  }
+  
+  .menu-hamburger {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+  }
+  
+  .menu-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin-top: 10px;
+  }
+  
+  /* Responsive ajustes */
+  @media (max-width: 768px) {
+    .edit-property-container {
+      width: 95%;
+    }
+  
+    .update-button {
+      font-size: 0.9rem;
+    }
+  
+    .menu-actions {
+      gap: 10px;
+    }
+  }  

@@ -17,7 +17,7 @@ function FormularioBusqueda() {
   return (
     <div className="formulario-container">
       <h1>Encuentra tu lugar ideal</h1>
-      <h3>Descubre los mejores alojamientos que se adapten a tus necesidades</h3>
+      <h2>Descubre los mejores alojamientos que se adapten a tus necesidades</h2>
       <form onSubmit={handleSubmit} className="formulario-busqueda">
         <div className="input-group">
           <label htmlFor="ubicacion">Ubicación</label>

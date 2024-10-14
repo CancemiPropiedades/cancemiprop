@@ -1,35 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
-import Home from './Pages/Home';
 import Navbar from './Componentes/Navbar';
-import Alquiler from './Pages/Alquiler';
-import Venta from './Pages/Venta';
+import Home from './Pages/Home';
+import PropertySearchPage from './Componentes/PropertySearchPage';
 import AdminDashboard from './Pages/AdminDashboard';
 import LoginPage from './Pages/LoginPage';
 import PropertyDetails from './Pages/PropertyDetails';
 
 function Cancemi() {
+  const [filterType, setFilterType] = useState('');
 
-  // Función para verificar si el usuario está autenticado
-  const isAuthenticated = () => {
-    return localStorage.getItem('token') !== null;
+  const handleFilterChange = (filterType) => {
+    setFilterType(filterType); // Almacena el tipo de filtro seleccionado
   };
 
-  // Configurar interceptor de Axios para manejar el token y redirigir en caso de error de autenticación
+  // Configurar interceptor de Axios
   useEffect(() => {
     const interceptor = axios.interceptors.response.use(
-      response => response, // Deja pasar las respuestas exitosas
+      response => response,
       error => {
         if (error.response && error.response.status === 401) {
-          localStorage.removeItem('token'); // Eliminar el token si es inválido o ha expirado
-          window.location.href = '/login'; // Redirigir al login usando window.location
+          localStorage.removeItem('token');
+          window.location.href = '/login';
         }
         return Promise.reject(error);
       }
     );
 
-    // Limpiar el interceptor al desmontar el componente
     return () => {
       axios.interceptors.response.eject(interceptor);
     };
@@ -38,15 +36,14 @@ function Cancemi() {
   return (
     <Router>
       <div className="App">
-        <Navbar />
+        <Navbar onFilterChange={handleFilterChange} /> {/* Pasar el filtro */}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/Inicio" element={<Home />} />
+          <Route path="/Alquiler" element={<PropertySearchPage filterType={filterType} />} />
+          <Route path="/Venta" element={<PropertySearchPage filterType={filterType} />} />
+          <Route path="/Emprendimiento" element={<PropertySearchPage filterType={filterType} />} />
+          <Route path="/admin" element={localStorage.getItem('token') ? <AdminDashboard /> : <Navigate to="/login" />} />
           <Route path="/Pages/PropertyDetails/:id" element={<PropertyDetails />} />
-          <Route path="/Alquiler" element={<Alquiler />} />
-          <Route path="/Venta" element={<Venta />} />
-          <Route path="/Login" element={<LoginPage />} />
-          <Route path="/admin" element={isAuthenticated() ? <AdminDashboard /> : <Navigate to="/login" />} />
         </Routes>
       </div>
     </Router>

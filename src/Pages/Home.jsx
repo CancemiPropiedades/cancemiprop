@@ -10,8 +10,16 @@ function Home() {
 
   useEffect(() => {
     const fetchProperties = async () => {
-      const response = await axios.get('http://localhost:4000/api/propiedades');
-      setProperties(response.data);
+      try {
+        const response = await axios.get('http://localhost:4000/api/propiedades');
+        
+        // Filtrar solo las propiedades habilitadas
+        const propiedadesHabilitadas = response.data.filter(property => property.habilitada === true);
+        
+        setProperties(propiedadesHabilitadas);
+      } catch (error) {
+        console.error('Error al obtener propiedades:', error);
+      }
     };
 
     fetchProperties();
@@ -19,9 +27,8 @@ function Home() {
 
   return (
     <div>
-      <h1>Bienvenido a Inmobiliaria</h1>
       <FormularioBusqueda />
-      <img src={ImgInicio} alt="Imagen de inicio" />
+      <img src={ImgInicio} className='imgHome' alt="Imagen de inicio" />
       <PropertyList properties={properties} /> {/* O PaginatedPropertyList */}
     </div>
   );

@@ -1,21 +1,13 @@
-import React, {  useState } from 'react';
-import PropertyFilters from '../Componentes/PropertyFilters';
-import PropertyList from '../Componentes/PropertyList';
+import React from 'react';
+import PropertySearchPage from '../Componentes/PropertySearchPage';
 
 const Venta = () => {
-    const [filteredProperties, setFilteredProperties] = useState([]);
-    
-    const handleFilterChange = (filters) => {
-        setFilteredProperties(filters);
-    };
-
-    return (
-        <div>
-            <h1>Buscar Ventas</h1>
-            <PropertyFilters onFilterChange={handleFilterChange} />
-            <PropertyList tipo="Venta" filteredProperties={filteredProperties} />
-        </div>
-    );
+  return (
+    <div>
+      <h1>Buscar Ventas</h1>
+      <PropertySearchPage tipo="Venta" />
+    </div>
+  );
 };
 
 export default Venta;

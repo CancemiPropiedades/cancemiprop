@@ -6,8 +6,12 @@ const TypeManager = () => {
   const [types, setTypes] = useState([]);
 
   const fetchTypes = async () => {
-    const response = await axios.get('http://localhost:4000/api/types');
-    setTypes(response.data);
+    try {
+      const response = await axios.get('http://localhost:4000/api/types');
+      setTypes(response.data);
+    } catch (error) {
+      console.error('Error al cargar los tipos:', error);
+    }
   };
 
   const handleChange = (e) => {
@@ -16,8 +20,13 @@ const TypeManager = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:4000/api/types', typeData);
-    fetchTypes(); // Actualiza la lista
+    try {
+      await axios.post('http://localhost:4000/api/types', typeData);
+      fetchTypes(); // Actualiza la lista después de agregar un nuevo tipo
+      setTypeData({ name: '' }); // Limpiar el formulario
+    } catch (error) {
+      console.error('Error al agregar el tipo:', error);
+    }
   };
 
   useEffect(() => {
@@ -40,7 +49,7 @@ const TypeManager = () => {
       </form>
       <ul>
         {types.map((type) => (
-          <li key={type._id}>{type.name}</li>
+          <li key={type._id}>{type.nombre}</li> // Muestra el nombre del tipo
         ))}
       </ul>
     </div>

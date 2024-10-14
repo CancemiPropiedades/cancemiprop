@@ -1,61 +1,125 @@
 .formulario-container {
-    width: 33%;
-    position: absolute;
-    text-align: center;
-    padding: 2rem;
-    background-color: rgba(255, 255, 255, 0.788);
-    border-radius: 5%;
-    margin: 100px;
+  width: 80%; /* Ajustamos el ancho a un porcentaje */
+  height: 78%;
+  max-width: 500px; /* Limitar el ancho máximo para pantallas grandes */
+  position: absolute;
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.788);
+  border-radius: 10px; /* Reducimos el borde para mejor apariencia */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Añadimos sombra para darle profundidad */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 0px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.1rem;
+  color: rgba(0, 0, 0, 0.753);
+  margin: 10px 0px;
+}
+
+.formulario-busqueda {
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.input-group label {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.input-group input,
+.input-group select {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box; /* Asegura que el padding no sobrepase el ancho */
+}
+
+button {
+  background-color: #F07F05;
+  color: #27337F;
+  padding: 0.8rem 4rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1.4rem;
+  font-weight: bolder;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #d96b04; /* Añadimos un efecto hover */
+}
+
+/* Media Queries para hacer responsive el formulario */
+@media (max-width: 768px) {
+  .formulario-container {
+      width: 70%; /* Ocupa más espacio en pantallas más pequeñas */
+      height: 70%;
+      padding: 1.5rem;
+      justify-content: center;
+      margin-top: 5px;
   }
-  
+
   h1 {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
+      font-size: 1.2rem;
   }
-  
+
   h3 {
-    font-size: 1rem;
-    margin-bottom: 2rem;
-    color: rgba(0, 0, 0, 0.753);
+      font-size: 1rem;
   }
-  
-  .formulario-busqueda {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+  button {
+      padding: 0.7rem 3rem;
+      font-size: 1.2rem;
   }
-  
-  .input-group {
-    margin-bottom: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 400px;
+}
+
+@media (max-width: 480px) {
+  .formulario-container {
+      width: 75%; /* Reduce el ancho aún más en móviles */
+      padding: 1rem; /* Reducimos el padding */
+      height: 65%;
+      margin-top: 5px;
   }
-  
-  .input-group label {
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
+
+  h1 {
+      font-size: 1rem;
   }
-  
+
+  h2 {
+      font-size: 0.9rem;
+      margin: 0;
+  }
+
   .input-group input,
   .input-group select {
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    width: 100%;
+      padding: 0.5rem; /* Reducimos el padding para inputs y selects */
+      font-size: 0.9rem; /* Tamaño de texto más pequeño */
   }
-  
+
   button {
-    background-color:#F07F05;
-    color: #27337F;
-    padding: .8rem 4rem;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    font-size: 1.4rem;
-    font-weight: bolder;
+      padding: 0.6rem 2rem; /* Reducimos el tamaño del botón */
+      font-size: 1rem;
   }
-  
-  
+}
