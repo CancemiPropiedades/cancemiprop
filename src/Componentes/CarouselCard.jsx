@@ -20,19 +20,19 @@ function CarouselCard() {
         className="mySwiper"
       >
         <SwiperSlide>
-          <img src={imgCard} alt="Imagen de inicio" className="carousel-image" />
+          <img src={imgCard} alt="Imagen de inicio" className="carousel-image-card" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={imgCard} alt="Imagen de inicio" className="carousel-image" />
+          <img src={imgCard} alt="Imagen de inicio" className="carousel-image-card" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={imgCard} alt="Imagen de inicio" className="carousel-image" />
+          <img src={imgCard} alt="Imagen de inicio" className="carousel-image-card" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={imgCard} alt="Imagen de inicio" className="carousel-image" />
+          <img src={imgCard} alt="Imagen de inicio" className="carousel-image-card" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={imgCard} alt="Imagen de inicio" className="carousel-image" />
+          <img src={imgCard} alt="Imagen de inicio" className="carousel-image-card" />
         </SwiperSlide>
       </Swiper>
     </>

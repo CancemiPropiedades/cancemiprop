@@ -1,34 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box, Button, Stepper, Step, StepLabel, TextField, Typography, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { Box, Button, Stepper, Step, StepLabel, TextField, Typography, MenuItem, Select, FormControl, InputLabel, FormControlLabel, Checkbox } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const PropertyStepper = ({ onPropertyAdded }) => {
+const PropertyStepper = ({ onPropertyAdded, propertyId }) => {
     const steps = ['Datos Principales', 'Características', 'Cargar Imágenes', 'Descripción'];
-
     const [activeStep, setActiveStep] = useState(0);
+    const [selectedImages, setSelectedImages] = useState([]); // Manejo de imágenes seleccionadas
+
     const [propertyData, setPropertyData] = useState({
         titulo: '',
         ubicacion: '',
         precio: '',
         tipo: '',
         ciudad: '',
-        estado: 'Alquiler',
+        estado: '',
         descripcion: '',
-        fotos: [],
         caracteristicas: {
             ambientes: 0,
             banos: 0,
+            dormitorios: 0,
             cochera: false,
             aceptaMascotas: false,
+            pileta: false,
+            parrilla: false,
+            gimnasio: false,
+            laundry: false,
+            ascensor: false,
         },
         moneda: 'USD',
     });
 
-    const [newPhoto, setNewPhoto] = useState('');
     const [cities, setCities] = useState([]);
     const [types, setTypes] = useState([]);
-
+    console.log(types)
     useEffect(() => {
         const fetchCitiesAndTypes = async () => {
             try {
@@ -42,7 +47,7 @@ const PropertyStepper = ({ onPropertyAdded }) => {
         };
 
         fetchCitiesAndTypes();
-    }, []);
+    }, [propertyId]);
 
     const handleChange = (e) => {
         setPropertyData({
@@ -62,25 +67,44 @@ const PropertyStepper = ({ onPropertyAdded }) => {
         }));
     };
 
-    const addPhoto = () => {
-        if (newPhoto) {
-            setPropertyData((prevData) => ({
-                ...prevData,
-                fotos: [...prevData.fotos, newPhoto],
-            }));
-            setNewPhoto('');
-        }
+    const handleFileChange = (event) => {
+        const files = event.target.files;
+        setSelectedImages(prevImages => [...prevImages, ...Array.from(files)]); // Agregar las nuevas imágenes seleccionadas
+    };
+
+    const handleImageRemove = (index) => {
+        setSelectedImages(prevImages => prevImages.filter((_, i) => i !== index)); // Eliminar imagen seleccionada
     };
 
     const handleSubmit = async () => {
-        try {
-            await axios.post('http://localhost:4000/api/propiedades', propertyData);
-            alert('Propiedad agregada con éxito');
-            onPropertyAdded(); // Llama a la función para actualizar la lista de propiedades
-        } catch (error) {
-            console.error('Error al agregar la propiedad:', error);
+        if (!['Venta', 'Alquiler', 'Emprendimiento'].includes(propertyData.estado)) {
+            alert('Por favor, selecciona un estado válido.');
+            return;
         }
-    };
+    
+        const formData = new FormData();
+        Object.keys(propertyData).forEach(key => {
+            if (key !== 'caracteristicas') {
+                formData.append(key, propertyData[key]);
+            }
+        });
+    
+        formData.append('caracteristicas', JSON.stringify(propertyData.caracteristicas));
+    
+        selectedImages.forEach(file => {
+            formData.append('fotos', file);
+        });
+    
+        try {
+            await axios.post('http://localhost:4000/api/propiedades', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            alert('Propiedad agregada con éxito');
+            onPropertyAdded();
+        } catch (error) {
+            console.error('Error al agregar la propiedad:', error.response.data);
+        }
+    };    
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -97,20 +121,19 @@ const PropertyStepper = ({ onPropertyAdded }) => {
                     <TextField name="titulo" label="Título" value={propertyData.titulo} onChange={handleChange} required fullWidth margin="normal" />
                     <TextField name="ubicacion" label="Ubicación" value={propertyData.ubicacion} onChange={handleChange} required fullWidth margin="normal" />
                     <TextField type="number" name="precio" label="Precio" value={propertyData.precio} onChange={handleChange} required fullWidth margin="normal" />
-
                     {/* Selector de Tipo */}
                     <FormControl fullWidth margin="normal">
-                        <InputLabel id="tipo-label">Tipo</InputLabel>
+                        <InputLabel id="estado-label">Estado De la Propiedad</InputLabel>
                         <Select
-                            labelId="tipo-label"
-                            name="tipo"
-                            value={propertyData.tipo}
+                            labelId="estado-label"
+                            name="estado"
+                            value={propertyData.estado}
                             onChange={handleChange}
                         >
-                            <MenuItem value=""><em>Seleccione un tipo</em></MenuItem>
-                            {types.map((type) => (
-                                <MenuItem key={type._id} value={type._id}>{type.nombre}</MenuItem>
-                            ))}
+                            <MenuItem value=""><em>Seleccione un estado</em></MenuItem>
+                            <MenuItem value="Venta">Venta</MenuItem>
+                            <MenuItem value="Alquiler">Alquiler</MenuItem>
+                            <MenuItem value="Emprendimiento">Emprendimiento</MenuItem>
                         </Select>
                     </FormControl>
 
@@ -129,7 +152,6 @@ const PropertyStepper = ({ onPropertyAdded }) => {
                             ))}
                         </Select>
                     </FormControl>
-
                     {/* Selector de Moneda */}
                     <FormControl fullWidth margin="normal">
                         <InputLabel id="moneda-label">Moneda</InputLabel>
@@ -147,65 +169,53 @@ const PropertyStepper = ({ onPropertyAdded }) => {
             ) : activeStep === 1 ? (
                 <Box sx={{ mb: 2 }}>
                     <Typography variant="h6">Características</Typography>
-                    <TextField 
-                        type="number" 
-                        name="ambientes" 
-                        label="Ambientes" 
-                        value={propertyData.caracteristicas.ambientes} 
-                        onChange={handleCaracteristicasChange} 
-                        fullWidth 
-                        margin="normal" 
-                    />
-                    <TextField 
-                        type="number" 
-                        name="banos" 
-                        label="Baños" 
-                        value={propertyData.caracteristicas.banos} 
-                        onChange={handleCaracteristicasChange} 
-                        fullWidth 
-                        margin="normal" 
-                    />
+                    <TextField type="number" name="ambientes" label="Ambientes" value={propertyData.caracteristicas.ambientes} onChange={handleCaracteristicasChange} fullWidth margin="normal" />
+                    <TextField type="number" name="banos" label="Baños" value={propertyData.caracteristicas.banos} onChange={handleCaracteristicasChange} fullWidth margin="normal" />
+                    <TextField type="number" name="dormitorios" label="Dormitorios" value={propertyData.caracteristicas.dormitorios} onChange={handleCaracteristicasChange} fullWidth margin="normal" />
                     <div>
-                        <label>
-                            <input 
-                                type="checkbox" 
-                                name="cochera" 
-                                checked={propertyData.caracteristicas.cochera} 
-                                onChange={handleCaracteristicasChange} 
-                            />
-                            Cochera
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            <input 
-                                type="checkbox" 
-                                name="aceptaMascotas" 
-                                checked={propertyData.caracteristicas.aceptaMascotas} 
-                                onChange={handleCaracteristicasChange} 
-                            />
-                            Acepta Mascotas
-                        </label>
+                        <FormControlLabel
+                            control={<Checkbox checked={propertyData.caracteristicas.cochera} onChange={handleCaracteristicasChange} name="cochera" />}
+                            label="Cochera"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={propertyData.caracteristicas.aceptaMascotas} onChange={handleCaracteristicasChange} name="aceptaMascotas" />}
+                            label="Acepta Mascotas"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={propertyData.caracteristicas.pileta} onChange={handleCaracteristicasChange} name="pileta" />}
+                            label="Pileta"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={propertyData.caracteristicas.parrilla} onChange={handleCaracteristicasChange} name="parrilla" />}
+                            label="Parrilla"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={propertyData.caracteristicas.gimnasio} onChange={handleCaracteristicasChange} name="gimnasio" />}
+                            label="Gimnasio"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={propertyData.caracteristicas.laundry} onChange={handleCaracteristicasChange} name="laundry" />}
+                            label="Laundry"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={propertyData.caracteristicas.ascensor} onChange={handleCaracteristicasChange} name="ascensor" />}
+                            label="Ascensor"
+                        />
                     </div>
                 </Box>
             ) : activeStep === 2 ? (
                 <Box sx={{ mb: 2 }}>
                     <Typography variant="h6">Cargar Imágenes</Typography>
-                    <input 
-                        type="text" 
-                        value={newPhoto} 
-                        onChange={(e) => setNewPhoto(e.target.value)} 
-                        placeholder="URL de la foto" 
+                    <input
+                        type="file"
+                        multiple
+                        onChange={handleFileChange}
                     />
-                    <Button onClick={addPhoto}>Agregar Foto</Button>
                     <ul>
-                        {propertyData.fotos.map((foto, index) => (
+                        {selectedImages.map((foto, index) => (
                             <li key={index}>
-                                {foto}
-                                <DeleteIcon onClick={() => setPropertyData((prevData) => ({
-                                    ...prevData,
-                                    fotos: prevData.fotos.filter((_, i) => i !== index),
-                                }))} />
+                                {foto.name} {/* Mostrar nombre del archivo */}
+                                <DeleteIcon onClick={() => handleImageRemove(index)} />
                             </li>
                         ))}
                     </ul>
@@ -216,11 +226,11 @@ const PropertyStepper = ({ onPropertyAdded }) => {
                     <TextField name="descripcion" label="Descripción" value={propertyData.descripcion} onChange={handleChange} required fullWidth margin="normal" />
                 </Box>
             )}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Button disabled={activeStep === 0} onClick={() => setActiveStep((prev) => prev - 1)}>Atrás</Button>
                 <Button onClick={() => {
                     if (activeStep === steps.length - 1) {
-                        handleSubmit(); // Llamar a `handleSubmit` sin pasarle `event`
+                        handleSubmit();
                     } else {
                         setActiveStep((prev) => prev + 1);
                     }

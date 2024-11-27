@@ -1,85 +1,157 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Checkbox, FormControlLabel, Button, TextField, Typography } from '@mui/material';
 
-const EditProperty = () => {
-  const { id } = useParams(); // Obtenemos el ID de la propiedad a editar
+const EditProperty = ({ property, onSave, onClose }) => {
   const [propertyData, setPropertyData] = useState({
     titulo: '',
     ubicacion: '',
-    precio: '',
+    precio: 0,
+    ciudad: '',
+    estado: '',
     descripcion: '',
-    habilitada: true,
+    moneda: '',
+    caracteristicas: {
+      ambientes: 0,
+      banos: 0,
+      dormitorios: 0,
+      cochera: false,
+      aceptaMascotas: false,
+      pileta: false,
+      parrilla: false,
+      gimnasio: false,
+      laundry: false,
+      ascensor: false,
+    },
+    fotos: [],
   });
 
   useEffect(() => {
-    const fetchProperty = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/propiedades/${id}`);
-        setPropertyData(response.data);
-      } catch (error) {
-        console.error('Error al cargar la propiedad:', error);
-      }
-    };
+    if (property) {
+      setPropertyData(property);
+    }
+  }, [property]);
 
-    fetchProperty();
-  }, [id]);
-
-  const handleChange = (e) => {
-    setPropertyData({
-      ...propertyData,
-      [e.target.name]: e.target.value,
-    });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setPropertyData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleCaracteristicasChange = (e) => {
+    const { name, checked } = e.target;
+    setPropertyData((prevData) => ({
+      ...prevData,
+      caracteristicas: {
+        ...prevData.caracteristicas,
+        [name]: checked,
+      },
+    }));
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await axios.put(`http://localhost:4000/api/propiedades/${id}`, propertyData);
-      alert('Propiedad actualizada con éxito');
-    } catch (error) {
-      console.error('Error al actualizar la propiedad:', error);
-    }
+    onSave(propertyData); // Enviar datos actualizados al componente padre
   };
 
   return (
-    <div>
-      <h1>Editar Propiedad</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="titulo"
-          value={propertyData.titulo}
-          onChange={handleChange}
-          placeholder="Título"
-          required
+    <form className='formEdit' onSubmit={handleSubmit}>
+      <Typography variant="h6">Editar Propiedad</Typography>
+      <TextField
+        label="Título"
+        name="titulo"
+        value={propertyData.titulo}
+        onChange={handleInputChange}
+        fullWidth
+        margin="normal"
+        required
+      />
+      <TextField
+        label="Ubicación"
+        name="ubicacion"
+        value={propertyData.ubicacion}
+        onChange={handleInputChange}
+        fullWidth
+        margin="normal"
+        required
+      />
+      <TextField
+        label="Precio"
+        name="precio"
+        type="number"
+        value={propertyData.precio}
+        onChange={handleInputChange}
+        fullWidth
+        margin="normal"
+        required
+      />
+      <TextField
+        label="Ciudad"
+        name="ciudad"
+        value={propertyData.ciudad}
+        onChange={handleInputChange}
+        fullWidth
+        margin="normal"
+        required
+      />
+      <TextField
+        label="Estado"
+        name="estado"
+        value={propertyData.estado}
+        onChange={handleInputChange}
+        fullWidth
+        margin="normal"
+        required
+      />
+      <TextField
+        label="Descripción"
+        name="descripcion"
+        value={propertyData.descripcion}
+        onChange={handleInputChange}
+        multiline
+        rows={4}
+        fullWidth
+        margin="normal"
+        required
+      />
+      <Typography variant="subtitle1">Características</Typography>
+      {[
+        { label: 'Cochera', name: 'cochera' },
+        { label: 'Acepta Mascotas', name: 'aceptaMascotas' },
+        { label: 'Pileta', name: 'pileta' },
+        { label: 'Parrilla', name: 'parrilla' },
+        { label: 'Gimnasio', name: 'gimnasio' },
+        { label: 'Laundry', name: 'laundry' },
+        { label: 'Ascensor', name: 'ascensor' },
+      ].map((feature) => (
+        <FormControlLabel
+          key={feature.name}
+          control={
+            <Checkbox
+              checked={propertyData.caracteristicas[feature.name]}
+              onChange={handleCaracteristicasChange}
+              name={feature.name}
+            />
+          }
+          label={feature.label}
         />
-        <input
-          type="text"
-          name="ubicacion"
-          value={propertyData.ubicacion}
-          onChange={handleChange}
-          placeholder="Ubicación"
-          required
-        />
-        <input
-          type="number"
-          name="precio"
-          value={propertyData.precio}
-          onChange={handleChange}
-          placeholder="Precio"
-          required
-        />
-        <textarea
-          name="descripcion"
-          value={propertyData.descripcion}
-          onChange={handleChange}
-          placeholder="Descripción"
-          required
-        />
-        <button type="submit">Actualizar Propiedad</button>
-      </form>
-    </div>
+      ))}
+      <div style={{ marginTop: '20px' }}>
+        <Button type="submit" variant="contained" color="primary">
+          Guardar Cambios
+        </Button>
+        <Button
+          type="button"
+          variant="outlined"
+          color="secondary"
+          onClick={onClose}
+          style={{ marginLeft: '10px' }}
+        >
+          Cancelar
+        </Button>
+      </div>
+    </form>
   );
 };
 

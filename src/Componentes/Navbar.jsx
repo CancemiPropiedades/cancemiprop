@@ -18,7 +18,7 @@ import { Link as LinkRouter, useNavigate } from 'react-router-dom';
 import '../Css/Navbar.css';
 
 const drawerWidth = 240;
-const navItems = ['Alquiler', 'Venta', 'Emprendimiento', 'Quienes somos', 'Contacto'];
+const navItems = ['alquiler', 'venta', 'emprendimiento', 'quienes-somos', 'contacto'];
 
 function DrawerAppBar({ onFilterChange }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -32,9 +32,9 @@ function DrawerAppBar({ onFilterChange }) {
   };
 
   const handleFilterChange = (filterType) => {
-    onFilterChange(filterType); // Aplica el filtro
-    navigate(`/${filterType}`); // Navegar a la página correspondiente
-  };
+    onFilterChange(filterType); // Actualiza el filtro en la App principal
+    navigate(`/${filterType}`); // Navega a la página correspondiente
+  };  
 
   const handleLogout = () => {
     localStorage.removeItem('token');  // Eliminar token de localStorage

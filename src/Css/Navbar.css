@@ -68,3 +68,9 @@ img {
         letter-spacing: 0.00938em;
     }
 }
+
+@media (min-width: 600px) {
+    .css-1ygil4i-MuiToolbar-root {
+        min-height: 100px !important;
+    }
+}

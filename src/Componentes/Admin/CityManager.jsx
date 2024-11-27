@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { MdDelete } from 'react-icons/md'; // Importar el ícono de eliminación
 
 const CityManager = () => {
     const [cities, setCities] = useState([]);
@@ -53,7 +54,11 @@ const CityManager = () => {
                 {cities.map(city => (
                     <li key={city._id}>
                         {city.name}
-                        <button onClick={() => handleDeleteCity(city._id)}>Eliminar</button>
+                        {/* Ícono de eliminación */}
+                        <MdDelete
+                            style={{ cursor: 'pointer', marginLeft: '10px' }}
+                            onClick={() => handleDeleteCity(city._id)}
+                        />
                     </li>
                 ))}
             </ul>

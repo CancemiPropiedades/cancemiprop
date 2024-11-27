@@ -5,12 +5,14 @@ import Navbar from './Componentes/Navbar';
 import Home from './Pages/Home';
 import PropertySearchPage from './Componentes/PropertySearchPage';
 import AdminDashboard from './Pages/AdminDashboard';
-import LoginPage from './Pages/LoginPage';
 import PropertyDetails from './Pages/PropertyDetails';
+import QuienesSomos from './Pages/Quienes-Somos';
+import FormContacto from './Pages/Form-Contacto';
+import WhatsAppButton from './Componentes/Botton-Whatsapp';
 
 function Cancemi() {
   const [filterType, setFilterType] = useState('');
-
+  console.log(filterType)
   const handleFilterChange = (filterType) => {
     setFilterType(filterType); // Almacena el tipo de filtro seleccionado
   };
@@ -39,12 +41,15 @@ function Cancemi() {
         <Navbar onFilterChange={handleFilterChange} /> {/* Pasar el filtro */}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/Alquiler" element={<PropertySearchPage filterType={filterType} />} />
-          <Route path="/Venta" element={<PropertySearchPage filterType={filterType} />} />
-          <Route path="/Emprendimiento" element={<PropertySearchPage filterType={filterType} />} />
+          <Route path="/alquiler" element={<PropertySearchPage filterType="Alquiler" />} />
+          <Route path="/venta" element={<PropertySearchPage filterType="Venta" />} />
+          <Route path="/emprendimiento" element={<PropertySearchPage filterType="Emprendimiento" />} />
+          <Route path="/quienes-somos" element={<QuienesSomos filterType="QuienesSomos" />} />
+          <Route path="contacto" element={<FormContacto filterType="Contactanos"/>}/>
           <Route path="/admin" element={localStorage.getItem('token') ? <AdminDashboard /> : <Navigate to="/login" />} />
           <Route path="/Pages/PropertyDetails/:id" element={<PropertyDetails />} />
         </Routes>
+        <WhatsAppButton />
       </div>
     </Router>
   );

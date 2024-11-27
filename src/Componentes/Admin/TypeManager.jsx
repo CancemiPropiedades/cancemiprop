@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { MdDelete } from 'react-icons/md'; // Importar el ícono de eliminación
 
 const TypeManager = () => {
   const [typeData, setTypeData] = useState({ name: '' });
@@ -29,6 +30,16 @@ const TypeManager = () => {
     }
   };
 
+  const handleDeleteType = async (id) => {
+    try {
+        await axios.delete(`http://localhost:4000/api/types/${id}`);
+        setTypes(types.filter((type) => type._id !== id)); // Actualiza el estado eliminando el tipo
+    } catch (error) {
+        console.error('Error al eliminar el tipo:', error);
+    }
+};
+
+
   useEffect(() => {
     fetchTypes();
   }, []);
@@ -49,7 +60,14 @@ const TypeManager = () => {
       </form>
       <ul>
         {types.map((type) => (
-          <li key={type._id}>{type.nombre}</li> // Muestra el nombre del tipo
+          <li key={type._id}>
+            {type.nombre}
+            {/* Ícono de eliminación */}
+            <MdDelete
+              style={{ cursor: 'pointer', marginLeft: '10px' }}
+              onClick={() => handleDeleteType(type._id)} // Llamada a la función de eliminación
+            />
+          </li>
         ))}
       </ul>
     </div>
