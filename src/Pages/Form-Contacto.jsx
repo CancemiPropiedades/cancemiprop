@@ -1,14 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Box } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 
 const FormContacto = () => {
+    const location = useLocation();
+    const property = location.state?.property; // Obtén la información de la propiedad desde el estado de la ruta
+
     const [formData, setFormData] = useState({
         nombre: '',
         apellido: '',
         telefono: '',
         email: '',
-        consulta: '',
+        consulta: property
+            ? `Estoy interesado/a en la propiedad: \nTítulo: ${property.titulo}\nUbicación: ${property.ubicacion}\nPrecio: ${property.precio} ${property.moneda}`
+            : '',
     });
+
+    useEffect(() => {
+        if (property) {
+            setFormData((prevData) => ({
+                ...prevData,
+                consulta: `Estoy interesado/a en la propiedad: \nTítulo: ${property.titulo}\nUbicación: ${property.ubicacion}\nPrecio: ${property.precio} ${property.moneda}`,
+            }));
+        }
+    }, [property]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -45,7 +60,7 @@ const FormContacto = () => {
             sx={{ maxWidth: 500, mx: 'auto', p: 3, boxShadow: 3, borderRadius: 2 }}
         >
             <Typography variant="h5" gutterBottom>
-                Consulta
+                Como Podemos Ayudarte
             </Typography>
             <TextField
                 fullWidth
@@ -86,7 +101,7 @@ const FormContacto = () => {
             />
             <TextField
                 fullWidth
-                label="Consulta"
+                label="Dejanos tu Consulta"
                 name="consulta"
                 value={formData.consulta}
                 onChange={handleChange}

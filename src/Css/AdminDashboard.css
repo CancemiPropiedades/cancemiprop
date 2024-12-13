@@ -1,3 +1,21 @@
+.admin-dashboard {
+  position: relative; 
+  z-index: 1; 
+}
+
+.admin-dashboard-content {
+  padding: 20px; 
+  cursor: pointer;
+}
+
+.MuiDrawer-paper {
+  z-index: 20; /* Más alto que el Navbar */
+}
+
+.css-z2qibm-MuiListItem-root {
+  cursor: pointer;
+}
+
 .property-list {
   margin-top: 20px;
 }
@@ -60,7 +78,6 @@
   align-items: center !important;
 }
 
-/* Estilos para el modal */
 .modal {
   position: fixed;
   top: 50%;
@@ -69,17 +86,16 @@
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  max-width: 800px; /* Ancho máximo */
-  width: 80%; /* Ancho relativo */
-  max-height: 80vh; /* Alto máximo */
-  overflow-y: auto; /* Permite el scroll vertical si el contenido es largo */
+  max-width: 800px; 
+  width: 80%; 
+  max-height: 80vh; 
+  overflow-y: auto; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 9999;
 }
 
-/* Estilo para el fondo del modal */
 .ReactModal__Overlay {
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
   left: 0;
@@ -88,11 +104,10 @@
   z-index: 9998;
 }
 
-/* Estilo para el contenido dentro del modal */
 .ReactModal__Content {
   padding: 20px;
-  max-height: 80vh; /* Alto máximo para evitar que el contenido quede fuera de la pantalla */
-  overflow-y: auto; /* Activar scroll si el contenido es largo */
+  max-height: 80vh; 
+  overflow-y: auto; 
 }
 
 

@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Modal from 'react-modal'; // Para el modal
-import PropertyStepper from '../Componentes/Admin/PropertyStepper'; 
+import Modal from 'react-modal';
+import PropertyStepper from '../Componentes/Admin/PropertyStepper';
 import PropertyManager from '../Componentes/Admin/PropertyManager'
 import TypeManager from '../Componentes/Admin/TypeManager';
 import CityManager from '../Componentes/Admin/CityManager';
 import { Box, Drawer, Button, List, Divider, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import InboxIcon from '@mui/icons-material/MoveToInbox'; // O cualquier icono que quieras usar
+import InboxIcon from '@mui/icons-material/MoveToInbox';
 import '../Css/AdminDashboard.css';
 
-Modal.setAppElement('#root'); // Necesario para accesibilidad
-
+Modal.setAppElement('#root');
 const AdminDashboard = () => {
   const [properties, setProperties] = useState([]);
-  const [selectedProperty, setSelectedProperty] = useState(null); // Propiedad seleccionada para editar
-  const [isModalOpen, setIsModalOpen] = useState(false); // Control del modal
-  const [openDrawer, setOpenDrawer] = useState(false); // Control del drawer
-  const [activeView, setActiveView] = useState('Agregar Propiedad'); // Vista activa
+  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [activeView, setActiveView] = useState('Agregar Propiedad');
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -45,11 +44,11 @@ const AdminDashboard = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setSelectedProperty(null); // Cerrar modal y limpiar propiedad seleccionada
+    setSelectedProperty(null);
   };
 
   const handleSaveChanges = async () => {
-    // Guardar los cambios de la propiedad en el backend
+
     try {
       await axios.put(`http://localhost:4000/api/propiedades/${selectedProperty._id}`, selectedProperty, {
         headers: { Authorization: `Bearer ${token}` }
@@ -61,21 +60,20 @@ const AdminDashboard = () => {
     }
   };
 
-  // Renderiza la vista activa basada en el estado
   const renderActiveView = () => {
     switch (activeView) {
-        case 'Agregar Propiedad':
-            return <PropertyStepper onPropertyAdded={setProperties} />;
-        case 'Gestionar Ciudades':
-            return <CityManager />;
-        case 'Gestionar Propiedades':
-            return <PropertyManager />;
-        case 'Gestionar Tipos': // Añadir la nueva vista para gestionar tipos
-            return <TypeManager />;
-        default:
-            return <PropertyStepper onPropertyAdded={setProperties} />;
+      case 'Agregar Propiedad':
+        return <PropertyStepper onPropertyAdded={setProperties} />;
+      case 'Gestionar Ciudades':
+        return <CityManager />;
+      case 'Gestionar Propiedades':
+        return <PropertyManager />;
+      case 'Gestionar Tipos':
+        return <TypeManager />;
+      default:
+        return <PropertyStepper onPropertyAdded={setProperties} />;
     }
-};
+  };
 
   return (
     <div>
@@ -86,7 +84,7 @@ const AdminDashboard = () => {
             {['Agregar Propiedad', 'Gestionar Ciudades', 'Gestionar Propiedades', 'Gestionar Tipos'].map((text, index) => (
               <ListItem button key={text} onClick={() => handleDrawerItemClick(text)}>
                 <ListItemIcon>
-                  <InboxIcon /> {/* Cambia el icono según la opción */}
+                  <InboxIcon />
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
@@ -97,9 +95,12 @@ const AdminDashboard = () => {
       </Drawer>
 
       <h1>Panel de Administración</h1>
-      {renderActiveView()}
+      <div className="admin-dashboard">
+        <div className="admin-dashboard-content">
+          {renderActiveView()}
+        </div>
+      </div>
 
-      {/* Modal para editar la propiedad */}
       {selectedProperty && (
         <Modal
           isOpen={isModalOpen}

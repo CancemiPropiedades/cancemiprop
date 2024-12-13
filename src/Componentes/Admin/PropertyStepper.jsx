@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 const PropertyStepper = ({ onPropertyAdded, propertyId }) => {
     const steps = ['Datos Principales', 'Características', 'Cargar Imágenes', 'Descripción'];
     const [activeStep, setActiveStep] = useState(0);
-    const [selectedImages, setSelectedImages] = useState([]); // Manejo de imágenes seleccionadas
+    const [selectedImages, setSelectedImages] = useState([]);
 
     const [propertyData, setPropertyData] = useState({
         titulo: '',
@@ -81,20 +81,20 @@ const PropertyStepper = ({ onPropertyAdded, propertyId }) => {
             alert('Por favor, selecciona un estado válido.');
             return;
         }
-    
+
         const formData = new FormData();
         Object.keys(propertyData).forEach(key => {
             if (key !== 'caracteristicas') {
                 formData.append(key, propertyData[key]);
             }
         });
-    
+
         formData.append('caracteristicas', JSON.stringify(propertyData.caracteristicas));
-    
+
         selectedImages.forEach(file => {
             formData.append('fotos', file);
         });
-    
+
         try {
             await axios.post('http://localhost:4000/api/propiedades', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
@@ -104,7 +104,7 @@ const PropertyStepper = ({ onPropertyAdded, propertyId }) => {
         } catch (error) {
             console.error('Error al agregar la propiedad:', error.response.data);
         }
-    };    
+    };
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -148,7 +148,9 @@ const PropertyStepper = ({ onPropertyAdded, propertyId }) => {
                         >
                             <MenuItem value=""><em>Seleccione una ciudad</em></MenuItem>
                             {cities.map((city) => (
-                                <MenuItem key={city._id} value={city._id}>{city.name}</MenuItem>
+                                <MenuItem key={city._id} value={city._id}>
+                                    {city.name}
+                                </MenuItem>
                             ))}
                         </Select>
                     </FormControl>

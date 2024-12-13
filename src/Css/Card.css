@@ -27,17 +27,17 @@
 
 .property-summary {
   display: flex;
-  gap: 10px; /* Espacio entre los iconos */
-  flex-wrap: wrap; /* Si hay muchos iconos, se ajustan en nuevas líneas */
+  gap: 10px; 
+  flex-wrap: wrap; 
 }
 
 .property-summary svg {
-  font-size: 24px; /* Tamaño de los iconos */
-  color: #4CAF50; /* Color de los iconos */
+  font-size: 24px; 
+  color: black; 
 }
 
 .property-summary svg:hover {
-  color: #1E8E3E; /* Cambia el color al pasar el mouse */
+  color: black; 
 }
 
 h6, h4{

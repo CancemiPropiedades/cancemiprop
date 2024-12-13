@@ -1,76 +1,32 @@
+.css-95f9g5-MuiToolbar-root {
+    position: sticky; 
+    top: 0;
+}
+
+.MuiAppBar-root {
+    box-shadow: none; 
+    z-index: 1100;
+    display: flex;
+    justify-content: center;
+}
+
+.MuiToolbar-root {
+    min-height: 64px; 
+}
+
+@media (max-width: 599px) {
+    .MuiToolbar-root {
+        min-height: 56px; 
+    }
+}
+
 img {
-    width: 40%;
-    margin: 10px;
+    max-width: 150px;
+    height: auto;
 }
 
-@media screen and (min-width: 600px) and (max-width: 1100px) {
+@media (max-width: 599px) {
     img {
-        width: 70%;
-    }
-
-    .css-95f9g5-MuiToolbar-root {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .css-130f8nx {
-        display: flex;
-    }
-    
-}
-
-@media screen and (min-width: 0px) and (max-width: 599px) {
-
-    img {
-        width: 100% !important;
-        background-color: #27337F;
-        margin: 0px;
-    }
-
-    .css-1ftvkgj {
-        width: 100%;
-    }
-
-    .css-k008qs {
-        height: 80px;
-    }
-
-    .css-95f9g5-MuiToolbar-root {
-        min-height: 80px !important;
-    }
-
-    .css-1c2fe0u {
-        margin-top: 0px !important;
-        margin-bottom: 0px !important;
-        background-color: #27337F;
-    }
-
-    .css-1u169s7-MuiList-root {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
-
-    a:-webkit-any-link {
-        color: -webkit-link;
-        cursor: pointer;
-        text-decoration: none;
-        font-weight: bolder;
-    }
-
-    .css-1edfpdg-MuiTypography-root {
-        color: #27337F;
-        margin: 0;
-        font-weight: 400;
-        font-size: 1.2rem !important;
-        letter-spacing: 0.00938em;
-    }
-}
-
-@media (min-width: 600px) {
-    .css-1ygil4i-MuiToolbar-root {
-        min-height: 100px !important;
+        max-width: 100px;
     }
 }

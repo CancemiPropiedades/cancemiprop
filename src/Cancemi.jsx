@@ -9,6 +9,7 @@ import PropertyDetails from './Pages/PropertyDetails';
 import QuienesSomos from './Pages/Quienes-Somos';
 import FormContacto from './Pages/Form-Contacto';
 import WhatsAppButton from './Componentes/Botton-Whatsapp';
+import LoginPage from './Pages/LoginPage';
 
 function Cancemi() {
   const [filterType, setFilterType] = useState('');
@@ -48,6 +49,7 @@ function Cancemi() {
           <Route path="contacto" element={<FormContacto filterType="Contactanos"/>}/>
           <Route path="/admin" element={localStorage.getItem('token') ? <AdminDashboard /> : <Navigate to="/login" />} />
           <Route path="/Pages/PropertyDetails/:id" element={<PropertyDetails />} />
+          <Route path="/login" element={<LoginPage ilterType="Login"/>}/>
         </Routes>
         <WhatsAppButton />
       </div>

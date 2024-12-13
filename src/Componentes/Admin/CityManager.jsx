@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { MdDelete } from 'react-icons/md'; // Importar el ícono de eliminación
+import { MdDelete } from 'react-icons/md';
+import { Box, Button, TextField, List, ListItem, ListItemText, IconButton, Snackbar, Alert } from '@mui/material';
 
 const CityManager = () => {
     const [cities, setCities] = useState([]);
     const [newCity, setNewCity] = useState('');
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: '' });
 
     useEffect(() => {
         const fetchCities = async () => {
@@ -20,13 +22,18 @@ const CityManager = () => {
     }, []);
 
     const handleAddCity = async () => {
-        if (!newCity) return;
+        if (!newCity.trim()) {
+            setSnackbar({ open: true, message: 'El nombre de la ciudad no puede estar vacío.', severity: 'warning' });
+            return;
+        }
         try {
             const response = await axios.post('http://localhost:4000/api/cities', { name: newCity });
             setCities([...cities, response.data]);
             setNewCity(''); // Limpiar el input
+            setSnackbar({ open: true, message: 'Ciudad agregada exitosamente.', severity: 'success' });
         } catch (error) {
             console.error('Error al agregar la ciudad:', error);
+            setSnackbar({ open: true, message: 'Error al agregar la ciudad.', severity: 'error' });
         }
     };
 
@@ -34,35 +41,58 @@ const CityManager = () => {
         try {
             await axios.delete(`http://localhost:4000/api/cities/${id}`);
             setCities(cities.filter(city => city._id !== id)); // Remover ciudad eliminada
+            setSnackbar({ open: true, message: 'Ciudad eliminada exitosamente.', severity: 'success' });
         } catch (error) {
             console.error('Error al eliminar la ciudad:', error);
+            setSnackbar({ open: true, message: 'Error al eliminar la ciudad.', severity: 'error' });
         }
     };
 
-    return (
-        <div>
-            <h2>Gestionar Ciudades</h2>
-            <input
-                type="text"
-                value={newCity}
-                onChange={e => setNewCity(e.target.value)}
-                placeholder="Nueva Ciudad"
-            />
-            <button onClick={handleAddCity}>Agregar Ciudad</button>
+    const handleSnackbarClose = () => {
+        setSnackbar({ open: false, message: '', severity: '' });
+    };
 
-            <ul>
+    return (
+        <Box sx={{ padding: 4, maxWidth: 600, margin: '0 auto', boxShadow: 3, borderRadius: 2, backgroundColor: '#f9f9f9' }}>
+            <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Gestionar Ciudades</h2>
+            <Box sx={{ display: 'flex', gap: 2, marginBottom: 3 }}>
+                <TextField
+                    label="Nueva Ciudad"
+                    variant="outlined"
+                    fullWidth
+                    value={newCity}
+                    onChange={(e) => setNewCity(e.target.value)}
+                />
+                <Button variant="contained" color="primary" onClick={handleAddCity}>
+                    Agregar
+                </Button>
+            </Box>
+            <List sx={{ backgroundColor: '#fff', borderRadius: 1, boxShadow: 1 }}>
                 {cities.map(city => (
-                    <li key={city._id}>
-                        {city.name}
-                        {/* Ícono de eliminación */}
-                        <MdDelete
-                            style={{ cursor: 'pointer', marginLeft: '10px' }}
-                            onClick={() => handleDeleteCity(city._id)}
-                        />
-                    </li>
+                    <ListItem
+                        key={city._id}
+                        secondaryAction={
+                            <IconButton edge="end" color="error" onClick={() => handleDeleteCity(city._id)}>
+                                <MdDelete />
+                            </IconButton>
+                        }
+                    >
+                        <ListItemText primary={city.name} />
+                    </ListItem>
                 ))}
-            </ul>
-        </div>
+            </List>
+
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert onClose={handleSnackbarClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
+        </Box>
     );
 };
 

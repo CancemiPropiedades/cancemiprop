@@ -24,7 +24,6 @@ function DrawerAppBar({ onFilterChange }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const navigate = useNavigate();
 
-  // Obtener si el usuario está autenticado
   const isAuthenticated = localStorage.getItem('token') !== null;
 
   const handleDrawerToggle = () => {
@@ -32,20 +31,20 @@ function DrawerAppBar({ onFilterChange }) {
   };
 
   const handleFilterChange = (filterType) => {
-    onFilterChange(filterType); // Actualiza el filtro en la App principal
-    navigate(`/${filterType}`); // Navega a la página correspondiente
-  };  
+    onFilterChange(filterType); 
+    navigate(`/${filterType}`); 
+  };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');  // Eliminar token de localStorage
-    navigate('/');  // Redirigir al usuario a la página principal o cualquier otra página
+    localStorage.removeItem('token');  
+    navigate('/');  
   };
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Box variant="h6" sx={{ my: 2, backgroundColor: '#27337F' }}>
         <LinkRouter to={"/"}>
-          <img className='imgLogo' src={Logo} alt="Logo" sx={{height:'100px'}}/>
+          <img className='imgLogo' src={Logo} alt="Logo" sx={{ height: '100px' }} />
         </LinkRouter>
       </Box>
       <Divider />
@@ -59,7 +58,7 @@ function DrawerAppBar({ onFilterChange }) {
             </ListItemButton>
           </ListItem>
         ))}
-        {/* Mostrar botón de "Cerrar Sesión" si el usuario está autenticado */}
+
         {isAuthenticated && (
           <ListItem disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }} onClick={handleLogout}>
@@ -76,7 +75,14 @@ function DrawerAppBar({ onFilterChange }) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component="nav" sx={{ background: '#27337F' }}>
+      <AppBar
+        component="nav"
+        sx={{
+          background: '#27337F',
+          position: 'fixed', 
+          height: '100px'
+        }}
+      >
         <Toolbar>
           <IconButton
             color="inherit"
@@ -92,7 +98,7 @@ function DrawerAppBar({ onFilterChange }) {
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
             <LinkRouter to={"/"}>
-              <img src={Logo} alt="Logo"/>
+              <img src={Logo} alt="Logo" />
             </LinkRouter>
           </Box>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
@@ -105,7 +111,6 @@ function DrawerAppBar({ onFilterChange }) {
                 {item}
               </Button>
             ))}
-            {/* Mostrar botón de "Cerrar Sesión" solo si el usuario está autenticado */}
             {isAuthenticated && (
               <Button sx={{ color: '#fff', fontSize: '15px' }} onClick={handleLogout}>
                 Cerrar Sesión
@@ -114,6 +119,7 @@ function DrawerAppBar({ onFilterChange }) {
           </Box>
         </Toolbar>
       </AppBar>
+
       <nav>
         <Drawer
           container={container}
