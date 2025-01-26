@@ -10,46 +10,62 @@ import QuienesSomos from './Pages/Quienes-Somos';
 import FormContacto from './Pages/Form-Contacto';
 import WhatsAppButton from './Componentes/Botton-Whatsapp';
 import LoginPage from './Pages/LoginPage';
+import UnavailableProperties from './Pages/UnavailableProperties';
 
 function Cancemi() {
+  const [properties, setProperties] = useState([]);
   const [filterType, setFilterType] = useState('');
-  console.log(filterType)
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/api/propiedades');
+        setProperties(response.data);
+      } catch (error) {
+        console.error('Error al obtener propiedades:', error);
+      }
+    };
+
+    fetchProperties();
+  }, []);
+
   const handleFilterChange = (filterType) => {
-    setFilterType(filterType); // Almacena el tipo de filtro seleccionado
+    setFilterType(filterType);
   };
 
-  // Configurar interceptor de Axios
-  useEffect(() => {
-    const interceptor = axios.interceptors.response.use(
-      response => response,
-      error => {
-        if (error.response && error.response.status === 401) {
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-        }
-        return Promise.reject(error);
-      }
-    );
+  const filteredProperties = properties.filter((property) => {
 
-    return () => {
-      axios.interceptors.response.eject(interceptor);
-    };
-  }, []);
+    if (!property.disponible) {
+      return false;
+    }
+
+    if (filterType === 'venta') {
+      return property.estado?.toLowerCase() === 'venta';
+    }
+    if (filterType === 'alquiler') {
+      return property.estado?.toLowerCase() === 'alquiler';
+    }
+    if (filterType === 'emprendimiento') {
+      return property.estado?.toLowerCase() === 'emprendimiento';
+    }
+
+  });
 
   return (
     <Router>
       <div className="App">
-        <Navbar onFilterChange={handleFilterChange} /> {/* Pasar el filtro */}
+        <Navbar onFilterChange={handleFilterChange} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/alquiler" element={<PropertySearchPage filterType="Alquiler" />} />
-          <Route path="/venta" element={<PropertySearchPage filterType="Venta" />} />
-          <Route path="/emprendimiento" element={<PropertySearchPage filterType="Emprendimiento" />} />
-          <Route path="/quienes-somos" element={<QuienesSomos filterType="QuienesSomos" />} />
-          <Route path="contacto" element={<FormContacto filterType="Contactanos"/>}/>
+          <Route path="/alquiler" element={<PropertySearchPage filterType="alquiler" properties={filteredProperties} />} />
+          <Route path="/venta" element={<PropertySearchPage filterType="venta" properties={filteredProperties} />} />
+          <Route path="/emprendimiento" element={<PropertySearchPage filterType="emprendimiento" properties={filteredProperties} />} />
+          <Route path="/quienes-somos" element={<QuienesSomos />} />
+          <Route path="/contacto" element={<FormContacto />} />
+          <Route path="/no-disponible" element={<UnavailableProperties />} />
           <Route path="/admin" element={localStorage.getItem('token') ? <AdminDashboard /> : <Navigate to="/login" />} />
           <Route path="/Pages/PropertyDetails/:id" element={<PropertyDetails />} />
-          <Route path="/login" element={<LoginPage ilterType="Login"/>}/>
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
         <WhatsAppButton />
       </div>

@@ -14,10 +14,8 @@ const LoginPage = () => {
         try {
             const response = await axios.post('http://localhost:4000/api/usuarios/login', { email, password });
 
-            // Store the token in localStorage
             localStorage.setItem('token', response.data.token);
 
-            // Redirect to the admin panel
             setTimeout(() => {
                 window.location.href = '/admin';
             }, 500);
@@ -51,7 +49,6 @@ const LoginPage = () => {
                 </Typography>
             </Grid>
 
-            {/* Right Section */}
             <Grid
                 item
                 xs={12}

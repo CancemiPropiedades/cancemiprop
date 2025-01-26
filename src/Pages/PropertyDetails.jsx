@@ -94,19 +94,6 @@ const PropertyDetails = () => {
   };
   
 
-<div style={parentStyle}>
-  <div style={containerStyle}>
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={location}
-      zoom={15}
-    >
-      <Marker position={location} />
-    </GoogleMap>
-  </div>
-</div>
-
-
   return (
     <div className="property-details">
       <CarouselDetails images={property.fotos} />
@@ -117,6 +104,10 @@ const PropertyDetails = () => {
         <p><strong>Precio: </strong> ${property.precio} {property.moneda}</p>
         <p><strong>Descripción: </strong> {property.descripcion}</p>
         <p><strong>Ciudad:</strong> {property.ciudad?.name || 'Ciudad no disponible'}</p>
+        <p><strong>Ambientes:</strong> {property.caracteristicas?.ambientes || 'No disponible'}</p>
+        <p><strong>Baños:</strong> {property.caracteristicas?.banos || 'No disponible'}</p>
+        <p><strong>Dormitorios:</strong> {property.caracteristicas?.dormitorios || 'No disponible'}</p>
+
         {property.caracteristicas?.cochera === true && (
           <div className="extra-feature">
             <FaCar /> <span>Cochera</span>

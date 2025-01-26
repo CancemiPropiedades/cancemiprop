@@ -50,14 +50,14 @@
   margin-bottom: 5px;
   width: 100%;
   padding: 5px;
-  background-color: #007bff;
+  background-color: #27337f;
   color: white;
   border: none;
   cursor: pointer;
 }
 
 .dropdown-menu button:hover {
-  background-color: #0056b3;
+  background-color: #27337f;
 }
 
 .modal {
@@ -105,7 +105,7 @@
 }
 
 .ReactModal__Content {
-  padding: 20px;
+  padding: 10px;
   max-height: 80vh; 
   overflow-y: auto; 
 }

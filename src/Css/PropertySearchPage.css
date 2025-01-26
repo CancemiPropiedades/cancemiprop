@@ -1,20 +1,13 @@
 .property-search-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
-    padding: 20px;
+    padding: 40px;
   }
   
   .filters-container {
     width: 300px; /* Fixed width for filters */
     margin-right: 20px;
-  }
-  
-  .properties-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two cards per row */
-    gap: 20px; /* Gap between cards */
-    flex-grow: 1; /* Allow the properties container to grow */
   }
   
   @media screen and (max-width: 768px) {
@@ -26,9 +19,15 @@
       width: 100%; /* Full width for filters */
       margin-bottom: 20px; /* Add spacing below filters */
     }
-  
-    .properties-container {
-      grid-template-columns: 1fr; /* One card per row on smaller screens */
-    }
+
   }
   
+  .css-10jnrrx-MuiTypography-root {
+    margin: 0;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 23px;
+    line-height: 1.235;
+    letter-spacing: 0.00735em;
+    margin-bottom: 24px;
+  }

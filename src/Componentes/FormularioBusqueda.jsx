@@ -1,65 +1,82 @@
+// FormularioBusqueda.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { TextField, Button, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import '../Css/FormularioBusqueda.css';
 
-function FormularioBusqueda() {
+const FormularioBusqueda = ({ setResultados, setError }) => {
   const [ubicacion, setUbicacion] = useState('');
-  const [tipo, setTipo] = useState('');
+  const [estado, setEstado] = useState('');
   const [ambientes, setAmbientes] = useState('');
-  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí más adelante iría la lógica para redirigir con filtros
-    navigate('/alquileres', { state: { ubicacion, tipo, ambientes } });
+    if (!ubicacion) {
+      setError('Por favor, selecciona una ubicación.');
+      return;
+    }
+    try {
+      const response = await axios.get('http://localhost:4000/api/propiedades/buscar', {
+        params: {
+          ubicacion,
+          estado,
+          ambientes,
+        },
+      });
+
+      setResultados(response.data); 
+      setError('');
+    } catch (error) {
+      console.error(error);
+      setError('Hubo un problema al buscar propiedades.');
+    }
   };
 
   return (
     <div className="formulario-container">
       <h1>Encuentra tu lugar ideal</h1>
-      <h2>Descubre los mejores alojamientos que se adapten a tus necesidades</h2>
+      <h3>Descubre los mejores alojamientos que se adapten a tus necesidades</h3>
       <form onSubmit={handleSubmit} className="formulario-busqueda">
         <div className="input-group">
-          <label htmlFor="ubicacion">Ubicación</label>
-          <input
-            type="text"
-            id="ubicacion"
+          <TextField
+            label="Ubicación"
             value={ubicacion}
             onChange={(e) => setUbicacion(e.target.value)}
-            placeholder="Ej. Buenos Aires"
+            fullWidth
           />
         </div>
+
         <div className="input-group">
-          <label htmlFor="tipo">Tipo</label>
-          <select
-            id="tipo"
-            value={tipo}
-            onChange={(e) => setTipo(e.target.value)}
-          >
-            <option value="">Selecciona un tipo</option>
-            <option value="ph">PH</option>
-            <option value="apartamento">Apartamento</option>
-            <option value="casa">Casa</option>
-          </select>
+          <FormControl fullWidth>
+            <InputLabel id="estado-label">Estado</InputLabel>
+            <Select
+              labelId="estado-label"
+              value={estado}
+              onChange={(e) => setEstado(e.target.value)}
+              fullWidth
+            >
+              <MenuItem value="">Selecciona un estado</MenuItem>
+              <MenuItem value="Venta">Venta</MenuItem>
+              <MenuItem value="Alquiler">Alquiler</MenuItem>
+              <MenuItem value="Emprendimiento">Emprendimiento</MenuItem>
+            </Select>
+          </FormControl>
         </div>
+
         <div className="input-group">
-          <label htmlFor="ambientes">Ambientes</label>
-          <select
-            id="ambientes"
+          <TextField
+            label="Ambientes"
+            type="number"
             value={ambientes}
             onChange={(e) => setAmbientes(e.target.value)}
-          >
-            <option value="">Selecciona ambientes</option>
-            <option value="1">1 Ambiente</option>
-            <option value="2">2 Ambientes</option>
-            <option value="3">3 Ambientes</option>
-            <option value="4">4 Ambientes</option>
-          </select>
+            fullWidth
+          />
         </div>
-        <button type="submit">Buscar</button>
+
+        <Button className='button-home' type="submit" variant="contained" color="primary">Buscar</Button>
       </form>
     </div>
   );
-}
+};
 
 export default FormularioBusqueda;

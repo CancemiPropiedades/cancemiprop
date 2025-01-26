@@ -19,6 +19,7 @@ const WhatsAppButton = () => {
                 bottom: '20px',
                 right: '20px',
                 zIndex: 1000,
+                color:'white'
             }}
         >
             <WhatsAppIcon />

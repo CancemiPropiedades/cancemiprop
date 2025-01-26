@@ -1,33 +1,80 @@
 .formulario-container {
-  width: 80%; /* Ajustamos el ancho a un porcentaje */
-  height: 78%;
-  max-width: 500px; /* Limitar el ancho máximo para pantallas grandes */
-  position: absolute;
+  width: 80%; 
+  max-width: 500px; 
+  position: absolute; 
+  top: 35%; 
+  left: 50%;
+  transform: translate(-50%, -20%); 
   text-align: center;
   padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.788);
-  border-radius: 10px; /* Reducimos el borde para mejor apariencia */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Añadimos sombra para darle profundidad */
+  background-color: white;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center !important;
   align-items: center;
-  margin-top: 0px;
+  box-sizing: border-box; 
+}
+
+.input-group select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%; 
+  box-sizing: border-box;
+  height: 56px;
+  appearance: none; 
+  background: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 4 5%27%3E%3Cpath fill=%27%23000000%27 d=%27M2 0L0 2h4z%27/%3E%3C/svg%3E') no-repeat right 10px center;
+  background-size: 10px 10px;
+  background-color: #fff;
+  cursor: pointer;
+  overflow: hidden; 
+}
+
+.input-group select option {
+  font-size: 14px;
+  padding: 10px;
+}
+
+.input-group {
+  position: relative; 
+}
+
+.input-group select {
+  position: relative; 
+  z-index: 1; 
+}
+
+.input-group select {
+  width: 100%; 
+  max-width: 100%; 
+}
+
+@media (max-width: 480px) {
+  .input-group select {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+
+  .input-group select option {
+    font-size: 0.8rem;
+    padding: 8px;
+  }
 }
 
 h1 {
-  font-size: 1.5rem;
+  font-size: 16pxrem;
   margin-bottom: 1rem;
 }
 
 h2 {
-  font-size: 1.1rem;
-  color: rgba(0, 0, 0, 0.753);
-  margin: 10px 0px;
+  font-size: 1.2rem;
+  color: rgba(0, 0, 0, 0.75);
 }
 
 .formulario-busqueda {
-  width: 85%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,85 +88,99 @@ h2 {
 }
 
 .input-group label {
-  margin-bottom: 0.5rem;
+  margin: 1px 10px;
   font-size: 1rem;
+  font-weight: bold;
+  text-align: left;
 }
 
-.input-group input,
-.input-group select {
-  padding: 0.75rem;
+.input-group input, .input-group select {
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
   font-size: 1rem;
   width: 100%;
-  box-sizing: border-box; /* Asegura que el padding no sobrepase el ancho */
+  box-sizing: border-box;
+  height: 56px;
 }
 
-button {
-  background-color: #F07F05;
-  color: #27337F;
-  padding: 0.8rem 4rem;
+.button-home {
+  background-color: #F07F05 !important;
+  color: #27337f !important;
   border: none;
-  border-radius: 30px;
+  border-radius: 30px !important;
   cursor: pointer;
-  font-size: 1.4rem;
-  font-weight: bolder;
-  transition: background-color 0.3s ease;
+  font-size: 20px !important;
+  font-weight: bold !important;
+  transition: background-color 0.3s ease !important;
+  width: 292px !important;
 }
 
 button:hover {
-  background-color: #d96b04; /* Añadimos un efecto hover */
+  background-color: #d96b04;
 }
 
-/* Media Queries para hacer responsive el formulario */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .formulario-container {
-      width: 70%; /* Ocupa más espacio en pantallas más pequeñas */
-      height: 70%;
-      padding: 1.5rem;
-      justify-content: center;
-      margin-top: 5px;
+    width: 80%; 
+    top: 34%; 
+    height: 570px;
+  }
+}
+
+@media (max-width: 940px) {
+  .formulario-container {
+    position: relative; 
+    top: unset; 
+    left: unset;
+    transform: none; 
+    margin: 2rem auto; 
+    width: 90%; 
+    padding: 1.5rem;
   }
 
   h1 {
-      font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 
-  h3 {
-      font-size: 1rem;
+  h2 {
+    font-size: 1rem;
   }
 
   button {
-      padding: 0.7rem 3rem;
-      font-size: 1.2rem;
+    padding: 0.7rem 2.5rem;
+    font-size: 1rem;
   }
 }
 
 @media (max-width: 480px) {
   .formulario-container {
-      width: 75%; /* Reduce el ancho aún más en móviles */
-      padding: 1rem; /* Reducimos el padding */
-      height: 65%;
-      margin-top: 5px;
+    width: 95%; 
+    padding: 1rem;
   }
 
   h1 {
-      font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   h2 {
-      font-size: 0.9rem;
-      margin: 0;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
   }
 
   .input-group input,
   .input-group select {
-      padding: 0.5rem; /* Reducimos el padding para inputs y selects */
-      font-size: 0.9rem; /* Tamaño de texto más pequeño */
+    padding: 0.6rem;
+    font-size: 0.9rem;
   }
 
   button {
-      padding: 0.6rem 2rem; /* Reducimos el tamaño del botón */
-      font-size: 1rem;
+    padding: 0.6rem 2rem;
+    font-size: 0.9rem;
   }
+}
+
+.css-w76bbz-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-w76bbz-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-w76bbz-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  padding-right: 32px;
+  text-align: left;
 }

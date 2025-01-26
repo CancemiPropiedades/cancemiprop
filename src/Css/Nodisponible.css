@@ -1,3 +1,30 @@
+.css-19kzrtu {
+    padding: 24px !important;
+}
+
+.css-1f9xtph-MuiTypography-root {
+    margin: 13px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1.334;
+    letter-spacing: 0em;
+    margin-bottom: 0.35em;
+    display: flex;
+}
+
+.css-mhc70k-MuiGrid-root {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    padding: 24px;
+    gap: 15px;
+}
+
 .Container,
 .properties-container {
   width: 100%;
@@ -17,6 +44,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
   width: 380px; 
   margin: 0px;
   height: 600px; 
@@ -44,12 +72,12 @@
 
 .extra-feature{
   color: black;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .extra-feature svg {
   margin-right: 8px;
-  color: #27337f;
+  color: black;
 }
 
 .property-description {

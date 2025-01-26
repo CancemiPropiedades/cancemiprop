@@ -23,8 +23,8 @@ const TypeManager = () => {
       const response = await axios.get('http://localhost:4000/api/types');
       setTypes(response.data);
     } catch (error) {
-      console.error('Error al cargar los tipos:', error);
-      setSnackbar({ open: true, message: 'Error al cargar los tipos.', severity: 'error' });
+      console.error('Error al cargar los estados:', error);
+      setSnackbar({ open: true, message: 'Error al cargar los estados.', severity: 'error' });
     }
   };
 
@@ -38,10 +38,10 @@ const TypeManager = () => {
       const response = await axios.post('http://localhost:4000/api/types', typeData);
       setTypes([...types, response.data]);
       setTypeData({ name: '' });
-      setSnackbar({ open: true, message: 'Tipo agregado exitosamente.', severity: 'success' });
+      setSnackbar({ open: true, message: 'Estado agregado exitosamente.', severity: 'success' });
     } catch (error) {
-      console.error('Error al agregar el tipo:', error);
-      setSnackbar({ open: true, message: 'Error al agregar el tipo.', severity: 'error' });
+      console.error('Error al agregar el estado:', error);
+      setSnackbar({ open: true, message: 'Error al agregar el estado.', severity: 'error' });
     }
   };
 
@@ -49,10 +49,10 @@ const TypeManager = () => {
     try {
       await axios.delete(`http://localhost:4000/api/types/${id}`);
       setTypes(types.filter((type) => type._id !== id));
-      setSnackbar({ open: true, message: 'Tipo eliminado exitosamente.', severity: 'success' });
+      setSnackbar({ open: true, message: 'Estado eliminado exitosamente.', severity: 'success' });
     } catch (error) {
-      console.error('Error al eliminar el tipo:', error);
-      setSnackbar({ open: true, message: 'Error al eliminar el tipo.', severity: 'error' });
+      console.error('Error al eliminar el estado:', error);
+      setSnackbar({ open: true, message: 'Error al eliminar el estado.', severity: 'error' });
     }
   };
 
@@ -65,7 +65,7 @@ const TypeManager = () => {
   }, []);
 
   const columns = [
-    { field: 'nombre', headerName: 'Nombre del Tipo', flex: 1 },
+    { field: 'nombre', headerName: 'Nombre del Estado', flex: 1 },
     {
       field: 'actions',
       headerName: 'Acciones',
@@ -79,18 +79,18 @@ const TypeManager = () => {
   ];
 
   return (
-    <Box p={3}>
+    <Box sx={{ padding: 4, maxWidth: 800, margin: '0 auto', boxShadow: 3, borderRadius: 2, backgroundColor: '#f9f9f9' }}>
       <Typography variant="h4" mb={3}>
-        Gestión de Tipos de Propiedades
+        Gestión de Estados de Propiedades
       </Typography>
       <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
         <Typography variant="h6" mb={2}>
-          Agregar Nuevo Tipo
+          Agregar Nuevo Estado
         </Typography>
         <form onSubmit={handleSubmit}>
           <Box display="flex" gap={2} alignItems="center">
             <TextField
-              label="Nombre del Tipo"
+              label="Nombre del Estado"
               name="name"
               value={typeData.name}
               onChange={handleChange}

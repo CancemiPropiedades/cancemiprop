@@ -7,33 +7,36 @@ import '../Css/PropertySearchPage.css';
 const PropertySearchPage = ({ filterType }) => {
   const [properties, setProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // Obtener propiedades
   useEffect(() => {
     const fetchProperties = async () => {
       try {
         const response = await axios.get('http://localhost:4000/api/propiedades');
-        setProperties(response.data);
-        setFilteredProperties(response.data); // Mostrar todas inicialmente
+        const availableProperties = response.data.filter(property => property.disponible !== false); // Filtrar propiedades disponibles
+        setProperties(availableProperties);
+        setFilteredProperties(availableProperties); // Mostrar todas las propiedades inicialmente
+        setLoading(false);
       } catch (error) {
         console.error('Error al obtener las propiedades:', error);
+        setLoading(false);
       }
     };
 
     fetchProperties();
   }, []);
 
-  // Filtro inicial por estado (Venta, Alquiler, Emprendimiento)
+  // Filtrar por tipo (alquiler, venta, etc.)
   useEffect(() => {
     if (filterType) {
-      const filtered = properties.filter(property => property.estado === filterType);
+      const filtered = properties.filter(property => property.estado.toLowerCase() === filterType.toLowerCase());
       setFilteredProperties(filtered);
     }
   }, [filterType, properties]);
 
-  // Función que maneja filtros adicionales (ubicación, precio, etc.)
   const handleFilterChange = (filters) => {
-    let updatedProperties = properties.filter(property => property.estado === filterType); // Asegurar el estado inicial
-
+    let updatedProperties = properties.filter(property => property.estado.toLowerCase() === filterType.toLowerCase());
     if (filters.zona) {
       updatedProperties = updatedProperties.filter(property =>
         property.ubicacion.toLowerCase().includes(filters.zona.toLowerCase())
@@ -72,18 +75,24 @@ const PropertySearchPage = ({ filterType }) => {
 
   return (
     <div className="property-search-container">
-      <div className="filters-container">
-        <PropertyFilters onFilterChange={handleFilterChange} />
-      </div>
-      <div className="properties-container">
-        {filteredProperties.length > 0 ? (
-          filteredProperties.map(property => (
-            <PropertyCard key={property._id} property={property} />
-          ))
-        ) : (
-          <p>No se encontraron propiedades</p>
-        )}
-      </div>
+      {loading ? (
+        <div className="loading">Cargando propiedades...</div>
+      ) : (
+        <>
+          <div className="filters-container">
+            <PropertyFilters onFilterChange={handleFilterChange} />
+          </div>
+          <div className="properties-container">
+            {filteredProperties.length > 0 ? (
+              filteredProperties.map(property => (
+                <PropertyCard key={property._id} property={property} />
+              ))
+            ) : (
+              <p>No se encontraron propiedades</p>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box, Button, Stepper, Step, StepLabel, TextField, Typography, MenuItem, Select, FormControl, InputLabel, FormControlLabel, Checkbox } from '@mui/material';
+import { Box, Button, Stepper, Step, StepLabel, TextField, Typography, MenuItem, Select, FormControl, InputLabel, FormControlLabel, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+//import SquareFootIcon from '@mui/icons-material/SquareFoot';
 import DeleteIcon from '@mui/icons-material/Delete';
+import '../../Css/Admin.css'
 
 const PropertyStepper = ({ onPropertyAdded, propertyId }) => {
     const steps = ['Datos Principales', 'Características', 'Cargar Imágenes', 'Descripción'];
@@ -23,7 +25,6 @@ const PropertyStepper = ({ onPropertyAdded, propertyId }) => {
             cochera: false,
             aceptaMascotas: false,
             pileta: false,
-            parrilla: false,
             gimnasio: false,
             laundry: false,
             ascensor: false,
@@ -33,7 +34,8 @@ const PropertyStepper = ({ onPropertyAdded, propertyId }) => {
 
     const [cities, setCities] = useState([]);
     const [types, setTypes] = useState([]);
-    console.log(types)
+    const [openModal, setOpenModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
     useEffect(() => {
         const fetchCitiesAndTypes = async () => {
             try {
@@ -48,13 +50,6 @@ const PropertyStepper = ({ onPropertyAdded, propertyId }) => {
 
         fetchCitiesAndTypes();
     }, [propertyId]);
-
-    const handleChange = (e) => {
-        setPropertyData({
-            ...propertyData,
-            [e.target.name]: e.target.value,
-        });
-    };
 
     const handleCaracteristicasChange = (e) => {
         const { name, type, value, checked } = e.target;
@@ -76,36 +71,53 @@ const PropertyStepper = ({ onPropertyAdded, propertyId }) => {
         setSelectedImages(prevImages => prevImages.filter((_, i) => i !== index)); // Eliminar imagen seleccionada
     };
 
+    const formatNumberWithDots = (value) => {
+        return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+    
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+    
+        setPropertyData((prevData) => ({
+            ...prevData,
+            [name]: name === "precio" ? formatNumberWithDots(value.replace(/\./g, "")) : value,
+        }));
+    };
+    
     const handleSubmit = async () => {
-        if (!['Venta', 'Alquiler', 'Emprendimiento'].includes(propertyData.estado)) {
-            alert('Por favor, selecciona un estado válido.');
-            return;
-        }
-
         const formData = new FormData();
-        Object.keys(propertyData).forEach(key => {
-            if (key !== 'caracteristicas') {
-                formData.append(key, propertyData[key]);
+        const cleanedPrice = propertyData.precio.replace(/\./g, "");
+
+        const finalPropertyData = {
+            ...propertyData,
+            precio: cleanedPrice,
+        };
+
+        Object.keys(finalPropertyData).forEach((key) => {
+            if (key !== "caracteristicas") {
+                formData.append(key, finalPropertyData[key]);
             }
         });
 
-        formData.append('caracteristicas', JSON.stringify(propertyData.caracteristicas));
-
-        selectedImages.forEach(file => {
-            formData.append('fotos', file);
+        formData.append("caracteristicas", JSON.stringify(propertyData.caracteristicas));
+        selectedImages.forEach((file) => {
+            formData.append("fotos", file);
         });
 
         try {
-            await axios.post('http://localhost:4000/api/propiedades', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
+            await axios.post("http://localhost:4000/api/propiedades", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
             });
-            alert('Propiedad agregada con éxito');
+            setModalMessage('Propiedad agregada con éxito');
+            setOpenModal(true);
             onPropertyAdded();
         } catch (error) {
-            console.error('Error al agregar la propiedad:', error.response.data);
+            console.error("Error al agregar la propiedad:", error.response.data);
+            setModalMessage('Hubo un error al agregar la propiedad. Intente nuevamente.');
+            setOpenModal(true);
         }
     };
-
+    
     return (
         <Box sx={{ width: '100%' }}>
             <Stepper activeStep={activeStep}>
@@ -188,10 +200,6 @@ const PropertyStepper = ({ onPropertyAdded, propertyId }) => {
                             label="Pileta"
                         />
                         <FormControlLabel
-                            control={<Checkbox checked={propertyData.caracteristicas.parrilla} onChange={handleCaracteristicasChange} name="parrilla" />}
-                            label="Parrilla"
-                        />
-                        <FormControlLabel
                             control={<Checkbox checked={propertyData.caracteristicas.gimnasio} onChange={handleCaracteristicasChange} name="gimnasio" />}
                             label="Gimnasio"
                         />
@@ -240,6 +248,17 @@ const PropertyStepper = ({ onPropertyAdded, propertyId }) => {
                     {activeStep === steps.length - 1 ? 'Enviar' : 'Siguiente'}
                 </Button>
             </Box>
+            <Dialog open={openModal} onClose={() => setOpenModal(false)}>
+                <DialogTitle>Resultado</DialogTitle>
+                <DialogContent>
+                    <Typography variant="body1">{modalMessage}</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenModal(false)} color="primary">
+                        Cerrar
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

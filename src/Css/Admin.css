@@ -1,8 +1,54 @@
+.css-1588512-MuiButtonBase-root-MuiButton-root {
+  margin-top: 20px !important;
+}
+
+.css-l8ztbh-MuiTypography-root {
+  margin: 0;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.235;
+  letter-spacing: 0.00735em;
+  text-align: var(--Typography-textAlign);
+  margin-bottom: 0.35em;
+}
+
+.css-l8ztbh-MuiTypography-root,
+.css-10jnrrx-MuiTypography-root {
+  font-size: 25px !important;
+}
+
+.css-1w06t9h-MuiButtonBase-root-MuiIconButton-root,
+.css-jp4vw-MuiButtonBase-root-MuiIconButton-root  {
+  font-size: 18px !important;
+}
+
 @media (max-width: 680px) {
 
     .css-nd0xiu-MuiStep-root {
       padding-left: 8px; 
       padding-right: 8px; 
     }
+
+    .css-ibtndc-MuiStepper-root{
+      display: flex;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+    }
     
     }
+
+    @media (max-width: 380px) {
+      .MuiDataGrid-root .MuiDataGrid-cell {
+        padding: 8px !important; /* Adjust padding */
+      }
+    
+      .MuiDataGrid-root .MuiDataGrid-toolbar {
+        display: none; /* Hide unnecessary toolbar elements */
+      }
+    
+      .MuiIconButton-root {
+        font-size: 16px; /* Reduce icon size */
+      }
+    }
+    

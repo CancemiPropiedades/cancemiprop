@@ -4,10 +4,6 @@
     margin: 5px 0;
   }
   
-  .extra-feature span {
-    margin-left: 8px;
-  }
-  
   .extra-feature svg {
     font-size: 24px;
     color: #555;
@@ -15,12 +11,12 @@
 
   .property-details {
     margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
+    padding: 0px 100px;
   }
   
   .property-info {
     margin-top: 20px;
+    line-height: 35px;
   }
   
   .property-info h1 {
@@ -41,11 +37,25 @@
   }
   
   .extra-feature svg {
-    margin-right: 8px;
-    color: #007bff;
+    margin-left: 8px;
+    color: black;
+    font-size: 15px;
   }
   
   button {
     margin-top: 20px;
+  }
+
+  @media (max-width: 1024px) {
+
+  .property-details {
+    margin: 0 auto;
+    padding: 0px 10px; 
+}
+
+button {
+  margin-left: 0px !important;
+}
+
   }
   

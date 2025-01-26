@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { MdDelete } from 'react-icons/md';
-import { Box, Button, TextField, List, ListItem, ListItemText, IconButton, Snackbar, Alert } from '@mui/material';
+import { Box, Button, TextField, List, ListItem, ListItemText, IconButton, Snackbar, Alert, Typography } from '@mui/material';
 
 const CityManager = () => {
     const [cities, setCities] = useState([]);
@@ -14,7 +14,7 @@ const CityManager = () => {
                 const response = await axios.get('http://localhost:4000/api/cities');
                 setCities(response.data);
             } catch (error) {
-                console.error('Error al cargar las ciudades:', error);
+                console.error('Error al cargar los barrios:', error);
             }
         };
 
@@ -23,28 +23,28 @@ const CityManager = () => {
 
     const handleAddCity = async () => {
         if (!newCity.trim()) {
-            setSnackbar({ open: true, message: 'El nombre de la ciudad no puede estar vacío.', severity: 'warning' });
+            setSnackbar({ open: true, message: 'El nombre del barrio no puede estar vacío.', severity: 'warning' });
             return;
         }
         try {
             const response = await axios.post('http://localhost:4000/api/cities', { name: newCity });
             setCities([...cities, response.data]);
             setNewCity(''); // Limpiar el input
-            setSnackbar({ open: true, message: 'Ciudad agregada exitosamente.', severity: 'success' });
+            setSnackbar({ open: true, message: 'Barrio agregada exitosamente.', severity: 'success' });
         } catch (error) {
-            console.error('Error al agregar la ciudad:', error);
-            setSnackbar({ open: true, message: 'Error al agregar la ciudad.', severity: 'error' });
+            console.error('Error al agregar la barrio:', error);
+            setSnackbar({ open: true, message: 'Error al agregar el barrio.', severity: 'error' });
         }
     };
 
     const handleDeleteCity = async (id) => {
         try {
             await axios.delete(`http://localhost:4000/api/cities/${id}`);
-            setCities(cities.filter(city => city._id !== id)); // Remover ciudad eliminada
-            setSnackbar({ open: true, message: 'Ciudad eliminada exitosamente.', severity: 'success' });
+            setCities(cities.filter(city => city._id !== id)); 
+            setSnackbar({ open: true, message: 'Barrio eliminado exitosamente.', severity: 'success' });
         } catch (error) {
-            console.error('Error al eliminar la ciudad:', error);
-            setSnackbar({ open: true, message: 'Error al eliminar la ciudad.', severity: 'error' });
+            console.error('Error al eliminar el barrio:', error);
+            setSnackbar({ open: true, message: 'Error al eliminar el barrio.', severity: 'error' });
         }
     };
 
@@ -53,11 +53,13 @@ const CityManager = () => {
     };
 
     return (
-        <Box sx={{ padding: 4, maxWidth: 600, margin: '0 auto', boxShadow: 3, borderRadius: 2, backgroundColor: '#f9f9f9' }}>
-            <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Gestionar Ciudades</h2>
+        <Box sx={{ padding: 4, maxWidth: 800, margin: '0 auto', boxShadow: 3, borderRadius: 2, backgroundColor: '#f9f9f9' }}>
+            <Typography variant="h4" align="center" gutterBottom>
+                Gestionar Barrios
+            </Typography>
             <Box sx={{ display: 'flex', gap: 2, marginBottom: 3 }}>
                 <TextField
-                    label="Nueva Ciudad"
+                    label="Nuevo Barrio"
                     variant="outlined"
                     fullWidth
                     value={newCity}

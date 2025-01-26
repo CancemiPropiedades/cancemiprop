@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import PropertyList from '../Componentes/PaginatedPropertyList'; 
-import FormularioBusqueda from '../Componentes/FormularioBusqueda';
-import ImgInicio from '../Imagenes/inicio.png';
+import PropertyList from '../Componentes/PropertyList';
+import ImgInicio from '../Imagenes/boca-banner.jpg';
 import '../Css/Home.css';
 import axios from 'axios';
 
@@ -12,10 +11,11 @@ function Home() {
     const fetchProperties = async () => {
       try {
         const response = await axios.get('http://localhost:4000/api/propiedades');
-        
-        // Filtrar solo las propiedades habilitadas
-        const propiedadesHabilitadas = response.data.filter(property => property.habilitada === true);
-        
+
+        const propiedadesHabilitadas = response.data.filter(
+          property => property.habilitada === true
+        );
+
         setProperties(propiedadesHabilitadas);
       } catch (error) {
         console.error('Error al obtener propiedades:', error);
@@ -27,9 +27,8 @@ function Home() {
 
   return (
     <div>
-      <FormularioBusqueda />
-      <img src={ImgInicio} className='imgHome' alt="Imagen de inicio" />
-      <PropertyList properties={properties} /> {/* O PaginatedPropertyList */}
+      <img src={ImgInicio} className='banner-img' alt="Imagen de inicio" />
+      <PropertyList properties={properties} />
     </div>
   );
 }

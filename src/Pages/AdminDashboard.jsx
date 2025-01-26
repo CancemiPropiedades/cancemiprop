@@ -64,7 +64,7 @@ const AdminDashboard = () => {
     switch (activeView) {
       case 'Agregar Propiedad':
         return <PropertyStepper onPropertyAdded={setProperties} />;
-      case 'Gestionar Ciudades':
+      case 'Gestionar Barrios':
         return <CityManager />;
       case 'Gestionar Propiedades':
         return <PropertyManager />;
@@ -75,13 +75,25 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleMarkAsUnavailable = async () => {
+    try {
+      await axios.patch(`http://localhost:4000/api/propiedades/no-disponible/${selectedProperty._id}`, null, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setProperties(properties.map(prop => prop._id === selectedProperty._id ? { ...prop, disponible: false } : prop));
+      closeModal(); // Cerramos el modal después de marcar como no disponible
+    } catch (error) {
+      console.error('Error al marcar la propiedad como no disponible:', error);
+    }
+  };
+
   return (
     <div>
       <Button onClick={toggleDrawer(true)}>Abrir menú</Button>
       <Drawer anchor="left" open={openDrawer} onClose={toggleDrawer(false)}>
         <Box sx={{ width: 250 }} role="presentation">
           <List>
-            {['Agregar Propiedad', 'Gestionar Ciudades', 'Gestionar Propiedades', 'Gestionar Tipos'].map((text, index) => (
+            {['Agregar Propiedad', 'Gestionar Barrios', 'Gestionar Propiedades', 'Gestionar Tipos'].map((text, index) => (
               <ListItem button key={text} onClick={() => handleDrawerItemClick(text)}>
                 <ListItemIcon>
                   <InboxIcon />
@@ -93,8 +105,6 @@ const AdminDashboard = () => {
           <Divider />
         </Box>
       </Drawer>
-
-      <h1>Panel de Administración</h1>
       <div className="admin-dashboard">
         <div className="admin-dashboard-content">
           {renderActiveView()}
@@ -103,38 +113,39 @@ const AdminDashboard = () => {
 
       {selectedProperty && (
         <Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          contentLabel="Editar Propiedad"
-          className="modal"
-        >
-          <h2>Editar Propiedad</h2>
-          <input
-            type="text"
-            value={selectedProperty.titulo}
-            onChange={e => setSelectedProperty({ ...selectedProperty, titulo: e.target.value })}
-            placeholder="Título"
-          />
-          <input
-            type="text"
-            value={selectedProperty.ubicacion}
-            onChange={e => setSelectedProperty({ ...selectedProperty, ubicacion: e.target.value })}
-            placeholder="Ubicación"
-          />
-          <input
-            type="number"
-            value={selectedProperty.precio}
-            onChange={e => setSelectedProperty({ ...selectedProperty, precio: e.target.value })}
-            placeholder="Precio"
-          />
-          <textarea
-            value={selectedProperty.descripcion}
-            onChange={e => setSelectedProperty({ ...selectedProperty, descripcion: e.target.value })}
-            placeholder="Descripción"
-          />
-          <button onClick={handleSaveChanges}>Guardar Cambios</button>
-          <button onClick={closeModal}>Cancelar</button>
-        </Modal>
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Editar Propiedad"
+        className="modal"
+      >
+        <h2>Editar Propiedad</h2>
+        <input
+          type="text"
+          value={selectedProperty.titulo}
+          onChange={e => setSelectedProperty({ ...selectedProperty, titulo: e.target.value })}
+          placeholder="Título"
+        />
+        <input
+          type="text"
+          value={selectedProperty.ubicacion}
+          onChange={e => setSelectedProperty({ ...selectedProperty, ubicacion: e.target.value })}
+          placeholder="Ubicación"
+        />
+        <input
+          type="number"
+          value={selectedProperty.precio}
+          onChange={e => setSelectedProperty({ ...selectedProperty, precio: e.target.value })}
+          placeholder="Precio"
+        />
+        <textarea
+          value={selectedProperty.descripcion}
+          onChange={e => setSelectedProperty({ ...selectedProperty, descripcion: e.target.value })}
+          placeholder="Descripción"
+        />
+        <button onClick={handleSaveChanges}>Guardar Cambios</button>
+        <button onClick={closeModal}>Cancelar</button>
+        <button onClick={handleMarkAsUnavailable}>Marcar como No Disponible</button>
+      </Modal>
       )}
     </div>
   );

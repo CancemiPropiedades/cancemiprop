@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import PropertyCard from './PropertyCard'; // Importa el componente `Card`
+import PropertyCard from './PropertyCard'; 
+import FormularioBusqueda from './FormularioBusqueda'; 
 import '../Css/Card.css';
 
 function PropertyList() {
-  const [properties, setProperties] = useState([]);  // Aquí almacenaremos las propiedades obtenidas desde la DB
-  const [loading, setLoading] = useState(true); // Para mostrar el estado de carga
+  const [properties, setProperties] = useState([]);  
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState('');  
 
-  // Función para obtener las propiedades desde la base de datos
   async function fetchProperties() {
     try {
       const propiedades = await axios.get('http://localhost:4000/api/propiedades');
-      console.log('Propiedades obtenidas:', propiedades.data); // Verificar la respuesta aquí
-      setProperties(propiedades.data); 
+      const availableProperties = propiedades.data.filter(property => property.disponible !== false);
+      setProperties(availableProperties); 
       setLoading(false);
     } catch (error) {
       console.error('Error al obtener las propiedades', error);
@@ -21,21 +22,23 @@ function PropertyList() {
   }
 
   useEffect(() => {
-    fetchProperties(); // Llamamos a la función para obtener los datos cuando el componente se monta
+    fetchProperties(); 
   }, []);
 
   return (
     <div className="bodyProperties">
+      <FormularioBusqueda setResultados={setProperties} setError={setError} />
+      {error && <p className="error-message">{error}</p>} 
       {loading ? (
-        <div className="loading">Cargando propiedades...</div>  // Muestra un mensaje de carga
+        <div className="loading">Cargando propiedades...</div> 
       ) : (
         <div className="Container">
           {properties.length > 0 ? (
             properties.map((property) => (
-              <PropertyCard key={property._id} property={property} /> // Usa el componente `Card` para mostrar cada propiedad
+              <PropertyCard key={property._id} property={property} /> 
             ))
           ) : (
-            <p>No hay propiedades disponibles.</p> // Si no hay propiedades disponibles
+            <p>No se encontraron propiedades disponibles.</p> 
           )}
         </div>
       )}

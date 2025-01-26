@@ -10,9 +10,8 @@ const PropertyFilters = ({ onFilterChange }) => {
   const [aceptaMascotas, setAceptaMascotas] = useState(false);
   const [precioMin, setPrecioMin] = useState('');
   const [precioMax, setPrecioMax] = useState('');
-  const [moneda, setMoneda] = useState('USD'); // Default value for currency
+  const [moneda, setMoneda] = useState('USD'); 
   const [pileta, setPileta] = useState(false);
-  const [parrilla, setParrilla] = useState(false);
   const [gimnasio, setGimnasio] = useState(false);
   const [laundry, setLaundry] = useState(false);
   const [ascensor, setAscensor] = useState(false);
@@ -29,7 +28,6 @@ const PropertyFilters = ({ onFilterChange }) => {
       precioMax: precioMax ? Number(precioMax) : null,
       moneda,
       pileta,
-      parrilla,
       gimnasio,
       laundry,
       ascensor
@@ -102,10 +100,6 @@ const PropertyFilters = ({ onFilterChange }) => {
       <FormControlLabel
         control={<Checkbox checked={pileta} onChange={(e) => setPileta(e.target.checked)} />}
         label="Pileta"
-      />
-      <FormControlLabel
-        control={<Checkbox checked={parrilla} onChange={(e) => setParrilla(e.target.checked)} />}
-        label="Parrilla"
       />
       <FormControlLabel
         control={<Checkbox checked={gimnasio} onChange={(e) => setGimnasio(e.target.checked)} />}

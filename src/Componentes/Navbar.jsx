@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,13 +16,15 @@ import PropTypes from 'prop-types';
 import Logo from '../Imagenes/LOGO.svg';
 import { Link as LinkRouter, useNavigate } from 'react-router-dom';
 import '../Css/Navbar.css';
+import axios from 'axios';
 
 const drawerWidth = 240;
-const navItems = ['alquiler', 'venta', 'emprendimiento', 'quienes-somos', 'contacto'];
+const navItems = ['ALQUILER', 'VENTA', 'EMPRENDIMIENTO', 'QUIENES-SOMOS', 'CONTACTO'];
 
 function DrawerAppBar({ onFilterChange }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const navigate = useNavigate();
+  const [selectedPropertyId, setSelectedPropertyId] = useState(null)
 
   const isAuthenticated = localStorage.getItem('token') !== null;
 
@@ -31,20 +33,44 @@ function DrawerAppBar({ onFilterChange }) {
   };
 
   const handleFilterChange = (filterType) => {
-    onFilterChange(filterType); 
-    navigate(`/${filterType}`); 
+    onFilterChange(filterType);
+    navigate(`/${filterType}`);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');  
-    navigate('/');  
+    localStorage.removeItem('token');
+    navigate('/');
+  };
+
+  const handleSetUnavailable = async () => {
+    if (!selectedPropertyId) {
+      alert("Por favor selecciona una propiedad primero");
+      return;
+    }
+
+    try {
+      const response = await axios.patch(
+        'http://localhost:4000/api/propiedades/no-disponible',
+        { id: selectedPropertyId },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+
+      alert(response.data.message); // Mostrar mensaje de éxito
+    } catch (error) {
+      console.error('Error al actualizar propiedad:', error.response || error.message);
+      alert(`Hubo un problema al actualizar la propiedad: ${error.response?.data?.message || error.message}`);
+    }
   };
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Box variant="h6" sx={{ my: 2, backgroundColor: '#27337F' }}>
         <LinkRouter to={"/"}>
-          <img className='imgLogo' src={Logo} alt="Logo" sx={{ height: '100px' }} />
+          <img src={Logo} alt="Logo" className="logo-img" />
         </LinkRouter>
       </Box>
       <Divider />
@@ -58,13 +84,18 @@ function DrawerAppBar({ onFilterChange }) {
             </ListItemButton>
           </ListItem>
         ))}
-
         {isAuthenticated && (
-          <ListItem disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }} onClick={handleLogout}>
-              <ListItemText primary="Cerrar Sesión" />
-            </ListItemButton>
-          </ListItem>
+          <>
+            <Button
+              sx={{ color: '#fff', fontSize: '15px', marginRight: '10px' }}
+              onClick={() => navigate('/no-disponible')}
+            >
+              Ver No Disponibles
+            </Button>
+            <Button sx={{ color: '#fff', fontSize: '15px' }} onClick={handleLogout}>
+              Cerrar Sesión
+            </Button>
+          </>
         )}
       </List>
     </Box>
@@ -79,42 +110,81 @@ function DrawerAppBar({ onFilterChange }) {
         component="nav"
         sx={{
           background: '#27337F',
-          position: 'fixed', 
-          height: '100px'
+          position: 'fixed',
+          height: '100px',
+          padding: { xs: '0 10px', sm: '0 20px' }, // Ajustes según el tamaño de pantalla
         }}
       >
         <Toolbar>
+          {/* Ícono de Menú */}
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{
+              mr: 2,
+              display: { xs: 'block', sm: 'block', md: 'none' }, // Visible en xs y sm
+            }}
           >
             <MenuIcon />
           </IconButton>
+
+          {/* Logo */}
           <Box
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'none', sm: 'block' }, // Mostrar a partir de sm
+              textAlign: { sm: 'center', md: 'left' }, // Centrado en sm
+            }}
           >
-            <LinkRouter to={"/"}>
-              <img src={Logo} alt="Logo" />
+            <LinkRouter to="/">
+              <img
+                src={Logo}
+                alt="Logo"
+                style={{
+                  maxWidth: '150px', // Ajustar tamaño
+                  height: 'auto',
+                }}
+              />
             </LinkRouter>
           </Box>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+
+          {/* Botones de Navegación */}
+          <Box
+            sx={{
+              display: { xs: 'none', sm: 'none', md: 'block' }, // Visible solo a partir de md
+            }}
+          >
             {navItems.map((item) => (
               <Button
                 key={item}
-                sx={{ color: '#fff', fontSize: '15px' }}
+                sx={{
+                  color: '#fff',
+                  fontSize: '15px',
+                  marginLeft: '10px',
+                }}
                 onClick={() => handleFilterChange(item.toLowerCase())}
               >
                 {item}
               </Button>
             ))}
             {isAuthenticated && (
-              <Button sx={{ color: '#fff', fontSize: '15px' }} onClick={handleLogout}>
-                Cerrar Sesión
-              </Button>
+              <>
+                <Button
+                  sx={{ color: '#fff', fontSize: '15px', marginRight: '10px' }}
+                  onClick={() => navigate('/no-disponible')}
+                >
+                  No Disponibles
+                </Button>
+                <Button
+                  sx={{ color: '#fff', fontSize: '15px' }}
+                  onClick={handleLogout}
+                >
+                  Cerrar Sesión
+                </Button>
+              </>
             )}
           </Box>
         </Toolbar>
@@ -127,15 +197,19 @@ function DrawerAppBar({ onFilterChange }) {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true,
+            keepMounted: true, // Mejora el rendimiento en dispositivos móviles
           }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: 'block', sm: 'block', md: 'none' }, // Activo hasta md
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+            },
           }}
         >
           {drawer}
         </Drawer>
+
       </nav>
       <Box component="main" sx={{ p: 3 }}>
         <Toolbar />

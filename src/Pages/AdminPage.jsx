@@ -7,13 +7,11 @@ const AdminPage = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    // Cerrar sesión
     const handleLogout = () => {
-        localStorage.removeItem('token');  // Elimina el token del almacenamiento
-        navigate('/login');  // Redirige al usuario a la página de login
+        localStorage.removeItem('token'); 
+        navigate('/login');  
     };
 
-    // Cargar propiedades
     useEffect(() => {
         const fetchPropiedades = async () => {
             try {
@@ -44,7 +42,7 @@ const AdminPage = () => {
                     </li>
                 ))}
             </ul>
-            <button onClick={handleLogout}>Cerrar Sesión</button> {/* Botón de Cerrar Sesión */}
+            <button onClick={handleLogout}>Cerrar Sesión</button> 
         </div>
     );
 };
