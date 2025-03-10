@@ -2,14 +2,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import PropertyStepper from '../Componentes/Admin/PropertyStepper';
-import PropertyManager from '../Componentes/Admin/PropertyManager'
+import PropertyManager from '../Componentes/Admin/PropertyManager';
 import TypeManager from '../Componentes/Admin/TypeManager';
 import CityManager from '../Componentes/Admin/CityManager';
 import { Box, Drawer, Button, List, Divider, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
+import HouseIcon from '@mui/icons-material/House';
+import PlaceIcon from '@mui/icons-material/Place';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import CategoryIcon from '@mui/icons-material/Category';
 import '../Css/AdminDashboard.css';
 
 Modal.setAppElement('#root');
+
 const AdminDashboard = () => {
   const [properties, setProperties] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState(null);
@@ -48,7 +52,6 @@ const AdminDashboard = () => {
   };
 
   const handleSaveChanges = async () => {
-
     try {
       await axios.put(`http://localhost:4000/api/propiedades/${selectedProperty._id}`, selectedProperty, {
         headers: { Authorization: `Bearer ${token}` }
@@ -93,11 +96,14 @@ const AdminDashboard = () => {
       <Drawer anchor="left" open={openDrawer} onClose={toggleDrawer(false)}>
         <Box sx={{ width: 250 }} role="presentation">
           <List>
-            {['Agregar Propiedad', 'Gestionar Barrios', 'Gestionar Propiedades', 'Gestionar Tipos'].map((text, index) => (
+            {[
+              { text: 'Agregar Propiedad', icon: <HouseIcon /> },
+              { text: 'Gestionar Barrios', icon: <PlaceIcon /> },
+              { text: 'Gestionar Propiedades', icon: <ApartmentIcon /> },
+              { text: 'Gestionar Tipos', icon: <CategoryIcon /> },
+            ].map(({ text, icon }) => (
               <ListItem button key={text} onClick={() => handleDrawerItemClick(text)}>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
+                <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
             ))}
@@ -113,39 +119,39 @@ const AdminDashboard = () => {
 
       {selectedProperty && (
         <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Editar Propiedad"
-        className="modal"
-      >
-        <h2>Editar Propiedad</h2>
-        <input
-          type="text"
-          value={selectedProperty.titulo}
-          onChange={e => setSelectedProperty({ ...selectedProperty, titulo: e.target.value })}
-          placeholder="Título"
-        />
-        <input
-          type="text"
-          value={selectedProperty.ubicacion}
-          onChange={e => setSelectedProperty({ ...selectedProperty, ubicacion: e.target.value })}
-          placeholder="Ubicación"
-        />
-        <input
-          type="number"
-          value={selectedProperty.precio}
-          onChange={e => setSelectedProperty({ ...selectedProperty, precio: e.target.value })}
-          placeholder="Precio"
-        />
-        <textarea
-          value={selectedProperty.descripcion}
-          onChange={e => setSelectedProperty({ ...selectedProperty, descripcion: e.target.value })}
-          placeholder="Descripción"
-        />
-        <button onClick={handleSaveChanges}>Guardar Cambios</button>
-        <button onClick={closeModal}>Cancelar</button>
-        <button onClick={handleMarkAsUnavailable}>Marcar como No Disponible</button>
-      </Modal>
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          contentLabel="Editar Propiedad"
+          className="modal"
+        >
+          <h2>Editar Propiedad</h2>
+          <input
+            type="text"
+            value={selectedProperty.titulo}
+            onChange={e => setSelectedProperty({ ...selectedProperty, titulo: e.target.value })}
+            placeholder="Título"
+          />
+          <input
+            type="text"
+            value={selectedProperty.ubicacion}
+            onChange={e => setSelectedProperty({ ...selectedProperty, ubicacion: e.target.value })}
+            placeholder="Ubicación"
+          />
+          <input
+            type="number"
+            value={selectedProperty.precio}
+            onChange={e => setSelectedProperty({ ...selectedProperty, precio: e.target.value })}
+            placeholder="Precio"
+          />
+          <textarea
+            value={selectedProperty.descripcion}
+            onChange={e => setSelectedProperty({ ...selectedProperty, descripcion: e.target.value })}
+            placeholder="Descripción"
+          />
+          <button onClick={handleSaveChanges}>Guardar Cambios</button>
+          <button onClick={closeModal}>Cancelar</button>
+          <button onClick={handleMarkAsUnavailable}>Marcar como No Disponible</button>
+        </Modal>
       )}
     </div>
   );

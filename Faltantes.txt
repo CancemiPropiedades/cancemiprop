@@ -1,0 +1,5 @@
+Agregar propiedades (AGREGA LA PROPIEDAD NO MUESTRA CARACTERISTICAS)
+Propiedad Comercial (Verificar que funcione correctamente)
+Filtros (Agregar varias propiedades de prueba para probar y ver que funcionen)
+FALTA LOGO
+VERIFICAR PAGO DE GOOGLE

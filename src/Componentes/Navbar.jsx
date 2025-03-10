@@ -1,40 +1,33 @@
 import React, { useState } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import { AppBar, Box, Toolbar, IconButton, Button, Menu, MenuItem, Drawer, CssBaseline, List, ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import PropTypes from 'prop-types';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Logo from '../Imagenes/LOGO.svg';
-import { Link as LinkRouter, useNavigate } from 'react-router-dom';
 import '../Css/Navbar.css';
-import axios from 'axios';
 
 const drawerWidth = 240;
-const navItems = ['ALQUILER', 'VENTA', 'EMPRENDIMIENTO', 'QUIENES-SOMOS', 'CONTACTO'];
 
-function DrawerAppBar({ onFilterChange }) {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-  const [selectedPropertyId, setSelectedPropertyId] = useState(null)
-
   const isAuthenticated = localStorage.getItem('token') !== null;
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
-  const handleFilterChange = (filterType) => {
-    onFilterChange(filterType);
-    navigate(`/${filterType}`);
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const handleNavigation = (path) => {
+    navigate(path);
+    handleCloseMenu();
   };
 
   const handleLogout = () => {
@@ -42,147 +35,97 @@ function DrawerAppBar({ onFilterChange }) {
     navigate('/');
   };
 
-  const handleSetUnavailable = async () => {
-    if (!selectedPropertyId) {
-      alert("Por favor selecciona una propiedad primero");
-      return;
-    }
-
-    try {
-      const response = await axios.patch(
-        'http://localhost:4000/api/propiedades/no-disponible',
-        { id: selectedPropertyId },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        }
-      );
-
-      alert(response.data.message); // Mostrar mensaje de éxito
-    } catch (error) {
-      console.error('Error al actualizar propiedad:', error.response || error.message);
-      alert(`Hubo un problema al actualizar la propiedad: ${error.response?.data?.message || error.message}`);
-    }
-  };
-
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Box variant="h6" sx={{ my: 2, backgroundColor: '#27337F' }}>
-        <LinkRouter to={"/"}>
+      <Box sx={{ my: 2 }}>
+        <RouterLink to="/">
           <img src={Logo} alt="Logo" className="logo-img" />
-        </LinkRouter>
+        </RouterLink>
       </Box>
       <Divider />
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <LinkRouter to={`/${item}`}>
-                <ListItemText primary={item} />
-              </LinkRouter>
-            </ListItemButton>
-          </ListItem>
-        ))}
-        {isAuthenticated && (
+        {!isAuthenticated ? (
           <>
-            <Button
-              sx={{ color: '#fff', fontSize: '15px', marginRight: '10px' }}
-              onClick={() => navigate('/no-disponible')}
-            >
-              Ver No Disponibles
-            </Button>
-            <Button sx={{ color: '#fff', fontSize: '15px' }} onClick={handleLogout}>
-              Cerrar Sesión
-            </Button>
+            {['Alquiler', 'Venta', 'Emprendimiento', 'Nosotros', 'Contacto'].map((item) => (
+              <ListItem key={item} disablePadding>
+                <ListItemButton onClick={() => handleNavigation(`/${item.toLowerCase()}`)}>
+                  <ListItemText primary={item} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </>
+        ) : (
+          <>
+            <ListItemButton onClick={handleMenuClick}>
+              <ListItemText primary="Operación Comercial" />
+            </ListItemButton>
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
+              {['Alquiler', 'Venta', 'Emprendimiento'].map((item) => (
+                <MenuItem key={item} onClick={() => handleNavigation(`/${item.toLowerCase()}`)}>
+                  {item}
+                </MenuItem>
+              ))}
+            </Menu>
+            <ListItemButton onClick={() => handleNavigation('/Nosotros')}>
+              <ListItemText primary="Nosotros" />
+            </ListItemButton>
+            <ListItemButton onClick={() => handleNavigation('/no-disponible')}>
+              <ListItemText primary="No Disponible" />
+            </ListItemButton>
+            <ListItemButton onClick={handleLogout}>
+              <ListItemText primary="Cerrar Sesión" />
+            </ListItemButton>
+            <ListItemButton onClick={() => handleNavigation('/admin')}>
+              <ListItemText primary="Panel Admin" />
+            </ListItemButton>
           </>
         )}
       </List>
     </Box>
   );
 
-  const container = window !== undefined ? window.document.body : undefined;
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar
-        component="nav"
-        sx={{
-          background: '#27337F',
-          position: 'fixed',
-          height: '100px',
-          padding: { xs: '0 10px', sm: '0 20px' }, // Ajustes según el tamaño de pantalla
-        }}
-      >
+      <AppBar sx={{ background: '#27337F', position: 'fixed', height: '100px', padding: '0 20px' }}>
         <Toolbar>
-          {/* Ícono de Menú */}
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{
-              mr: 2,
-              display: { xs: 'block', sm: 'block', md: 'none' }, // Visible en xs y sm
-            }}
-          >
+          <IconButton color="inherit" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2, display: { md: 'none' } }}>
             <MenuIcon />
           </IconButton>
 
-          {/* Logo */}
-          <Box
-            component="div"
-            sx={{
-              flexGrow: 1,
-              display: { xs: 'none', sm: 'block' }, // Mostrar a partir de sm
-              textAlign: { sm: 'center', md: 'left' }, // Centrado en sm
-            }}
-          >
-            <LinkRouter to="/">
-              <img
-                src={Logo}
-                alt="Logo"
-                style={{
-                  maxWidth: '150px', // Ajustar tamaño
-                  height: 'auto',
-                }}
-              />
-            </LinkRouter>
+          <Box sx={{ flexGrow: 1 }}>
+            <RouterLink to="/">
+              <img src={Logo} alt="Logo" style={{ maxWidth: '150px', height: 'auto' }} />
+            </RouterLink>
           </Box>
 
-          {/* Botones de Navegación */}
-          <Box
-            sx={{
-              display: { xs: 'none', sm: 'none', md: 'block' }, // Visible solo a partir de md
-            }}
-          >
-            {navItems.map((item) => (
-              <Button
-                key={item}
-                sx={{
-                  color: '#fff',
-                  fontSize: '15px',
-                  marginLeft: '10px',
-                }}
-                onClick={() => handleFilterChange(item.toLowerCase())}
-              >
-                {item}
-              </Button>
-            ))}
-            {isAuthenticated && (
-              <>
-                <Button
-                  sx={{ color: '#fff', fontSize: '15px', marginRight: '10px' }}
-                  onClick={() => navigate('/no-disponible')}
-                >
-                  No Disponibles
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+            {!isAuthenticated ? (
+              ['Alquiler', 'Venta', 'Emprendimiento', 'Nosotros', 'Contacto'].map((item) => (
+                <Button key={item} sx={{ color: '#fff' }} onClick={() => handleNavigation(`/${item.toLowerCase()}`)}>
+                  {item}
                 </Button>
-                <Button
-                  sx={{ color: '#fff', fontSize: '15px' }}
-                  onClick={handleLogout}
-                >
+              ))
+            ) : (
+              <>
+                <Button sx={{ color: '#fff' }} onClick={handleMenuClick}>
+                  Operación Comercial
+                </Button>
+                <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
+                  {['Alquiler', 'Venta', 'Emprendimiento'].map((item) => (
+                    <MenuItem key={item} onClick={() => handleNavigation(`/${item.toLowerCase()}`)}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Menu>
+                <Button sx={{ color: '#fff' }} onClick={() => handleNavigation('/no-disponible')}>
+                  No Disponible
+                </Button>
+                <Button sx={{ color: '#fff' }} onClick={handleLogout}>
                   Cerrar Sesión
+                </Button>
+                <Button sx={{ color: '#fff' }} onClick={() => handleNavigation('/admin')}>
+                  Panel Admin
                 </Button>
               </>
             )}
@@ -191,35 +134,12 @@ function DrawerAppBar({ onFilterChange }) {
       </AppBar>
 
       <nav>
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Mejora el rendimiento en dispositivos móviles
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'block', md: 'none' }, // Activo hasta md
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-            },
-          }}
-        >
+        <Drawer variant="temporary" open={mobileOpen} onClose={handleDrawerToggle} sx={{ '& .MuiDrawer-paper': { width: drawerWidth } }}>
           {drawer}
         </Drawer>
-
       </nav>
-      <Box component="main" sx={{ p: 3 }}>
-        <Toolbar />
-      </Box>
     </Box>
   );
 }
 
-DrawerAppBar.propTypes = {
-  onFilterChange: PropTypes.func.isRequired,
-};
-
-export default DrawerAppBar;
+export default Navbar;

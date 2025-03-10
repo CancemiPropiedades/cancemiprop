@@ -1,9 +1,78 @@
-.css-wtf12b {
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 24px;
-    box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+#contacto-forms{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.contacto-forms-box {
+    width: 45%;
+    background-color: #fff;
     border-radius: 8px;
-    margin-top: 80px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    padding: 20px;
+}
+
+.contacto-forms-titulo {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.contacto-forms-titulo img {
+    max-width: 40px;
+    margin-bottom: 10px;
+}
+
+.form-box {
+    margin-top: 20px;
+}
+
+.form-box .MuiTextField-root {
+    margin-bottom: 15px;
+}
+
+.contacto-form-submit {
+    text-align: center;
+    cursor: pointer;
+    background-color: #27337f;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.contacto-form-submit:hover {
+    background-color: #1c2a61;
+}
+
+/* Estilos para ser responsive */
+@media (max-width: 600px) {
+    #contacto-forms{
+        flex-direction: column;
+    }
+    .contacto-forms-box {
+        width: 90%;
+    }
+    .contacto-forms-box {
+        padding: 15px;
+    }
+
+    .contacto-forms-titulo {
+        font-size: 16px;
+    }
+}
+
+.css-1f9xtph-MuiTypography-root {
+    margin: 15px !important;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 1.2rem !important;
+    line-height: 1.334;
+    letter-spacing: 0em;
+    margin-bottom: 0.35em;
 }

@@ -4,7 +4,7 @@
 }
 
 .admin-dashboard-content {
-  padding: 20px; 
+  padding: 30px 250px; 
   cursor: pointer;
 }
 
@@ -110,12 +110,16 @@
   overflow-y: auto; 
 }
 
-
-@media (max-width: 680px) {
+@media (max-width: 880px) {
 
   .css-nd0xiu-MuiStep-root {
     padding-left: 8px !important; 
     padding-right: 8px !important; 
+  }
+
+  .admin-dashboard-content {
+    padding: 30px 80px; 
+    cursor: pointer;
   }
   
   }

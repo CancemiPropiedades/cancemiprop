@@ -1,125 +1,146 @@
-.Container,
-.properties-container {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-items: flex-start;
-  gap: 20px; 
-  padding: 20px;
-}
-
-.card {
+.property-card {
+  list-style: none;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 380px; 
-  margin: 0px;
-  height: 600px; 
-  transition: transform 0.3s ease; 
+  width: 380px;
+  margin: 20px;
+  position: relative;
+  transition: transform 0.3s ease;
 }
 
-.card h6 {
-  font-size: 14px;
-  margin: 10px;
-  text-align: center;
-  font-weight: normal;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
+a{
+  width: 380px;
 }
 
-.price {
-  color: #27337f;
-  font-size: 20px;
-  font-weight: bold;
-  margin: 10px;
-  text-align: left;
-}
-
-.extra-feature{
-  color: black;
-  font-size: 20px;
-}
-
-.extra-feature svg {
-  margin-right: 8px;
-  color: #27337f;
-}
-
-.property-description {
-  font-size: 14px;
-  margin: 10px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2; 
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis; 
-  line-height: 1.5;
-}
-
-.property-summary {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+.property-image {
   width: 100%;
-  padding: 10px;
+  height: 200px; /* Ajusta la altura según sea necesario */
+  object-fit: cover;
+  border-radius: 12px; /* Si quieres bordes redondeados */
 }
 
-.property-summary svg {
-  font-size: 20px;
-  transition: color 0.3s ease; 
-}
-
-.property-summary svg:hover {
-  color: #F07F05; 
-}
-
-.ContainerDetails {
+.prop-img {
+  position: relative;
   width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  padding: 15px;
+  height: 276px;
 }
 
-.buttonCard {
-  background: #27337f;
+.detalleColor,
+.resultadosB-favoritaNo {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+}
+
+.resultadosB-favoritaSi {
+  color: #F07F05;
+  font-size: 24px;
+}
+
+.resultadosB-favoritaNo {
+  color: #ccc;
+  font-size: 24px;
+}
+
+.prop-data {
+  width: 100px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 5;
+  display: flex;
+  gap: 5px;
+  font-size: 14px;
   color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  border-radius: 5px;
+ justify-content: center;
+}
+
+.prop-data2{
+  width: 100px;
+  position: absolute;
+  bottom: 10px;
+  left: 110px;
+  z-index: 5;
+  display: flex;
+  gap: 5px;
   font-size: 14px;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  border-radius: 5px;
+  justify-content: center;
+}
+
+.prop-img-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  color: white;
+}
+
+.ver-ficha-box {
   font-weight: bold;
-  padding: 10px 20px;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  text-align: center;
+  font-size: 18px;
 }
 
-.buttonCard:hover {
-  background: #F07F05;
-  transform: scale(1.05); 
+.prop-desc {
+  padding: 15px;
+  font-size: 14px;
 }
 
-.css-1umw9bq-MuiSvgIcon-root {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  width: 1em;
-  height: 1em;
-  display: inline-block;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  -webkit-transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  fill: currentColor;
+.prop-desc-tipo-ub {
+  font-weight: bold;
+  color: #27337f;
+}
+
+.prop-desc-dir {
+  color: #555;
+}
+
+.prop-valor-nro {
+  padding: 15px;
   font-size: 20px;
-  margin: 5px;
+  font-weight: bold;
+  color: #27337f;
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.codref {
+  font-size: 12px;
+  color: #999;
+}
+
+.prop-valor-nro:hover {
+  background-color: #F07F05;
+  color: white;
+  cursor: pointer;
+}
+
+.prop-img-bg .ver-ficha-box {
+  background: #F07F05;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.prop-img-bg .ver-ficha-box:hover {
+  background: #27337f;
 }

@@ -32,7 +32,7 @@ const LoginPage = () => {
                 xs={12}
                 md={6}
                 sx={{
-                    backgroundColor: 'primary.main',
+                    backgroundColor: '#27337f',
                     color: 'white',
                     display: 'flex',
                     flexDirection: 'column',
@@ -73,9 +73,7 @@ const LoginPage = () => {
                         backgroundColor: 'background.paper',
                     }}
                 >
-                    <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', mb: 3 }}>
-                        Iniciar Sesión
-                    </Typography>
+                    
                     {error && (
                         <Alert severity="error" sx={{ mb: 2 }}>
                             {error}
@@ -104,9 +102,10 @@ const LoginPage = () => {
                         variant="contained"
                         color="primary"
                         fullWidth
-                        sx={{ mt: 2 }}
+                        sx={{ mt: 2 , backgroundColor: '#27337f'}}
+                        
                     >
-                        Login
+                        Iniciar Sesión
                     </Button>
                 </Box>
             </Grid>

@@ -1,3 +1,7 @@
+.css-19kzrtu {
+  padding: 0px !important;
+}
+
 .css-1588512-MuiButtonBase-root-MuiButton-root {
   margin-top: 20px !important;
 }
@@ -23,11 +27,16 @@
   font-size: 18px !important;
 }
 
-@media (max-width: 680px) {
+@media (max-width: 935px) {
 
     .css-nd0xiu-MuiStep-root {
       padding-left: 8px; 
       padding-right: 8px; 
+    }
+
+    .admin-dashboard-content {
+      padding: 30px; 
+      cursor: pointer;
     }
 
     .css-ibtndc-MuiStepper-root{

@@ -1,13 +1,8 @@
-.css-19kzrtu {
-    padding: 24px !important;
-}
-
 .css-1f9xtph-MuiTypography-root {
     margin: 13px;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-weight: 400;
     font-size: 1.5rem;
-    line-height: 1.334;
     letter-spacing: 0em;
     margin-bottom: 0.35em;
     display: flex;
@@ -72,7 +67,7 @@
 
 .extra-feature{
   color: black;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 .extra-feature svg {
@@ -88,7 +83,6 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis; 
-  line-height: 1.5;
 }
 
 .property-summary {
@@ -97,7 +91,6 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   width: 100%;
-  padding: 10px;
 }
 
 .property-summary svg {
@@ -113,7 +106,7 @@
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  padding: 15px;
+  padding: 8px;
 }
 
 .buttonCard {
@@ -150,4 +143,9 @@
   fill: currentColor;
   font-size: 20px;
   margin: 5px;
+}
+
+.swiper-wrapper {
+  transform: translate3d(0px, 0, 0);
+  height: 350px;
 }

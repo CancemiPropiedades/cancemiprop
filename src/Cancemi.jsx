@@ -6,7 +6,7 @@ import Home from './Pages/Home';
 import PropertySearchPage from './Componentes/PropertySearchPage';
 import AdminDashboard from './Pages/AdminDashboard';
 import PropertyDetails from './Pages/PropertyDetails';
-import QuienesSomos from './Pages/Quienes-Somos';
+import Nosotros from './Pages/QuienesSomos';
 import FormContacto from './Pages/Form-Contacto';
 import WhatsAppButton from './Componentes/Botton-Whatsapp';
 import LoginPage from './Pages/LoginPage';
@@ -34,7 +34,6 @@ function Cancemi() {
   };
 
   const filteredProperties = properties.filter((property) => {
-
     if (!property.disponible) {
       return false;
     }
@@ -48,8 +47,18 @@ function Cancemi() {
     if (filterType === 'emprendimiento') {
       return property.estado?.toLowerCase() === 'emprendimiento';
     }
-
   });
+
+  const isAdminLoggedIn = localStorage.getItem('token');
+
+  const shouldShowWhatsAppButton = !isAdminLoggedIn && (
+    window.location.pathname === '/' || 
+    window.location.pathname.startsWith('/alquiler') || 
+    window.location.pathname.startsWith('/venta') || 
+    window.location.pathname.startsWith('/emprendimiento') || 
+    window.location.pathname.startsWith('/quienes_somos') || 
+    window.location.pathname.startsWith('/contacto')
+  );
 
   return (
     <Router>
@@ -60,14 +69,16 @@ function Cancemi() {
           <Route path="/alquiler" element={<PropertySearchPage filterType="alquiler" properties={filteredProperties} />} />
           <Route path="/venta" element={<PropertySearchPage filterType="venta" properties={filteredProperties} />} />
           <Route path="/emprendimiento" element={<PropertySearchPage filterType="emprendimiento" properties={filteredProperties} />} />
-          <Route path="/quienes-somos" element={<QuienesSomos />} />
+          <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/contacto" element={<FormContacto />} />
           <Route path="/no-disponible" element={<UnavailableProperties />} />
-          <Route path="/admin" element={localStorage.getItem('token') ? <AdminDashboard /> : <Navigate to="/login" />} />
+          <Route path="/admin" element={isAdminLoggedIn ? <AdminDashboard /> : <Navigate to="/login" />} />
           <Route path="/Pages/PropertyDetails/:id" element={<PropertyDetails />} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>
-        <WhatsAppButton />
+
+        {/* Mostrar el botón de WhatsApp solo si no es admin y en las vistas correctas */}
+        {shouldShowWhatsAppButton && <WhatsAppButton />}
       </div>
     </Router>
   );

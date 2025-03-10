@@ -1,7 +1,12 @@
+header{
+    position: relative !important;
+}
+
 @media (max-width: 800) {
     .MuiToolbar-root {
         justify-content: space-between;
     }
+
 }
 
 @media (max-width: 600px) {
@@ -45,4 +50,10 @@ a img {
         display: flex;
         justify-content: center;
     }
+}
+
+.css-1ebprri {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    background-color: #27337f;
 }

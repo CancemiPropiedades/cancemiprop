@@ -24,7 +24,7 @@ const FormularioBusqueda = ({ setResultados, setError }) => {
         },
       });
 
-      setResultados(response.data); 
+      setResultados(response.data);
       setError('');
     } catch (error) {
       console.error(error);
@@ -33,48 +33,50 @@ const FormularioBusqueda = ({ setResultados, setError }) => {
   };
 
   return (
-    <div className="formulario-container">
-      <h1>Encuentra tu lugar ideal</h1>
-      <h3>Descubre los mejores alojamientos que se adapten a tus necesidades</h3>
-      <form onSubmit={handleSubmit} className="formulario-busqueda">
-        <div className="input-group">
-          <TextField
-            label="Ubicación"
-            value={ubicacion}
-            onChange={(e) => setUbicacion(e.target.value)}
-            fullWidth
-          />
-        </div>
-
-        <div className="input-group">
-          <FormControl fullWidth>
-            <InputLabel id="estado-label">Estado</InputLabel>
-            <Select
-              labelId="estado-label"
-              value={estado}
-              onChange={(e) => setEstado(e.target.value)}
+    <div className='Container-Form'>
+      <div className="formulario-container">
+        <h1>Encuentra tu lugar ideal</h1>
+        <h3>Descubre los mejores alojamientos que se adapten a tus necesidades</h3>
+        <form onSubmit={handleSubmit} className="formulario-busqueda">
+          <div className="input-group">
+            <TextField
+              label="Ubicación"
+              value={ubicacion}
+              onChange={(e) => setUbicacion(e.target.value)}
               fullWidth
-            >
-              <MenuItem value="">Selecciona un estado</MenuItem>
-              <MenuItem value="Venta">Venta</MenuItem>
-              <MenuItem value="Alquiler">Alquiler</MenuItem>
-              <MenuItem value="Emprendimiento">Emprendimiento</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
+            />
+          </div>
 
-        <div className="input-group">
-          <TextField
-            label="Ambientes"
-            type="number"
-            value={ambientes}
-            onChange={(e) => setAmbientes(e.target.value)}
-            fullWidth
-          />
-        </div>
+          <div className="input-group">
+            <FormControl fullWidth>
+              <InputLabel id="estado-label">Tipo de Operación</InputLabel>
+              <Select
+                labelId="estado-label"
+                value={estado}
+                onChange={(e) => setEstado(e.target.value)}
+                fullWidth
+              >
+                <MenuItem value="">Selecciona un estado</MenuItem>
+                <MenuItem value="Venta">Venta</MenuItem>
+                <MenuItem value="Alquiler">Alquiler</MenuItem>
+                <MenuItem value="Emprendimiento">Emprendimiento</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
 
-        <Button className='button-home' type="submit" variant="contained" color="primary">Buscar</Button>
-      </form>
+          <div className="input-group">
+            <TextField
+              label="Ambientes"
+              type="number"
+              value={ambientes}
+              onChange={(e) => setAmbientes(e.target.value)}
+              fullWidth
+            />
+          </div>
+
+          <Button className='button-home' type="submit" variant="contained" color="primary">Buscar</Button>
+        </form>
+      </div>
     </div>
   );
 };
