@@ -20,7 +20,7 @@ const TypeManager = () => {
 
   const fetchTypes = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/types');
+      const response = await axios.get('http://localhost:4001/api/types');
       setTypes(response.data);
     } catch (error) {
       console.error('Error al cargar los estados:', error);
@@ -35,7 +35,7 @@ const TypeManager = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:4000/api/types', typeData);
+      const response = await axios.post('http://localhost:4001/api/types', typeData);
       setTypes([...types, response.data]);
       setTypeData({ name: '' });
       setSnackbar({ open: true, message: 'Estado agregado exitosamente.', severity: 'success' });
@@ -47,7 +47,7 @@ const TypeManager = () => {
 
   const handleDeleteType = async (id) => {
     try {
-      await axios.delete(`http://localhost:4000/api/types/${id}`);
+      await axios.delete(`http://localhost:4001/api/types/${id}`);
       setTypes(types.filter((type) => type._id !== id));
       setSnackbar({ open: true, message: 'Estado eliminado exitosamente.', severity: 'success' });
     } catch (error) {

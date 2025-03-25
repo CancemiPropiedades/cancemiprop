@@ -14,7 +14,7 @@ const UnavailableProperties = () => {
         const fetchUnavailableProperties = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:4000/api/propiedades/no-disponibles', {
+                const response = await axios.get('http://localhost:4001/api/propiedades/no-disponibles', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setProperties(response.data);

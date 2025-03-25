@@ -10,7 +10,7 @@ function Home() {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/propiedades');
+        const response = await axios.get('http://localhost:4001/api/propiedades');
 
         const propiedadesHabilitadas = response.data.filter(
           property => property.habilitada === true

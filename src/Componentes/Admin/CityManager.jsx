@@ -11,7 +11,7 @@ const CityManager = () => {
     useEffect(() => {
         const fetchCities = async () => {
             try {
-                const response = await axios.get('http://localhost:4000/api/cities');
+                const response = await axios.get('http://localhost:4001/api/cities');
                 setCities(response.data);
             } catch (error) {
                 console.error('Error al cargar los barrios:', error);
@@ -27,7 +27,7 @@ const CityManager = () => {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:4000/api/cities', { name: newCity });
+            const response = await axios.post('http://localhost:4001/api/cities', { name: newCity });
             setCities([...cities, response.data]);
             setNewCity(''); // Limpiar el input
             setSnackbar({ open: true, message: 'Barrio agregada exitosamente.', severity: 'success' });
@@ -39,7 +39,7 @@ const CityManager = () => {
 
     const handleDeleteCity = async (id) => {
         try {
-            await axios.delete(`http://localhost:4000/api/cities/${id}`);
+            await axios.delete(`http://localhost:4001/api/cities/${id}`);
             setCities(cities.filter(city => city._id !== id)); 
             setSnackbar({ open: true, message: 'Barrio eliminado exitosamente.', severity: 'success' });
         } catch (error) {

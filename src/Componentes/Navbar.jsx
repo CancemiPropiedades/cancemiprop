@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AppBar, Box, Toolbar, IconButton, Button, Menu, MenuItem, Drawer, CssBaseline, List, ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import Logo from '../Imagenes/LOGO.svg';
+import Logo from '../Imagenes/LOGOTIPO.png';
 import '../Css/Navbar.css';
 
 const drawerWidth = 240;
@@ -69,9 +69,9 @@ function Navbar() {
             <ListItemButton onClick={() => handleNavigation('/Nosotros')}>
               <ListItemText primary="Nosotros" />
             </ListItemButton>
-            <ListItemButton onClick={() => handleNavigation('/no-disponible')}>
+            {/* <ListItemButton onClick={() => handleNavigation('/no-disponible')}>
               <ListItemText primary="No Disponible" />
-            </ListItemButton>
+            </ListItemButton> */}
             <ListItemButton onClick={handleLogout}>
               <ListItemText primary="Cerrar Sesión" />
             </ListItemButton>
@@ -118,9 +118,9 @@ function Navbar() {
                     </MenuItem>
                   ))}
                 </Menu>
-                <Button sx={{ color: '#fff' }} onClick={() => handleNavigation('/no-disponible')}>
+                {/* <Button sx={{ color: '#fff' }} onClick={() => handleNavigation('/no-disponible')}>
                   No Disponible
-                </Button>
+                </Button> */}
                 <Button sx={{ color: '#fff' }} onClick={handleLogout}>
                   Cerrar Sesión
                 </Button>

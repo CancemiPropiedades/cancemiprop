@@ -25,7 +25,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/propiedades', {
+        const response = await axios.get('http://localhost:4001/api/propiedades', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setProperties(response.data);
@@ -53,7 +53,7 @@ const AdminDashboard = () => {
 
   const handleSaveChanges = async () => {
     try {
-      await axios.put(`http://localhost:4000/api/propiedades/${selectedProperty._id}`, selectedProperty, {
+      await axios.put(`http://localhost:4001/api/propiedades/${selectedProperty._id}`, selectedProperty, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProperties(properties.map(prop => prop._id === selectedProperty._id ? selectedProperty : prop));
@@ -80,7 +80,7 @@ const AdminDashboard = () => {
 
   const handleMarkAsUnavailable = async () => {
     try {
-      await axios.patch(`http://localhost:4000/api/propiedades/no-disponible/${selectedProperty._id}`, null, {
+      await axios.patch(`http://localhost:4001/api/propiedades/no-disponible/${selectedProperty._id}`, null, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProperties(properties.map(prop => prop._id === selectedProperty._id ? { ...prop, disponible: false } : prop));

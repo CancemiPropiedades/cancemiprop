@@ -136,7 +136,7 @@ button:hover {
   }
 }
 
-@media (max-width: 940px) {
+@media (max-width: 1025px) {
   .formulario-container {
     position: relative; 
     top: unset; 

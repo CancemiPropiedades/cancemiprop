@@ -11,6 +11,8 @@ import FormContacto from './Pages/Form-Contacto';
 import WhatsAppButton from './Componentes/Botton-Whatsapp';
 import LoginPage from './Pages/LoginPage';
 import UnavailableProperties from './Pages/UnavailableProperties';
+import ForgotPassword from './Componentes/ForgotPassword';
+import ResetPassword from './Componentes/ResetPassword';
 
 function Cancemi() {
   const [properties, setProperties] = useState([]);
@@ -19,7 +21,7 @@ function Cancemi() {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/propiedades');
+        const response = await axios.get('http://localhost:4001/api/propiedades');
         setProperties(response.data);
       } catch (error) {
         console.error('Error al obtener propiedades:', error);
@@ -75,6 +77,9 @@ function Cancemi() {
           <Route path="/admin" element={isAdminLoggedIn ? <AdminDashboard /> : <Navigate to="/login" />} />
           <Route path="/Pages/PropertyDetails/:id" element={<PropertyDetails />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset/:token" element={<ResetPassword />} />
+
         </Routes>
 
         {/* Mostrar el botón de WhatsApp solo si no es admin y en las vistas correctas */}

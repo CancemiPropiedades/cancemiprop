@@ -16,7 +16,7 @@ const AdminPage = () => {
         const fetchPropiedades = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:4000/api/propiedades', {
+                const response = await axios.get('http://localhost:4001/api/propiedades', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

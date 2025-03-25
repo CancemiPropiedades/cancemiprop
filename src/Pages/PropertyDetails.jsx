@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import CarouselDetails from '../Componentes/CarouselDetails';
-import { FaCar, FaPaw, FaSwimmer, FaDumbbell, FaRegSun, FaBuilding } from 'react-icons/fa';
+import { FaCar, FaPaw, FaSwimmer, FaDumbbell, FaRegSun, FaBuilding, FaWifi, FaHotTub, FaFire, FaTv, FaBath, FaBed, FaLightbulb, FaWater, FaSewage, FaGas, FaRoad, FaPhone, FaSatellite } from 'react-icons/fa';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Button from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
@@ -11,11 +11,11 @@ import { useNavigate } from 'react-router-dom';
 import '../Css/PropertyDetails.css';
 
 const PropertyDetails = () => {
-  const { id } = useParams();
-  const [property, setProperty] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [location, setLocation] = useState(null);
-  const navigate = useNavigate();
+    const { id } = useParams();
+    const [property, setProperty] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [location, setLocation] = useState(null);
+    const navigate = useNavigate();
 
   const fetchCoordinates = async (ubicacion) => {
     const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -45,7 +45,7 @@ const PropertyDetails = () => {
   useEffect(() => {
     const fetchPropertyDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/propiedades/${id}`);
+        const response = await axios.get(`http://localhost:4001/api/propiedades/${id}`);
         const propertyData = response.data;
 
         setProperty(propertyData);
@@ -61,6 +61,7 @@ const PropertyDetails = () => {
 
     fetchPropertyDetails();
   }, [id]);
+
 
   if (loading) {
     return (
@@ -85,6 +86,8 @@ const PropertyDetails = () => {
     margin: '20px auto',
   };
 
+console.log('Caracteristicas de la propiedad:', property.caracteristicas);
+
   return (
     <div className="property-details">
       <CarouselDetails images={property.fotos} />
@@ -94,77 +97,71 @@ const PropertyDetails = () => {
         <p><strong>Descripción: </strong> {property.descripcion}</p>
         <p><strong>Ciudad:</strong> {property.ciudad?.name || 'Ciudad no disponible'}</p>
 
-        {property.caracteristicas?.ambientes && <p><strong>Ambientes:</strong> {property.caracteristicas.ambientes}</p>}
-        {property.caracteristicas?.banos && <p><strong>Baños:</strong> {property.caracteristicas.banos}</p>}
-        {property.caracteristicas?.dormitorios && <p><strong>Dormitorios:</strong> {property.caracteristicas.dormitorios}</p>}
-
-        {property.caracteristicas?.cochera && (
-          <div className="extra-feature">
-            <FaCar /> <span>Cochera</span>
-          </div>
+        {property.caracteristicas && (
+          <>
+            {property.caracteristicas.metrosCuadrados && <p><strong>Metros Cuadrados:</strong> {property.caracteristicas.metrosCuadrados}</p>}
+            {property.caracteristicas.ambientes && <p><strong>Ambientes:</strong> {property.caracteristicas.ambientes}</p>}
+            {property.caracteristicas.banos && <p><strong>Baños:</strong> {property.caracteristicas.banos}</p>}
+            {property.caracteristicas.dormitorios && <p><strong>Dormitorios:</strong> {property.caracteristicas.dormitorios}</p>}
+            {property.caracteristicas.cochera && <div className="extra-feature"><FaCar /> <span>Cochera</span></div>}
+            {property.caracteristicas.aceptaMascotas && <div className="extra-feature"><FaPaw /> <span>Acepta Mascotas</span></div>}
+            {property.caracteristicas.pileta && <div className="extra-feature"><FaSwimmer /> <span>Pileta</span></div>}
+            {property.caracteristicas.gimnasio && <div className="extra-feature"><FaDumbbell /> <span>Gimnasio</span></div>}
+            {property.caracteristicas.laundry && <div className="extra-feature"><FaRegSun /> <span>Laundry</span></div>}
+            {property.caracteristicas.ascensor && <div className="extra-feature"><FaBuilding /> <span>Ascensor</span></div>}
+            {property.caracteristicas.aguaCorriente && <div className="extra-feature"><span>Agua Corriente</span></div>}
+            {property.caracteristicas.cloaca && <div className="extra-feature"><span>Cloaca</span></div>}
+            {property.caracteristicas.gasNatural && <div className="extra-feature"><span>Gas Natural</span></div>}
+            {property.caracteristicas.internet && <div className="extra-feature"><FaWifi /> <span>Internet</span></div>}
+            {property.caracteristicas.electricidad && <div className="extra-feature"><span>Electricidad</span></div>}
+            {property.caracteristicas.pavimento && <div className="extra-feature"><span>Pavimento</span></div>}
+            {property.caracteristicas.telefono && <div className="extra-feature"><span>Teléfono</span></div>}
+            {property.caracteristicas.cable && <div className="extra-feature"><span>Cable</span></div>}
+            {property.caracteristicas.solarium && <div className="extra-feature"><FaHotTub /> <span>Solarium</span></div>}
+            {property.caracteristicas.sum && <div className="extra-feature"><FaFire /> <span>SUM</span></div>}
+            {property.caracteristicas.luminoso && <div className="extra-feature"><FaTv /> <span>Luminoso</span></div>}
+            {property.caracteristicas.aguaPotable && <div className="extra-feature"><FaBath /> <span>Agua Potable</span></div>}
+            {property.caracteristicas.seguridad24hs && <div className="extra-feature"><FaBed /> <span>Seguridad 24hs</span></div>}
+          </>
         )}
-        {property.caracteristicas?.aceptaMascotas && (
-          <div className="extra-feature">
-            <FaPaw /> <span>Acepta Mascotas</span>
-          </div>
-        )}
-        {property.caracteristicas?.pileta && (
-          <div className="extra-feature">
-            <FaSwimmer /> <span>Pileta</span>
-          </div>
-        )}
-        {property.caracteristicas?.gimnasio && (
-          <div className="extra-feature">
-            <FaDumbbell /> <span>Gimnasio</span>
-          </div>
-        )}
-        {property.caracteristicas?.laundry && (
-          <div className="extra-feature">
-            <FaRegSun /> <span>Laundry</span>
-          </div>
-        )}
-        {property.caracteristicas?.ascensor && (
-          <div className="extra-feature">
-            <FaBuilding /> <span>Ascensor</span>
-          </div>
+        <Button
+          variant="contained"
+          color="success"
+          style={{ marginLeft: '10px', padding: '4px 16px' }}
+          startIcon={<WhatsAppIcon />}
+          onClick={() => {
+            const message = encodeURIComponent(
+              `Hola, acabo de ver esta propiedad y quisiera más información: \n\n` +
+              `Título: ${property.titulo}\n` +
+              `Ubicación: ${property.ubicacion}\n` +
+              `Precio: ${property.precio} ${property.moneda}\n` +
+              `Estado: ${property.estado}\n` +
+              `¡Gracias!`
+            );
+            const whatsappNumber = "+5491164476465";
+            window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
+          }}
+        >
+          Pedir Información
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginLeft: '10px', padding: '7px 16px' }}
+          onClick={() => navigate('/contacto', { state: { property } })}
+        >
+          Quiero que me contacten
+        </Button>
+        {location ? (
+          <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+            <GoogleMap mapContainerStyle={containerStyle} center={location} zoom={15}>
+              <Marker position={location} />
+            </GoogleMap>
+          </LoadScript>
+        ) : (
+          <p>Ubicación no disponible para mostrar en el mapa.</p>
         )}
       </div>
-      <Button
-        variant="contained"
-        color="success"
-        startIcon={<WhatsAppIcon />}
-        onClick={() => {
-          const message = encodeURIComponent(
-            `Hola, acabo de ver esta propiedad y quisiera más información: \n\n` +
-            `Título: ${property.titulo}\n` +
-            `Ubicación: ${property.ubicacion}\n` +
-            `Precio: ${property.precio} ${property.moneda}\n` +
-            `Estado: ${property.estado}\n` +
-            `¡Gracias!`
-          );
-          const whatsappNumber = "+5491164476465";
-          window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
-        }}
-      >
-        Pedir Información
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        style={{ marginLeft: '10px' }}
-        onClick={() => navigate('/contacto', { state: { property } })}
-      >
-        Quiero que me contacten
-      </Button>
-      {location ? (
-        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
-          <GoogleMap mapContainerStyle={containerStyle} center={location} zoom={15}>
-            <Marker position={location} />
-          </GoogleMap>
-        </LoadScript>
-      ) : (
-        <p>Ubicación no disponible para mostrar en el mapa.</p>
-      )}
     </div>
   );
 };

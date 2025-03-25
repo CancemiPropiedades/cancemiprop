@@ -1,5 +1,7 @@
-header{
+header {
     position: relative !important;
+    display: flex;
+    justify-content: center;
 }
 
 @media (max-width: 800) {
@@ -33,14 +35,18 @@ header{
 }
 
 a img {
-    max-width: 310px !important;
+    max-width: 250px !important;
     height: auto;
 }
 
 @media (min-width: 950px) {
     .css-g2n3xz {
         text-align: left;
-        width: 300px;
+    }
+
+    a img {
+        max-width: 310px !important;
+        height: auto;
     }
 }
 

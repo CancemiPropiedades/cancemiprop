@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, Button, Stepper, Step, StepLabel, TextField, Typography, MenuItem, Select, FormControl, InputLabel, FormControlLabel, Checkbox, FormGroup } from "@mui/material";
+import { Box, Button, Stepper, Step, StepLabel, TextField, Typography, MenuItem, Select, FormControl, InputLabel, FormControlLabel, Checkbox, FormGroup, Modal } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const ResidentialPropertyForm = ({ onPropertyAdded }) => {
   const steps = ["Datos Principales", "Características", "Cargar Imágenes", "Descripción"];
   const [activeStep, setActiveStep] = useState(0);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [errors, setErrors] = useState({});
+  console.log(setErrors);
+  
   const [propertyData, setPropertyData] = useState({
     ubicacion: "",
     precio: "",
@@ -17,7 +20,7 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
     moneda: "USD",
     ambientes: 0,
     banos: 0,
-    habitaciones: 0,
+    dormitorios: 0,
     caracteristicas: {
       AguaCorriente: false,
       Cloaca: false,
@@ -37,6 +40,7 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
       Laundry: false,
       Seguridad24hs: false,
       AlumbradoPublico: false,
+      metrosCuadrados: 0,
     },
   });
   const caracteristicasLista = [
@@ -45,6 +49,17 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
     "SUM", "Pileta", "Luminoso", "AguaPotable", "Laundry", "Seguridad24hs", "AlumbradoPublico"
   ];
 
+  // const validateForm = () => {
+  //   let tempErrors = {};
+  //   if (!propertyData.ubicacion) tempErrors.ubicacion = "Este campo es obligatorio";
+  //   if (!propertyData.precio) tempErrors.precio = "Este campo es obligatorio";
+  //   if (!propertyData.estado) tempErrors.estado = "Este campo es obligatorio";
+  //   if (!propertyData.ciudad) tempErrors.ciudad = "Este campo es obligatorio";
+  //   if (!propertyData.metrosCuadrados) tempErrors.metrosCuadrados = "Este campo es obligatorio";
+  //   setErrors(tempErrors);
+  //   return Object.keys(tempErrors).length === 0;
+  // };
+
   const [cities, setCities] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [modalMessage, setModalMessage] = useState([]);
@@ -52,7 +67,7 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const cityResponse = await axios.get("http://localhost:4000/api/cities");
+        const cityResponse = await axios.get("http://localhost:4001/api/cities");
         setCities(cityResponse.data);
       } catch (error) {
         console.error("Error al cargar ciudades:", error);
@@ -63,12 +78,21 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setPropertyData((prevData) => ({
-      ...prevData,
-      [name]: name === "precio" ? value.replace(/\./g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".") : value,
-    }));
-  };
-
+    if (name === "metrosCuadrados" || name === "ambientes" || name === "banos" || name === "dormitorios") {
+        setPropertyData((prevData) => ({
+            ...prevData,
+            caracteristicas: {
+                ...prevData.caracteristicas,
+                [name]: Number(value),
+            },
+        }));
+    } else {
+        setPropertyData((prevData) => ({
+            ...prevData,
+            [name]: name === "precio" ? value.replace(/\./g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".") : value,
+        }));
+    }
+};
   const handleCaracteristicasChange = (e) => {
     const { name, type, value, checked } = e.target;
     setPropertyData((prevData) => ({
@@ -93,11 +117,18 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
     const formData = new FormData();
     const cleanedPrice = propertyData.precio.replace(/\./g, "");
 
+    console.log("FormData:", formData);
+    for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
+    
     const finalPropertyData = {
       ...propertyData,
       precio: cleanedPrice,
-      caracteristicas: JSON.stringify(propertyData.caracteristicas), 
-    };
+      caracteristicas: JSON.stringify(propertyData.caracteristicas),
+  };
+
+  console.log('Tipo de caracteristicas a enviar:', typeof finalPropertyData.caracteristicas);
 
     Object.keys(finalPropertyData).forEach((key) => {
       if (key !== "caracteristicas") {
@@ -111,7 +142,7 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
     });
 
     try {
-      await axios.post("http://localhost:4000/api/propiedades", formData, {
+      await axios.post("http://localhost:4001/api/propiedades", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setModalMessage("Propiedad agregada con éxito");
@@ -122,6 +153,10 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
       setModalMessage("Hubo un error al agregar la propiedad. Intente nuevamente.");
       setOpenModal(true);
     }
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
   };
 
   return (
@@ -170,9 +205,9 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
         <Box sx={{ mb: 2 }}>
           <Typography variant="h6">Características</Typography>
           <TextField type="number" name="ambientes" label="Ambientes" value={propertyData.caracteristicas.ambientes} onChange={handleCaracteristicasChange} fullWidth margin="normal" />
-          <TextField type="number" name="banos" label="Baños" value={propertyData.banos} onChange={handleChange} fullWidth margin="normal" />
-          <TextField type="number" name="habitaciones" label="Habitaciones" value={propertyData.habitaciones} onChange={handleChange} fullWidth margin="normal" />
-          
+          <TextField type="number" name="banos" label="Baños" value={propertyData.caracteristicas.banos} onChange={handleChange} fullWidth margin="normal" />
+          <TextField type="number" name="dormitorios" label="dormitorios" value={propertyData.caracteristicas.dormitorios} onChange={handleChange} fullWidth margin="normal" />
+          <TextField type="number" name="metrosCuadrados" label="Metros Cuadrados" value={propertyData.caracteristicas.metrosCuadrados} onChange={handleChange} fullWidth margin="normal" error={!!errors.metrosCuadrados} helperText={errors.metrosCuadrados} />
           <Box sx={{ mb: 2 }}>
             <Typography variant="h6">Características</Typography>
             <FormGroup>
@@ -197,6 +232,15 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
 
       <Button disabled={activeStep === 0} onClick={() => setActiveStep((prev) => prev - 1)}>Atrás</Button>
       <Button onClick={() => activeStep === steps.length - 1 ? handleSubmit() : setActiveStep((prev) => prev + 1)}>{activeStep === steps.length - 1 ? "Enviar" : "Siguiente"}</Button>
+    
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4, }}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            {modalMessage}
+          </Typography>
+          <Button onClick={handleCloseModal}>Cerrar</Button>
+        </Box>
+      </Modal>
     </Box>
   );
 };

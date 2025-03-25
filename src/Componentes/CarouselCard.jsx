@@ -6,7 +6,7 @@ import 'swiper/css/navigation';
 import '../Css/CarouselCard.css';
 import { Pagination, Navigation } from 'swiper/modules';
 
-const getFullImageUrl = (path) => `http://localhost:4000/${path}`;
+const getFullImageUrl = (path) => `http://localhost:4001/uploads/${path}`;
 
 function CarouselCard({ images }) {
   if (!images || images.length === 0) {

@@ -80,12 +80,6 @@ a{
 }
 
 .prop-img-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
@@ -98,7 +92,7 @@ a{
 }
 
 .prop-desc {
-  padding: 15px;
+  padding: 40px 15px 10px 10px;
   font-size: 14px;
 }
 
@@ -112,7 +106,8 @@ a{
 }
 
 .prop-valor-nro {
-  padding: 15px;
+  width: 100%;
+  padding: 5px;
   font-size: 20px;
   font-weight: bold;
   color: #27337f;
@@ -129,8 +124,6 @@ a{
 }
 
 .prop-valor-nro:hover {
-  background-color: #F07F05;
-  color: white;
   cursor: pointer;
 }
 
@@ -143,4 +136,26 @@ a{
 
 .prop-img-bg .ver-ficha-box:hover {
   background: #27337f;
+}
+
+.property-features {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+}
+
+.feature svg {
+  margin-right: 5px;
+}
+
+.details-button {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
 }

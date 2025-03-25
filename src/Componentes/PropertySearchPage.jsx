@@ -13,7 +13,7 @@ const PropertySearchPage = ({ filterType }) => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/propiedades');
+        const response = await axios.get('http://localhost:4001/api/propiedades');
         const availableProperties = response.data.filter(property => property.disponible !== false); // Filtrar propiedades disponibles
         setProperties(availableProperties);
         setFilteredProperties(availableProperties); // Mostrar todas las propiedades inicialmente

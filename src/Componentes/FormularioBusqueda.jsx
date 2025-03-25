@@ -16,7 +16,7 @@ const FormularioBusqueda = ({ setResultados, setError }) => {
       return;
     }
     try {
-      const response = await axios.get('http://localhost:4000/api/propiedades/buscar', {
+      const response = await axios.get('http://localhost:4001/api/propiedades/buscar', {
         params: {
           ubicacion,
           estado,

@@ -11,7 +11,7 @@ function PropertyList() {
 
   async function fetchProperties() {
     try {
-      const propiedades = await axios.get('http://localhost:4000/api/propiedades');
+      const propiedades = await axios.get('http://localhost:4001/api/propiedades');
       const availableProperties = propiedades.data.filter(property => property.disponible !== false);
       setProperties(availableProperties); 
       setLoading(false);

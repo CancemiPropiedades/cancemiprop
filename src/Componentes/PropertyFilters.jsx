@@ -79,7 +79,7 @@ const PropertyFilters = ({ onFilterChange }) => {
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <TextField
                     fullWidth
                     label="Desde"
@@ -89,7 +89,7 @@ const PropertyFilters = ({ onFilterChange }) => {
                     sx={{ backgroundColor: '#F9F9F9', borderRadius: 2, '& .MuiInputBase-root': { padding: '10px' } }}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <TextField
                     fullWidth
                     label="Hasta"
