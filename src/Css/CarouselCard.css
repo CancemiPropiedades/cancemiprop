@@ -25,3 +25,9 @@
   content: 'prev';
   font-size: 25px !important;
 }
+
+.card-details{
+  font-size: 14px;
+  color: black;
+  margin: 10px;
+}

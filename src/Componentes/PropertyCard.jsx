@@ -2,14 +2,18 @@ import React from 'react';
 import { Link as LinkRouter } from 'react-router-dom';
 import '../Css/Card.css';
 import CarouselCard from './CarouselCard';
-import { FaHome, FaRulerCombined } from 'react-icons/fa'; 
+import { FaHome, FaRulerCombined } from 'react-icons/fa';
 
-function PropertyCard({ property }) {
+function PropertyCard({ property, tiposPropiedad }) {
   const getCurrencySymbol = (currency) => {
     return currency === 'ARS' ? '$' : 'USD';
   };
-  // Dentro del componente
-console.log('Caracteristicas de la propiedad:', property.caracteristicas);
+
+  const tipoPropiedadObj = tiposPropiedad.find(tipo => tipo._id === property.tipoPropiedad);
+
+  const tipoPropiedadNombre = tiposPropiedad
+    ? tiposPropiedad.find(tipo => tipo._id === property.tipoPropiedad)?.nombre || 'Tipo no especificado'
+    : 'Cargando tipo de propiedad...';
 
   return (
     <li className="property-card">
@@ -28,10 +32,15 @@ console.log('Caracteristicas de la propiedad:', property.caracteristicas);
         <div>
           {getCurrencySymbol(property.moneda)} {property.precio}
         </div>
+        <div className="card-details">
+        {tipoPropiedadNombre} en {property.estado} en {property.ubicacion}
+      </div>
         <div className="property-features">
-          <div className="feature">
-            <FaHome /> {property.caracteristicas?.ambientes}
-          </div>
+          {property.caracteristicas?.ambientes && (
+            <div className="feature">
+              <FaHome /> {property.caracteristicas.ambientes}
+            </div>
+          )}
           <div className="feature">
             <FaRulerCombined /> {property.caracteristicas?.metrosCuadrados} m²
           </div>

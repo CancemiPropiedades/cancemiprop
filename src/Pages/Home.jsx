@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropertyList from '../Componentes/PropertyList';
-import ImgInicio from '../Imagenes/boca-banner.jpg';
+import ImgInicio from '../Imagenes/banner.webp';
 import '../Css/Home.css';
 import axios from 'axios';
 

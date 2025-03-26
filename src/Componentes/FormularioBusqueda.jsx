@@ -1,4 +1,3 @@
-// FormularioBusqueda.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { TextField, Button, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
@@ -16,12 +15,15 @@ const FormularioBusqueda = ({ setResultados, setError }) => {
       return;
     }
     try {
+      const params = {
+        ubicacion: encodeURIComponent(ubicacion), // Codificar la ubicación
+      };
+
+      if (estado) params.estado = estado;
+      if (ambientes) params.ambientes = parseInt(ambientes);
+
       const response = await axios.get('http://localhost:4001/api/propiedades/buscar', {
-        params: {
-          ubicacion,
-          estado,
-          ambientes,
-        },
+        params,
       });
 
       setResultados(response.data);

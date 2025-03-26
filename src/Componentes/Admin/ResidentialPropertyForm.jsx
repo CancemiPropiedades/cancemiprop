@@ -9,7 +9,7 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [errors, setErrors] = useState({});
   console.log(setErrors);
-  
+
   const [propertyData, setPropertyData] = useState({
     ubicacion: "",
     precio: "",
@@ -63,6 +63,7 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
   const [cities, setCities] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [modalMessage, setModalMessage] = useState([]);
+  const [propertyTypes, setPropertyTypes] = useState([]);
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -74,25 +75,35 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
       }
     };
     fetchCities();
+
+    const fetchPropertyTypes = async () => { // Nueva función para cargar los tipos de propiedad
+      try {
+        const response = await axios.get("http://localhost:4001/api/types-propiedad");
+        setPropertyTypes(response.data);
+      } catch (error) {
+        console.error("Error al cargar los tipos de propiedad:", error);
+      }
+    };
+    fetchPropertyTypes(); // Llama a la nueva función dentro del useEffect
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "metrosCuadrados" || name === "ambientes" || name === "banos" || name === "dormitorios") {
-        setPropertyData((prevData) => ({
-            ...prevData,
-            caracteristicas: {
-                ...prevData.caracteristicas,
-                [name]: Number(value),
-            },
-        }));
+      setPropertyData((prevData) => ({
+        ...prevData,
+        caracteristicas: {
+          ...prevData.caracteristicas,
+          [name]: Number(value),
+        },
+      }));
     } else {
-        setPropertyData((prevData) => ({
-            ...prevData,
-            [name]: name === "precio" ? value.replace(/\./g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".") : value,
-        }));
+      setPropertyData((prevData) => ({
+        ...prevData,
+        [name]: name === "precio" ? value.replace(/\./g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".") : value,
+      }));
     }
-};
+  };
   const handleCaracteristicasChange = (e) => {
     const { name, type, value, checked } = e.target;
     setPropertyData((prevData) => ({
@@ -117,43 +128,40 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
     const formData = new FormData();
     const cleanedPrice = propertyData.precio.replace(/\./g, "");
 
-    console.log("FormData:", formData);
-    for (var pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-    }
-    
     const finalPropertyData = {
-      ...propertyData,
-      precio: cleanedPrice,
-      caracteristicas: JSON.stringify(propertyData.caracteristicas),
-  };
-
-  console.log('Tipo de caracteristicas a enviar:', typeof finalPropertyData.caracteristicas);
+        ...propertyData,
+        precio: cleanedPrice,
+        tipoPropiedad: propertyData.tipoPropiedad,
+    };
 
     Object.keys(finalPropertyData).forEach((key) => {
-      if (key !== "caracteristicas") {
-        formData.append(key, finalPropertyData[key]);
-      }
+        if (key !== "caracteristicas") {
+            formData.append(key, finalPropertyData[key]);
+        }
     });
 
-    formData.append("caracteristicas", finalPropertyData.caracteristicas);
+    // Enviar campos de caracteristicas individualmente
+    Object.keys(propertyData.caracteristicas).forEach((key) => {
+        formData.append(`caracteristicas[${key}]`, propertyData.caracteristicas[key]);
+    });
+
     selectedImages.forEach((file) => {
-      formData.append("fotos", file);
+        formData.append("fotos", file);
     });
 
     try {
-      await axios.post("http://localhost:4001/api/propiedades", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      setModalMessage("Propiedad agregada con éxito");
-      setOpenModal(true);
-      onPropertyAdded();
+        await axios.post("http://localhost:4001/api/propiedades", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+        setModalMessage("Propiedad agregada con éxito");
+        setOpenModal(true);
+        onPropertyAdded();
     } catch (error) {
-      console.error("Error al agregar la propiedad:", error.response?.data || error);
-      setModalMessage("Hubo un error al agregar la propiedad. Intente nuevamente.");
-      setOpenModal(true);
+        console.error("Error al agregar la propiedad:", error.response?.data || error);
+        setModalMessage("Hubo un error al agregar la propiedad. Intente nuevamente.");
+        setOpenModal(true);
     }
-  };
+};
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -174,7 +182,14 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
           <Typography variant="h6">Datos Principales</Typography>
           <TextField name="ubicacion" label="Ubicación" value={propertyData.ubicacion} onChange={handleChange} required fullWidth margin="normal" />
           <TextField type="number" name="precio" label="Precio" value={propertyData.precio} onChange={handleChange} fullWidth margin="normal" />
-
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="tipo-propiedad-label">Tipo de Propiedad</InputLabel>
+            <Select labelId="tipo-propiedad-label" name="tipoPropiedad" value={propertyData.tipoPropiedad} onChange={handleChange}>
+              {propertyTypes.map((type) => (
+                <MenuItem key={type._id} value={type._id}>{type.nombre}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <FormControl fullWidth margin="normal">
             <InputLabel id="estado-label">Estado De la Propiedad</InputLabel>
             <Select labelId="estado-label" name="estado" value={propertyData.estado} onChange={handleChange}>
@@ -232,7 +247,7 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
 
       <Button disabled={activeStep === 0} onClick={() => setActiveStep((prev) => prev - 1)}>Atrás</Button>
       <Button onClick={() => activeStep === steps.length - 1 ? handleSubmit() : setActiveStep((prev) => prev + 1)}>{activeStep === steps.length - 1 ? "Enviar" : "Siguiente"}</Button>
-    
+
       <Modal open={openModal} onClose={handleCloseModal}>
         <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4, }}>
           <Typography id="modal-modal-title" variant="h6" component="h2">

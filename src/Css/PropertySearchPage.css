@@ -33,3 +33,18 @@
     letter-spacing: 0.00735em;
     margin-bottom: 24px;
   }
+
+  .css-n7ppdg-MuiPaper-root-MuiAccordion-root .MuiAccordionSummary-root {
+    background-color: #F5F5F5;
+    border-radius: 10px;
+    padding: 10px !important;
+}
+
+.css-a0naa1-MuiFormControl-root-MuiTextField-root .MuiInputBase-root {
+  padding: 0px !important;
+}
+
+.css-mhc70k-MuiGrid-root {
+padding: 5px !important;
+
+}

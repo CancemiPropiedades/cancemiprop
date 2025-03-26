@@ -17,6 +17,7 @@ import ResetPassword from './Componentes/ResetPassword';
 function Cancemi() {
   const [properties, setProperties] = useState([]);
   const [filterType, setFilterType] = useState('');
+  const [loadingProperties, setLoadingProperties] = useState(true); // Estado de carga
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -25,6 +26,8 @@ function Cancemi() {
         setProperties(response.data);
       } catch (error) {
         console.error('Error al obtener propiedades:', error);
+      } finally {
+        setLoadingProperties(false); // Actualizar el estado de carga
       }
     };
 
@@ -49,18 +52,23 @@ function Cancemi() {
     if (filterType === 'emprendimiento') {
       return property.estado?.toLowerCase() === 'emprendimiento';
     }
+    return true; // Mostrar todas las propiedades si no hay filtro
   });
 
   const isAdminLoggedIn = localStorage.getItem('token');
 
   const shouldShowWhatsAppButton = !isAdminLoggedIn && (
-    window.location.pathname === '/' || 
-    window.location.pathname.startsWith('/alquiler') || 
-    window.location.pathname.startsWith('/venta') || 
-    window.location.pathname.startsWith('/emprendimiento') || 
-    window.location.pathname.startsWith('/quienes_somos') || 
+    window.location.pathname === '/' ||
+    window.location.pathname.startsWith('/alquiler') ||
+    window.location.pathname.startsWith('/venta') ||
+    window.location.pathname.startsWith('/emprendimiento') ||
+    window.location.pathname.startsWith('/quienes_somos') ||
     window.location.pathname.startsWith('/contacto')
   );
+
+  if (loadingProperties) {
+    return <div>Cargando propiedades...</div>; // Mostrar mensaje de carga
+  }
 
   return (
     <Router>
@@ -79,10 +87,8 @@ function Cancemi() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset/:token" element={<ResetPassword />} />
-
         </Routes>
 
-        {/* Mostrar el botón de WhatsApp solo si no es admin y en las vistas correctas */}
         {shouldShowWhatsAppButton && <WhatsAppButton />}
       </div>
     </Router>

@@ -35,7 +35,7 @@ const FormContacto = () => {
         if (property) {
             setFormDataContacto((prevData) => ({
                 ...prevData,
-                consulta: `Estoy interesado/a en la propiedad: \nTítulo: ${property.titulo}\nUbicación: ${property.ubicacion}\nPrecio: ${property.precio} ${property.moneda}`,
+                consulta: `Estoy interesado/a en la propiedad: \nUbicación: ${property.ubicacion}\nPrecio: ${property.precio} ${property.moneda}`,
             }));
         }
     }, [property]);

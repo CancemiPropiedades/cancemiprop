@@ -8,10 +8,11 @@ const CommercialPropertyForm = ({ onPropertyAdded }) => {
     const [activeStep, setActiveStep] = useState(0);
     const [selectedImages, setSelectedImages] = useState([]);
     const [errors, setErrors] = useState({});
+    const [propertyTypes, setPropertyTypes] = useState([]);
     console.log(errors);
     console.log(setErrors);
-    
-    
+
+
     const [propertyData, setPropertyData] = useState({
         ubicacion: "",
         precio: "",
@@ -19,6 +20,7 @@ const CommercialPropertyForm = ({ onPropertyAdded }) => {
         ciudad: "",
         moneda: "USD",
         descripcion: "",
+        tipoPropiedad: "",
         metrosCuadrados: 0,
         caracteristicas: {
             AguaCorriente: false,
@@ -73,14 +75,35 @@ const CommercialPropertyForm = ({ onPropertyAdded }) => {
             }
         };
         fetchCities();
+
+        const fetchPropertyTypes = async () => {
+
+            try {
+                const response = await axios.get("http://localhost:4001/api/types-propiedad");
+                setPropertyTypes(response.data);
+            } catch (error) {
+                console.error("Error al cargar los tipos de propiedad:", error);
+            }
+        };
+        fetchPropertyTypes();
     }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setPropertyData((prevData) => ({
-            ...prevData,
-            [name]: name === "precio" ? value.replace(/\./g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".") : value,
-        }));
+        if (name === 'metrosCuadrados') {
+            setPropertyData((prevData) => ({
+                ...prevData,
+                caracteristicas: {
+                    ...prevData.caracteristicas,
+                    metrosCuadrados: Number(value), // Actualización correcta
+                },
+            }));
+        } else {
+            setPropertyData((prevData) => ({
+                ...prevData,
+                [name]: name === "precio" ? value.replace(/\./g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".") : value,
+            }));
+        }
     };
 
     const handleCaracteristicasChange = (e) => {
@@ -106,37 +129,28 @@ const CommercialPropertyForm = ({ onPropertyAdded }) => {
     const handleSubmit = async () => {
         const formData = new FormData();
         const cleanedPrice = propertyData.precio.replace(/\./g, "");
-    
-        console.log("FormData:", formData);
-    for (var pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-    }
-    
+
         const finalPropertyData = {
             ...propertyData,
             precio: cleanedPrice,
-            caracteristicas: JSON.stringify(propertyData.caracteristicas),
+            tipoPropiedad: propertyData.tipoPropiedad,
         };
-    
-        console.log('Tipo de caracteristicas a enviar:', typeof finalPropertyData.caracteristicas);
-    
+
         Object.keys(finalPropertyData).forEach((key) => {
             if (key !== "caracteristicas") {
                 formData.append(key, finalPropertyData[key]);
             }
         });
-    
-        formData.append("caracteristicas", finalPropertyData.caracteristicas);
+
+        // Enviar campos de caracteristicas individualmente
+        Object.keys(propertyData.caracteristicas).forEach((key) => {
+            formData.append(`caracteristicas[${key}]`, propertyData.caracteristicas[key]);
+        });
+
         selectedImages.forEach((file) => {
             formData.append("fotos", file);
         });
-    
-        // Agrega estos console.log
-        console.log("FormData:", formData);
-        for (var pair of formData.entries()) {
-            console.log(pair[0] + ', ' + pair[1]);
-        }
-    
+
         try {
             await axios.post("http://localhost:4001/api/propiedades", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
@@ -153,7 +167,7 @@ const CommercialPropertyForm = ({ onPropertyAdded }) => {
 
     const handleCloseModal = () => {
         setOpenModal(false);
-      };
+    };
 
     return (
         <Box sx={{ width: "100%" }}>
@@ -170,7 +184,14 @@ const CommercialPropertyForm = ({ onPropertyAdded }) => {
                     <Typography variant="h6">Datos Principales</Typography>
                     <TextField name="ubicacion" label="Ubicación" value={propertyData.ubicacion} onChange={handleChange} required fullWidth margin="normal" />
                     <TextField type="number" name="precio" label="Precio" value={propertyData.precio} onChange={handleChange} fullWidth margin="normal" />
-
+                    <FormControl fullWidth margin="normal">
+                        <InputLabel id="tipo-propiedad-label">Tipo de Propiedad</InputLabel>
+                        <Select labelId="tipo-propiedad-label" name="tipoPropiedad" value={propertyData.tipoPropiedad} onChange={handleChange}>
+                            {propertyTypes.map((type) => (
+                                <MenuItem key={type._id} value={type._id}>{type.nombre}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                     <FormControl fullWidth margin="normal">
                         <InputLabel id="estado-label">Estado De la Propiedad</InputLabel>
                         <Select labelId="estado-label" name="estado" value={propertyData.estado} onChange={handleChange}>
@@ -199,13 +220,15 @@ const CommercialPropertyForm = ({ onPropertyAdded }) => {
                         </Select>
                     </FormControl>
                     <TextField
+                        type="number"
                         name="metrosCuadrados"
                         label="Metros Cuadrados"
-                        value={propertyData.metrosCuadrados}
+                        value={propertyData.caracteristicas.metrosCuadrados}
                         onChange={handleChange}
                         fullWidth
                         margin="normal"
-                        type="number"
+                        error={!!errors.metrosCuadrados}
+                        helperText={errors.metrosCuadrados}
                     />
                 </Box>
             ) : activeStep === 1 ? (
@@ -245,13 +268,13 @@ const CommercialPropertyForm = ({ onPropertyAdded }) => {
                 {activeStep === steps.length - 1 ? "Enviar" : "Siguiente"}
             </Button>
             <Modal open={openModal} onClose={handleCloseModal}>
-        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4, }}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {modalMessage}
-          </Typography>
-          <Button onClick={handleCloseModal}>Cerrar</Button>
-        </Box>
-      </Modal>
+                <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4, }}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        {modalMessage}
+                    </Typography>
+                    <Button onClick={handleCloseModal}>Cerrar</Button>
+                </Box>
+            </Modal>
         </Box>
     );
 };
