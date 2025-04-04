@@ -23,7 +23,7 @@ function CarouselCard({ images }) {
       {images.map((image, index) => {
         return (
           <SwiperSlide key={index}>
-            <img src={getFullImageUrl(image)} alt={`Slide ${index + 1}`} className="carousel-image" />
+            <img src={getFullImageUrl(image)} alt={`Slide ${index + 1}`} className="carousel-imageC" />
           </SwiperSlide>
         );
       })}

@@ -48,34 +48,32 @@ a{
 }
 
 .prop-data {
-  width: 100px;
+  width: 180px;
   position: absolute;
-  bottom: 10px;
+  bottom: 0px;
   left: 10px;
   z-index: 5;
   display: flex;
   gap: 5px;
-  font-size: 14px;
+  font-size: 17px;
   color: white;
   background: rgba(0, 0, 0, 0.5);
   padding: 5px;
-  border-radius: 5px;
  justify-content: center;
 }
 
 .prop-data2{
-  width: 100px;
+  width: 180px;
   position: absolute;
-  bottom: 10px;
-  left: 110px;
+  bottom: 0px;
+  left: 190px;
   z-index: 5;
   display: flex;
   gap: 5px;
-  font-size: 14px;
+  font-size: 17px;
   color: white;
   background: rgba(0, 0, 0, 0.5);
   padding: 5px;
-  border-radius: 5px;
   justify-content: center;
 }
 
@@ -92,7 +90,7 @@ a{
 }
 
 .prop-desc {
-  padding: 40px 15px 10px 10px;
+  padding: 14px 15px 10px 10px;
   font-size: 14px;
 }
 
@@ -107,12 +105,11 @@ a{
 
 .prop-valor-nro {
   width: 100%;
-  padding: 5px;
-  font-size: 20px;
+  padding: 4px 10px;
+  font-size: 18px;
   font-weight: bold;
   color: #27337f;
-  background-color: #f5f5f5;
-  border-top: 1px solid #ddd;
+  background-color: white;
   display: flex;
   flex-direction: column;
   gap: 5px;
