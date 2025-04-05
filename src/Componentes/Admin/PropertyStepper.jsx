@@ -7,7 +7,7 @@ const PropertyStepper = ({ cities }) => {
     const [propertyType, setPropertyType] = useState("residential");
 
     const handlePropertyAdded = () => {
-        
+
     };
 
     return (
@@ -19,18 +19,19 @@ const PropertyStepper = ({ cities }) => {
             <ToggleButtonGroup
                 value={propertyType}
                 exclusive
-                onChange={(event, newType) => newType && setPropertyType(newType)}  // Cambiar el estado
+                onChange={(event, newType) => newType && setPropertyType(newType)}
                 sx={{ mb: 2 }}
             >
                 <ToggleButton value="residential">Residencial</ToggleButton>
-                <ToggleButton value="developments">Comercial</ToggleButton>
+                <ToggleButton value="commercial">Comercial</ToggleButton> 
             </ToggleButtonGroup>
 
             {propertyType === "residential" ? (
                 <ResidentialPropertyForm onPropertyAdded={handlePropertyAdded} />
-            ) : propertyType === "developments" ? (
+            ) : propertyType === "commercial" ? ( 
                 <CommercialPropertyForm cities={cities} onPropertyAdded={handlePropertyAdded} />
             ) : null}
+
         </Box>
     );
 };

@@ -24,39 +24,38 @@ const PropertyFilters = ({ onFilterChange }) => {
   const [zona, setZona] = useState('');
   const [ambientes, setAmbientes] = useState('');
   const [dormitorios, setDormitorios] = useState('');
-  const [antiguedad, setAntiguedad] = useState('');
   const [superficieCubierta, setSuperficieCubierta] = useState('');
   const [superficieTotal, setSuperficieTotal] = useState('');
   const [precioMin, setPrecioMin] = useState('');
   const [precioMax, setPrecioMax] = useState('');
   const [moneda, setMoneda] = useState('USD');
   const [caracteristicas, setCaracteristicas] = useState({
-    'Agua Corriente': false,
-    'Cloaca': false,
-    'Gas Natural': false,
-    'Internet': false,
-    'Electricidad': false,
-    'Pavimento': false,
-    'Teléfono': false,
-    'Cable': false,
-    'Gimnasio': false,
-    'Parrilla': false,
-    'Solarium': false,
-    'SUM': false,
-    'Pileta': false,
-    'Luminoso': false,
-    'Agua Potable': false,
-    'Laundry': false,
-    'Seguridad 24hs': false,
-    'Alumbrado público': false,
-  });
+  aguaCorriente: false,
+  cloaca: false,
+  gasNatural: false,
+  internet: false,
+  electricidad: false,
+  pavimento: false,
+  telefono: false,
+  cable: false,
+  gimnasio: false,
+  parrilla: false,
+  solarium: false,
+  sum: false,
+  pileta: false,
+  luminoso: false,
+  aguaPotable: false,
+  laundry: false,
+  seguridad24hs: false,
+  alumbradoPublico: false,
+});
+
 
   const handleFilterChange = () => {
     onFilterChange({
       zona,
       ambientes: Number(ambientes),
       dormitorios: Number(dormitorios),
-      antiguedad: Number(antiguedad),
       superficieCubierta: Number(superficieCubierta),
       superficieTotal: Number(superficieTotal),
       precioMin: precioMin ? Number(precioMin) : null,
@@ -165,18 +164,19 @@ const PropertyFilters = ({ onFilterChange }) => {
               <Box sx={{ display: 'grid', gap: 2 }}>
                 {Object.entries(caracteristicas).map(([key, value]) => (
                   <FormControlLabel
-                    key={key}
-                    control={<Checkbox checked={value} onChange={(e) => setCaracteristicas({ ...caracteristicas, [key]: e.target.checked })} />}
-                    label={key}
-                    sx={{ '& .MuiTypography-root': { fontWeight: 500 } }}
-                  />
+                  key={key}
+                  control={<Checkbox checked={value} onChange={(e) => setCaracteristicas({ ...caracteristicas, [key]: e.target.checked })} />}
+                  label={key
+                    .replace(/([A-Z])/g, ' $1')       // separa palabras con espacio
+                    .replace(/^./, (str) => str.toUpperCase())} // mayúscula inicial
+                />
+                
                 ))}
               </Box>
             </AccordionDetails>
           </FilterAccordion>
         </Grid>
 
-        {/* Filtro de Dormitorios y Antigüedad */}
         <Grid item xs={12}>
           <FilterAccordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="dormitorios-content" id="dormitorios-header">
@@ -189,24 +189,6 @@ const PropertyFilters = ({ onFilterChange }) => {
                 type="number"
                 value={dormitorios}
                 onChange={(e) => setDormitorios(e.target.value)}
-                sx={{ backgroundColor: '#F9F9F9', borderRadius: 2, '& .MuiInputBase-root': { padding: '10px' } }}
-              />
-            </AccordionDetails>
-          </FilterAccordion>
-        </Grid>
-
-        <Grid item xs={12}>
-          <FilterAccordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="antiguedad-content" id="antiguedad-header">
-              <Typography sx={{ fontWeight: 'bold', color: '#27337f' }}>Antigüedad</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <TextField
-                fullWidth
-                label="Antigüedad"
-                type="number"
-                value={antiguedad}
-                onChange={(e) => setAntiguedad(e.target.value)}
                 sx={{ backgroundColor: '#F9F9F9', borderRadius: 2, '& .MuiInputBase-root': { padding: '10px' } }}
               />
             </AccordionDetails>

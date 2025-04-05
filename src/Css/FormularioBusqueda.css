@@ -22,6 +22,8 @@
   justify-content: center !important;
   align-items: center;
   box-sizing: border-box; 
+  color: #27337f;
+  height: fit-content;
 }
 
 .input-group select {
@@ -71,12 +73,12 @@
   }
 }
 
-h1 {
+h2 {
   font-size: 16pxrem;
   margin-bottom: 1rem;
 }
 
-h2 {
+h3 {
   font-size: 1.2rem;
   color: rgba(0, 0, 0, 0.75);
 }
@@ -116,12 +118,13 @@ h2 {
   background-color: #F07F05 !important;
   color: #27337f !important;
   border: none;
-  border-radius: 30px !important;
+  border-radius: 18px !important;
   cursor: pointer;
   font-size: 20px !important;
   font-weight: bold !important;
   transition: background-color 0.3s ease !important;
   width: 292px !important;
+  padding: 15px;
 }
 
 button:hover {
@@ -147,11 +150,11 @@ button:hover {
     padding: 1.5rem;
   }
 
-  h1 {
+  h2 {
     font-size: 1.5rem;
   }
 
-  h2 {
+  h3 {
     font-size: 1rem;
   }
 
@@ -167,11 +170,11 @@ button:hover {
     padding: 1rem;
   }
 
-  h1 {
+  h2 {
     font-size: 1.2rem;
   }
 
-  h2 {
+  h3 {
     font-size: 0.9rem;
     margin-bottom: 1rem;
   }

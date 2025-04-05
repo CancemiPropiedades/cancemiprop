@@ -22,44 +22,44 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
     banos: 0,
     dormitorios: 0,
     caracteristicas: {
-      AguaCorriente: false,
-      Cloaca: false,
-      GasNatural: false,
-      Internet: false,
-      Electricidad: false,
-      Pavimento: false,
-      Teléfono: false,
-      Cable: false,
-      Gimnasio: false,
-      Parrilla: false,
-      Solarium: false,
-      SUM: false,
-      Pileta: false,
-      Luminoso: false,
-      AguaPotable: false,
-      Laundry: false,
-      Seguridad24hs: false,
-      AlumbradoPublico: false,
       metrosCuadrados: 0,
-    },
+      ambientes: 0,
+      banos: 0,
+      dormitorios: 0,
+      cochera: false,
+      mascotas: false,
+      pileta: false,
+      parrilla: false,
+      gimnasio: false,
+      laundry: false,
+      ascensor: false,
+      agua: false,
+      cloaca: false,
+      gas: false,
+      internet: false,
+      electricidad: false,
+      pavimento: false,
+      telefono: false,
+      cable: false,
+      solarium: false,
+      sum: false,
+      luminoso: false,
+      potable: false,
+      seguridad: false,
+      alumbrado: false,
+    }
+    
   });
+  
   const caracteristicasLista = [
-    "AguaCorriente", "Cloaca", "GasNatural", "Internet", "Electricidad",
-    "Pavimento", "Teléfono", "Cable", "Gimnasio", "Parrilla", "Solarium",
-    "SUM", "Pileta", "Luminoso", "AguaPotable", "Laundry", "Seguridad24hs", "AlumbradoPublico"
+    "agua", "cloaca", "gas", "internet", "electricidad",
+    "pavimento", "telefono", "cable", "gimnasio", "parrilla",
+    "solarium", "sum", "pileta", "luminoso", "potable",
+    "laundry", "seguridad", "alumbrado", "cochera", "mascotas",
+    "ascensor"
   ];
-
-  // const validateForm = () => {
-  //   let tempErrors = {};
-  //   if (!propertyData.ubicacion) tempErrors.ubicacion = "Este campo es obligatorio";
-  //   if (!propertyData.precio) tempErrors.precio = "Este campo es obligatorio";
-  //   if (!propertyData.estado) tempErrors.estado = "Este campo es obligatorio";
-  //   if (!propertyData.ciudad) tempErrors.ciudad = "Este campo es obligatorio";
-  //   if (!propertyData.metrosCuadrados) tempErrors.metrosCuadrados = "Este campo es obligatorio";
-  //   setErrors(tempErrors);
-  //   return Object.keys(tempErrors).length === 0;
-  // };
-
+  
+  
   const [cities, setCities] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [modalMessage, setModalMessage] = useState([]);
@@ -126,42 +126,41 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    const cleanedPrice = propertyData.precio.replace(/\./g, "");
 
     const finalPropertyData = {
-        ...propertyData,
-        precio: cleanedPrice,
-        tipoPropiedad: propertyData.tipoPropiedad,
+      ...propertyData,
+      tipoPropiedad: propertyData.tipoPropiedad,
     };
-
-    Object.keys(finalPropertyData).forEach((key) => {
-        if (key !== "caracteristicas") {
-            formData.append(key, finalPropertyData[key]);
-        }
-    });
-
-    // Enviar campos de caracteristicas individualmente
-    Object.keys(propertyData.caracteristicas).forEach((key) => {
-        formData.append(`caracteristicas[${key}]`, propertyData.caracteristicas[key]);
-    });
+  
+    formData.append("caracteristicas", JSON.stringify(finalPropertyData.caracteristicas));
+    formData.append("ubicacion", propertyData.ubicacion);
+    formData.append("precio", finalPropertyData.precio);
+    formData.append("tipoPropiedad", finalPropertyData.tipoPropiedad);
+    formData.append("estado", finalPropertyData.estado);
+    formData.append("descripcion", finalPropertyData.descripcion);
+    formData.append("moneda", finalPropertyData.moneda);
+    formData.append("ciudad", finalPropertyData.ciudad);
+    formData.append("categoria", "residencial");
 
     selectedImages.forEach((file) => {
-        formData.append("fotos", file);
+      formData.append("fotos", file);
     });
-
+  
     try {
-        await axios.post("http://localhost:4001/api/propiedades", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-        });
-        setModalMessage("Propiedad agregada con éxito");
-        setOpenModal(true);
-        onPropertyAdded();
+      await axios.post("http://localhost:4001/api/propiedades", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+  
+      setModalMessage("Propiedad agregada con éxito");
+      setOpenModal(true);
+      onPropertyAdded();
     } catch (error) {
-        console.error("Error al agregar la propiedad:", error.response?.data || error);
-        setModalMessage("Hubo un error al agregar la propiedad. Intente nuevamente.");
-        setOpenModal(true);
+      console.error("Error al agregar la propiedad:", error.response?.data || error);
+      setModalMessage("Hubo un error al agregar la propiedad. Intente nuevamente.");
+      setOpenModal(true);
     }
-};
+  };
+  
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -227,7 +226,18 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
             <Typography variant="h6">Características</Typography>
             <FormGroup>
               {caracteristicasLista.map((caracteristica) => (
-                <FormControlLabel key={caracteristica} control={<Checkbox checked={propertyData.caracteristicas[caracteristica] || false} onChange={handleCaracteristicasChange} name={caracteristica} />} label={caracteristica.replace(/([A-Z])/g, " $1").trim()} />
+               <FormControlLabel
+               key={caracteristica}
+               control={
+                 <Checkbox
+                   checked={propertyData.caracteristicas[caracteristica] || false}
+                   onChange={handleCaracteristicasChange}
+                   name={caracteristica}
+                 />
+               }
+               label={caracteristica.charAt(0).toUpperCase() + caracteristica.slice(1).replace(/([A-Z])/g, " $1")}
+             />
+             
               ))}
             </FormGroup>
           </Box>

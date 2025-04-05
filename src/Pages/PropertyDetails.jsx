@@ -7,15 +7,17 @@ import { FaCar, FaPaw, FaSwimmer, FaDumbbell, FaRegSun, FaBuilding, FaWifi, FaHo
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Button from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
+import { GiBarbecue, GiStreetLight } from 'react-icons/gi'; // parrilla, alumbrado
+import { FaToilet, FaGasPump } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import '../Css/PropertyDetails.css';
 
 const PropertyDetails = () => {
-    const { id } = useParams();
-    const [property, setProperty] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [location, setLocation] = useState(null);
-    const navigate = useNavigate();
+  const { id } = useParams();
+  const [property, setProperty] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [location, setLocation] = useState(null);
+  const navigate = useNavigate();
 
   const fetchCoordinates = async (ubicacion) => {
     const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -86,7 +88,7 @@ const PropertyDetails = () => {
     margin: '20px auto',
   };
 
-console.log('Caracteristicas de la propiedad:', property.caracteristicas);
+  console.log('Caracteristicas de la propiedad:', property.caracteristicas);
 
   return (
     <div className="property-details">
@@ -97,33 +99,36 @@ console.log('Caracteristicas de la propiedad:', property.caracteristicas);
         <p><strong>Descripción: </strong> {property.descripcion}</p>
         <p><strong>Ciudad:</strong> {property.ciudad?.name || 'Ciudad no disponible'}</p>
 
-        {property.caracteristicas && (
-          <>
-            {property.caracteristicas.metrosCuadrados && <p><strong>Metros Cuadrados:</strong> {property.caracteristicas.metrosCuadrados}</p>}
-            {property.caracteristicas.ambientes && <p><strong>Ambientes:</strong> {property.caracteristicas.ambientes}</p>}
-            {property.caracteristicas.banos && <p><strong>Baños:</strong> {property.caracteristicas.banos}</p>}
-            {property.caracteristicas.dormitorios && <p><strong>Dormitorios:</strong> {property.caracteristicas.dormitorios}</p>}
-            {property.caracteristicas.cochera && <div className="extra-feature"><FaCar /> <span>Cochera</span></div>}
-            {property.caracteristicas.aceptaMascotas && <div className="extra-feature"><FaPaw /> <span>Acepta Mascotas</span></div>}
-            {property.caracteristicas.pileta && <div className="extra-feature"><FaSwimmer /> <span>Pileta</span></div>}
-            {property.caracteristicas.gimnasio && <div className="extra-feature"><FaDumbbell /> <span>Gimnasio</span></div>}
-            {property.caracteristicas.laundry && <div className="extra-feature"><FaRegSun /> <span>Laundry</span></div>}
-            {property.caracteristicas.ascensor && <div className="extra-feature"><FaBuilding /> <span>Ascensor</span></div>}
-            {property.caracteristicas.aguaCorriente && <div className="extra-feature"><span>Agua Corriente</span></div>}
-            {property.caracteristicas.cloaca && <div className="extra-feature"><span>Cloaca</span></div>}
-            {property.caracteristicas.gasNatural && <div className="extra-feature"><span>Gas Natural</span></div>}
-            {property.caracteristicas.internet && <div className="extra-feature"><FaWifi /> <span>Internet</span></div>}
-            {property.caracteristicas.electricidad && <div className="extra-feature"><span>Electricidad</span></div>}
-            {property.caracteristicas.pavimento && <div className="extra-feature"><span>Pavimento</span></div>}
-            {property.caracteristicas.telefono && <div className="extra-feature"><span>Teléfono</span></div>}
-            {property.caracteristicas.cable && <div className="extra-feature"><span>Cable</span></div>}
-            {property.caracteristicas.solarium && <div className="extra-feature"><FaHotTub /> <span>Solarium</span></div>}
-            {property.caracteristicas.sum && <div className="extra-feature"><FaFire /> <span>SUM</span></div>}
-            {property.caracteristicas.luminoso && <div className="extra-feature"><FaTv /> <span>Luminoso</span></div>}
-            {property.caracteristicas.aguaPotable && <div className="extra-feature"><FaBath /> <span>Agua Potable</span></div>}
-            {property.caracteristicas.seguridad24hs && <div className="extra-feature"><FaBed /> <span>Seguridad 24hs</span></div>}
-          </>
-        )}
+        <div className="extra-features-grid">
+          {property.caracteristicas.metrosCuadrados && <div className="extra-feature"><FaRegSun /><span>Metros Cuadrados: {property.caracteristicas.metrosCuadrados}</span></div>}
+          {property.caracteristicas.ambientes && <div className="extra-feature"><FaBuilding /><span>Ambientes: {property.caracteristicas.ambientes}</span></div>}
+          {property.caracteristicas.banos && <div className="extra-feature"><FaBath /><span>Baños: {property.caracteristicas.banos}</span></div>}
+          {property.caracteristicas.dormitorios && <div className="extra-feature"><FaBed /><span>Dormitorios: {property.caracteristicas.dormitorios}</span></div>}
+
+          {property.caracteristicas.cochera && <div className="extra-feature"><FaCar /><span>Cochera</span></div>}
+          {property.caracteristicas.aceptaMascotas && <div className="extra-feature"><FaPaw /><span>Acepta Mascotas</span></div>}
+          {property.caracteristicas.pileta && <div className="extra-feature"><FaSwimmer /><span>Pileta</span></div>}
+          {property.caracteristicas.gimnasio && <div className="extra-feature"><FaDumbbell /><span>Gimnasio</span></div>}
+          {property.caracteristicas.laundry && <div className="extra-feature"><FaRegSun /><span>Laundry</span></div>}
+          {property.caracteristicas.ascensor && <div className="extra-feature"><FaBuilding /><span>Ascensor</span></div>}
+
+          {property.caracteristicas.agua && <div className="extra-feature"><FaWater /><span>Agua</span></div>}
+          {property.caracteristicas.cloaca && <div className="extra-feature"><FaToilet /><span>Cloaca</span></div>}
+          {property.caracteristicas.gas && <div className="extra-feature"><FaGasPump /><span>Gas</span></div>}
+          {property.caracteristicas.internet && <div className="extra-feature"><FaWifi /><span>Internet</span></div>}
+          {property.caracteristicas.electricidad && <div className="extra-feature"><FaLightbulb /><span>Electricidad</span></div>}
+          {property.caracteristicas.pavimento && <div className="extra-feature"><FaRoad /><span>Pavimento</span></div>}
+          {property.caracteristicas.telefono && <div className="extra-feature"><FaPhone /><span>Teléfono</span></div>}
+          {property.caracteristicas.cable && <div className="extra-feature"><FaSatellite /><span>Cable</span></div>}
+          {property.caracteristicas.solarium && <div className="extra-feature"><FaHotTub /><span>Solarium</span></div>}
+          {property.caracteristicas.sum && <div className="extra-feature"><FaFire /><span>SUM</span></div>}
+          {property.caracteristicas.luminoso && <div className="extra-feature"><FaTv /><span>Luminoso</span></div>}
+          {property.caracteristicas.potable && <div className="extra-feature"><FaBath /><span>Agua Potable</span></div>}
+          {property.caracteristicas.seguridad && <div className="extra-feature"><FaBed /><span>Seguridad 24hs</span></div>}
+          {property.caracteristicas.parrilla && <div className="extra-feature"><GiBarbecue /><span>Parrilla</span></div>}
+          {property.caracteristicas.alumbrado && <div className="extra-feature"><GiStreetLight /><span>Alumbrado</span></div>}
+        </div>
+
         <Button
           variant="contained"
           color="success"
