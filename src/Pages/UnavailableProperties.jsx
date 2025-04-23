@@ -14,7 +14,7 @@ const UnavailableProperties = () => {
         const fetchUnavailableProperties = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:4001/api/propiedades/no-disponibles', {
+                const response = await axios.get('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades/no-disponibles', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setProperties(response.data);

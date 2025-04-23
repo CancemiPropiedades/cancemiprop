@@ -17,7 +17,7 @@ const PropertyManager = () => {
     useEffect(() => {
         const fetchProperties = async () => {
             try {
-                const response = await axios.get('http://localhost:4001/api/propiedades', {
+                const response = await axios.get('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setProperties(response.data);
@@ -40,7 +40,7 @@ const PropertyManager = () => {
                 return;
             }
 
-            const response = await axios.patch(`http://localhost:4001/api/propiedades/no-disponible/${propertyId}`, {}, { headers: { Authorization: `Bearer ${token}` } });
+            const response = await axios.patch(`https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades/no-disponible/${propertyId}`, {}, { headers: { Authorization: `Bearer ${token}` } });
 
             if (response.status === 200) {
                 setProperties(prevProperties =>
@@ -63,7 +63,7 @@ const PropertyManager = () => {
         }
 
         try {
-            await axios.put(`http://localhost:4001/api/propiedades/${selectedProperty._id}`, { ...updatedProperty, propertyStatus: updatedProperty.estado }, {
+            await axios.put(`https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades/${selectedProperty._id}`, { ...updatedProperty, propertyStatus: updatedProperty.estado }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setProperties(properties.map(prop =>
@@ -79,7 +79,7 @@ const PropertyManager = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:4001/api/propiedades/${id}`);
+            await axios.delete(`https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades/${id}`);
             setProperties(properties.filter(property => property._id !== id));
             setSnackbar({ open: true, message: 'Propiedad eliminada exitosamente.', severity: 'success' });
         } catch (error) {

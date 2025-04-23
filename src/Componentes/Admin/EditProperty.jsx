@@ -43,9 +43,9 @@ const EditProperty = ({ property, onPropertyUpdated, onClose, handleToggleAvaila
     const fetchData = async () => {
       try {
         const [cityResponse, typeResponse, propertyResponse] = await Promise.all([
-          axios.get('http://localhost:4000/api/cities'),
-          axios.get('http://localhost:4000/api/types'),
-          propertyId ? axios.get(`http://localhost:4000/api/propiedades/${propertyId}`) : Promise.resolve({ data: {} }),
+          axios.get('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/cities'),
+          axios.get('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/types'),
+          propertyId ? axios.get(`https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades/${propertyId}`) : Promise.resolve({ data: {} }),
         ]);
         
         // Verifica la respuesta para ver si "estado" está presente
@@ -179,7 +179,7 @@ const EditProperty = ({ property, onPropertyUpdated, onClose, handleToggleAvaila
     console.log('Datos enviados:', Object.fromEntries(formData.entries()));
   
     try {
-      await axios.put(`http://localhost:4000/api/propiedades/${propertyId}`, formData, {
+      await axios.put(`https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades/${propertyId}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setSnackbar({

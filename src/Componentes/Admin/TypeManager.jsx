@@ -29,7 +29,7 @@ const TypeManager = () => {
     const fetchPropertyTypes = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://localhost:4001/api/types-propiedad');
+            const response = await axios.get('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/types-propiedad');
             setPropertyTypes(response.data);
             setLoading(false);
         } catch (error) {
@@ -46,7 +46,7 @@ const TypeManager = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:4001/api/types-propiedad', newPropertyTypeData);
+            const response = await axios.post('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/types-propiedad', newPropertyTypeData);
             setPropertyTypes([...propertyTypes, response.data]);
             setNewPropertyTypeData({ nombre: '' });
             setSnackbar({ open: true, message: 'Tipo de propiedad agregado exitosamente.', severity: 'success' });
@@ -62,7 +62,7 @@ const TypeManager = () => {
 
     const confirmDelete = async () => {
         try {
-            await axios.delete(`http://localhost:4001/api/types-propiedad/${deleteConfirmation.id}`);
+            await axios.delete(`https://cancemi-inmobiliaria-backend-admin.vercel.app/api/types-propiedad/${deleteConfirmation.id}`);
             setPropertyTypes(propertyTypes.filter((tipo) => tipo._id !== deleteConfirmation.id));
             setSnackbar({ open: true, message: 'Tipo de propiedad eliminado exitosamente.', severity: 'success' });
         } catch (error) {

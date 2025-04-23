@@ -19,7 +19,7 @@ function PropertyTypeManager({ propertyTypes }) {
 
   const fetchPropertyTypes = async () => {
     try {
-      const response = await axios.get('http://localhost:4001/api/propertyTypes');
+      const response = await axios.get('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propertyTypes');
       // No necesitas setPropertyTypes aquí, ya que estás usando la prop
       // setPropertyTypes(response.data);
     } catch (error) {
@@ -35,7 +35,7 @@ function PropertyTypeManager({ propertyTypes }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:4001/api/propertyTypes', propertyTypeData);
+      const response = await axios.post('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propertyTypes', propertyTypeData);
       // Actualiza la prop propertyTypes en el componente padre, no aquí
       // setPropertyTypes([...propertyTypes, response.data]);
       setPropertyTypeData({ nombre: '' });
@@ -48,7 +48,7 @@ function PropertyTypeManager({ propertyTypes }) {
 
   const handleDeletePropertyType = async (id) => {
     try {
-      await axios.delete(`http://localhost:4001/api/propertyTypes/${id}`);
+      await axios.delete(`https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propertyTypes/${id}`);
       // Actualiza la prop propertyTypes en el componente padre, no aquí
       // setPropertyTypes(propertyTypes.filter((type) => type._id !== id));
       setSnackbar({ open: true, message: 'Tipo de propiedad eliminado exitosamente.', severity: 'success' });

@@ -66,7 +66,7 @@ const CommercialPropertyForm = ({ onPropertyAdded }) => {
     useEffect(() => {
         const fetchCities = async () => {
             try {
-                const cityResponse = await axios.get("http://localhost:4001/api/cities");
+                const cityResponse = await axios.get("https://cancemi-inmobiliaria-backend-admin.vercel.app/api/cities");
                 setCities(cityResponse.data);
             } catch (error) {
                 console.error("Error al cargar ciudades:", error);
@@ -77,7 +77,7 @@ const CommercialPropertyForm = ({ onPropertyAdded }) => {
         const fetchPropertyTypes = async () => {
 
             try {
-                const response = await axios.get("http://localhost:4001/api/types-propiedad");
+                const response = await axios.get("https://cancemi-inmobiliaria-backend-admin.vercel.app/api/types-propiedad");
                 setPropertyTypes(response.data);
             } catch (error) {
                 console.error("Error al cargar los tipos de propiedad:", error);
@@ -147,7 +147,7 @@ const CommercialPropertyForm = ({ onPropertyAdded }) => {
         });
       
         try {
-          await axios.post("http://localhost:4001/api/propiedades", formData, {
+          await axios.post("https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades", formData, {
             headers: { "Content-Type": "multipart/form-data" },
           });
       
