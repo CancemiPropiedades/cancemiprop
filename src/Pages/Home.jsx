@@ -32,7 +32,7 @@ function Home() {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('http://localhost:4001/api/propiedades');
+        const response = await axios.get('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades');
 
         const propiedadesHabilitadas = response.data.filter(
           (property) => property.habilitada !== false

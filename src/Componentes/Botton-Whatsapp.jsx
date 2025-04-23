@@ -3,7 +3,7 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { Fab } from '@mui/material';
 
 const WhatsAppButton = () => {
-    const whatsappNumber = "+5491164476465";
+    const whatsappNumber = "+5491138304057";
 
     const handleWhatsAppClick = () => {
         window.open(`https://wa.me/${whatsappNumber}`, '_blank');

@@ -12,7 +12,7 @@ const LoginPage = () => {
     const handleLogin = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:4001/api/usuarios/login', { email, password });
+            const response = await axios.post('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/usuarios/login', { email, password });
 
             localStorage.setItem('token', response.data.token);
 

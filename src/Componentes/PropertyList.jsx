@@ -10,7 +10,7 @@ function PropertyList({ properties }) {
 
   async function fetchTiposPropiedad() {
     try {
-      const tipos = await axios.get('http://localhost:4001/api/types-propiedad');
+      const tipos = await axios.get('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/types-propiedad');
       setTiposPropiedad(tipos.data);
     } catch (error) {
       console.error('Error al obtener los tipos de propiedad', error);

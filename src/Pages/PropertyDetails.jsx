@@ -47,7 +47,7 @@ const PropertyDetails = () => {
   useEffect(() => {
     const fetchPropertyDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:4001/api/propiedades/${id}`);
+        const response = await axios.get(`https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades/${id}`);
         const propertyData = response.data;
 
         setProperty(propertyData);

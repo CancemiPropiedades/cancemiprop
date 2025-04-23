@@ -14,7 +14,7 @@ const PropertySearchPage = ({ filterType }) => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('http://localhost:4001/api/propiedades');
+        const response = await axios.get('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades');
         const availableProperties = response.data.filter(property => property.disponible !== false);
         setProperties(availableProperties);
         setFilteredProperties(availableProperties);
@@ -25,7 +25,7 @@ const PropertySearchPage = ({ filterType }) => {
 
     const fetchTiposPropiedad = async () => {
       try {
-        const response = await axios.get('http://localhost:4001/api/types-propiedad');
+        const response = await axios.get('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/types-propiedad');
         setTiposPropiedad(response.data);
       } catch (error) {
         console.error('Error al obtener los tipos de propiedad:', error);

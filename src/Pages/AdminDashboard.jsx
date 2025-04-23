@@ -29,7 +29,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('http://localhost:4001/api/propiedades', {
+        const response = await axios.get('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setProperties(response.data);
@@ -40,7 +40,7 @@ const AdminDashboard = () => {
 
     const fetchPropertyTypes = async () => {
       try {
-        const response = await axios.get('http://localhost:4001/api/types', {
+        const response = await axios.get('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/types', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setPropertyTypes(response.data);
@@ -73,7 +73,7 @@ const AdminDashboard = () => {
 
   const handleSaveChanges = async () => {
     try {
-      await axios.put(`http://localhost:4001/api/propiedades/${selectedProperty._id}`, selectedProperty, {
+      await axios.put(`https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades/${selectedProperty._id}`, selectedProperty, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProperties(properties.map(prop => prop._id === selectedProperty._id ? selectedProperty : prop));
@@ -105,7 +105,7 @@ const AdminDashboard = () => {
 
   const handleMarkAsUnavailable = async () => {
     try {
-      await axios.patch(`http://localhost:4001/api/propiedades/no-disponible/${selectedProperty._id}`, null, {
+      await axios.patch(`https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades/no-disponible/${selectedProperty._id}`, null, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProperties(properties.map(prop => prop._id === selectedProperty._id ? { ...prop, disponible: false } : prop));

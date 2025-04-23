@@ -16,7 +16,7 @@ const AdminPage = () => {
         const fetchPropiedades = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:4001/api/propiedades', {
+                const response = await axios.get('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

@@ -8,7 +8,7 @@ const ForgotPassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:4001/api/usuarios/forgot-password', { 
+            const response = await fetch('https://cancemi-inmobiliaria-backend-admin.vercel.app/api/usuarios/forgot-password', { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
