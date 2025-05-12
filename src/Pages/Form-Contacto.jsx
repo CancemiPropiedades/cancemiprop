@@ -100,12 +100,23 @@ const FormContacto = () => {
                 {/* Información de contacto */}
                 <div className="info-contacto">
                     <h2>Información de Contacto</h2>
-                    <p><FaMapMarkerAlt /> Dirección: Finochieto 484, Barracas, CABA</p>
-                    <p><FaEnvelope /> Email: cancemipropiedades@gmail.com</p>
-                    <p><FaPhone /> Teléfono: 11-3306-1010</p>
+                    <p><FaMapMarkerAlt /> Dirección: Dr. Enrique Finochieto 484. Barracas, CABA.</p>
+                    <p>
+                        <FaEnvelope /> Email:
+                        <a href="mailto:cancemipropiedades@gmail.com" target="_blank" rel="noopener noreferrer">
+                            cancemipropiedades@gmail.com
+                        </a>
+                    </p>
+                    <p>
+                        <FaPhone /> Teléfono:
+                        <a href="tel:1133061010">
+                            11-3306-1010
+                        </a>
+                    </p>
                 </div>
             </div>
-            <div  id="contacto-forms">
+
+            <div id="contacto-forms">
 
                 {/* Formulario de Contacto */}
                 <div id="contacto-box" className="contacto-forms-box">

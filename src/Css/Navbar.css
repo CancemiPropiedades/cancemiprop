@@ -35,7 +35,7 @@ header {
 }
 
 a img {
-    max-width: 250px !important;
+    max-width: 250px;
     height: auto;
 }
 
@@ -44,10 +44,6 @@ a img {
         text-align: left;
     }
 
-    a img {
-        max-width: 310px !important;
-        height: auto;
-    }
 }
 
 @media (min-width: 0px) {
@@ -56,10 +52,15 @@ a img {
         display: flex;
         justify-content: center;
     }
+
+    a img {
+        width: 190px !important;
+    }
 }
 
 .css-1ebprri {
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding: 16px;
     background-color: #27337f;
 }

@@ -148,6 +148,7 @@ button:hover {
     margin: 2rem auto; 
     width: 90%; 
     padding: 1.5rem;
+    height: fit-content;
   }
 
   h2 {

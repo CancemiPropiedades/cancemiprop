@@ -55,8 +55,20 @@
 }
 
 .contacto-form-submit:hover {
-    background-color: #1c2a61;
+    background-color: #27337f;
 }
+
+.contact-link {
+    color: black !important;
+    text-decoration: none; 
+    margin-left: 5px;
+}
+
+.contact-link:hover {
+    color: #27337f; 
+    text-decoration: underline; 
+}
+
 
 /* Estilos para ser responsive */
 @media (max-width: 600px) {
