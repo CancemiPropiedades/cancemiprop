@@ -50,3 +50,16 @@
   font-size: 20px;
   color: #27337f;
 }
+
+
+@media (min-width: 0px) {
+  .property-details {
+    margin: 0 auto;
+    padding: 0px 30px !important;
+  }
+
+  element.style {
+    margin: 10px;
+    padding: 4px 26px;
+}
+}
