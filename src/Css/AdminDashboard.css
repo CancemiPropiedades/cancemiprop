@@ -1,6 +1,7 @@
 .admin-dashboard {
   position: relative; 
   z-index: 1; 
+  cursor: pointer;
 }
 
 .admin-dashboard-content {
@@ -118,7 +119,7 @@
   }
 
   .admin-dashboard-content {
-    padding: 30px 80px; 
+    padding: 20px; 
     cursor: pointer;
   }
   

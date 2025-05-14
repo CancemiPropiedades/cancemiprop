@@ -5,9 +5,10 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import CarouselDetails from '../Componentes/CarouselDetails';
 import { FaCar, FaPaw, FaSwimmer, FaDumbbell, FaRegSun, FaBuilding, FaWifi, FaHotTub, FaFire, FaTv, FaBath, FaBed, FaLightbulb, FaWater, FaSewage, FaGas, FaRoad, FaPhone, FaSatellite } from 'react-icons/fa';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import EmailIcon from '@mui/icons-material/Email';
 import Button from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
-import { GiBarbecue, GiStreetLight } from 'react-icons/gi'; // parrilla, alumbrado
+import { GiBarbecue, GiStreetLight } from 'react-icons/gi';
 import { FaToilet, FaGasPump } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import '../Css/PropertyDetails.css';
@@ -152,11 +153,13 @@ const PropertyDetails = () => {
         <Button
           variant="contained"
           color="primary"
-          style={{ marginLeft: '10px', padding: '7px 16px' }}
+          style={{ marginLeft: '10px', padding: '4px 16px' }}
+          startIcon={<EmailIcon />}
           onClick={() => navigate('/contacto', { state: { property } })}
         >
           Quiero que me contacten
         </Button>
+
         {location ? (
           <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
             <GoogleMap mapContainerStyle={containerStyle} center={location} zoom={15}>

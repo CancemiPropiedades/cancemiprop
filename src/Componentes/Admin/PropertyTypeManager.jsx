@@ -86,13 +86,10 @@ function PropertyTypeManager({ propertyTypes }) {
 
   return (
     <Box sx={{ padding: 4, maxWidth: 800, margin: '0 auto', boxShadow: 3, borderRadius: 2, backgroundColor: '#f9f9f9' }}>
-      <Typography variant="h4" mb={3}>
+      <Typography variant="h6" mb={3}>
         Gestión de Tipos de Propiedades
       </Typography>
       <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
-        <Typography variant="h6" mb={2}>
-          Agregar Nuevo Tipo de Propiedad
-        </Typography>
         <form onSubmit={handleSubmit}>
           <Box display="flex" gap={2} alignItems="center">
             <TextField
@@ -104,7 +101,7 @@ function PropertyTypeManager({ propertyTypes }) {
               fullWidth
               required
             />
-            <Button type="submit" variant="contained" color="primary">
+            <Button type="submit" variant="contained" color="primary" sx={{backgroundColor: '#27337f', padding: '15px 16px'}}>
               Agregar
             </Button>
           </Box>

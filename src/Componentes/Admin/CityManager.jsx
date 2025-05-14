@@ -54,7 +54,7 @@ const CityManager = () => {
 
     return (
         <Box sx={{ padding: 4, maxWidth: 800, margin: '0 auto', boxShadow: 3, borderRadius: 2, backgroundColor: '#f9f9f9' }}>
-            <Typography variant="h4" align="center" gutterBottom>
+            <Typography variant="h6" align="letf" gutterBottom>
                 Gestionar Barrios
             </Typography>
             <Box sx={{ display: 'flex', gap: 2, marginBottom: 3 }}>
@@ -65,7 +65,7 @@ const CityManager = () => {
                     value={newCity}
                     onChange={(e) => setNewCity(e.target.value)}
                 />
-                <Button variant="contained" color="primary" onClick={handleAddCity}>
+                <Button variant="contained" color="primary" onClick={handleAddCity } sx={{backgroundColor: '#27337f', padding: '15px 16px'}}>
                     Agregar
                 </Button>
             </Box>

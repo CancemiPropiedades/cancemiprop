@@ -106,7 +106,7 @@ const PropertyManager = () => {
 
     return (
         <Box sx={{ padding: 4, maxWidth: 800, margin: '0 auto', boxShadow: 3, borderRadius: 2, backgroundColor: '#f9f9f9' }}>
-            <Typography variant="h4" align="center" gutterBottom>
+            <Typography variant="h6" align="letf" gutterBottom>
                 Gestionar Propiedades
             </Typography>
             <DataGrid

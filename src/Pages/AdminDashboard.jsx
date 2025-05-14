@@ -118,7 +118,7 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <Button onClick={toggleDrawer(true)}>Abrir menú</Button>
+      <Button onClick={toggleDrawer(true)} sx={{color: '#27337f'}}>Abrir menú</Button>
       <Drawer anchor="left" open={openDrawer} onClose={toggleDrawer(false)}>
         <Box sx={{ width: 250 }} role="presentation">
           <List>
