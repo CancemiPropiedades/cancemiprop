@@ -6,20 +6,24 @@
     padding: 40px;
     margin-top: 10px;
   }
+
+  .css-11sqy7u .MuiInputBase-root {
+    padding: 0px;
+}
   
   .filters-container {
-    width: 300px; /* Fixed width for filters */
+    width: 300px; 
     margin-right: 20px;
   }
   
   @media screen and (max-width: 768px) {
     .property-search-container {
-      flex-direction: column; /* Stack filters and properties vertically */
+      flex-direction: column; 
     }
   
     .filters-container {
-      width: 100%; /* Full width for filters */
-      margin-bottom: 20px; /* Add spacing below filters */
+      width: 100%; 
+      margin-bottom: 20px; 
     }
 
   }

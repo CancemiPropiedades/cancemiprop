@@ -138,7 +138,6 @@ const PropertyDetails = () => {
           onClick={() => {
             const message = encodeURIComponent(
               `Hola, acabo de ver esta propiedad y quisiera más información: \n\n` +
-              `Título: ${property.titulo}\n` +
               `Ubicación: ${property.ubicacion}\n` +
               `Precio: ${property.precio} ${property.moneda}\n` +
               `Estado: ${property.estado}\n` +

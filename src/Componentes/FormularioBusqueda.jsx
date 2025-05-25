@@ -35,6 +35,7 @@ const FormularioBusqueda = ({ onFilterChange }) => {
             <select value={estado} onChange={(e) => setEstado(e.target.value)}>
               <option value="">Todas</option>
               <option value="Venta">Venta</option>
+              <option value="Ph">PH</option>
               <option value="Alquiler">Alquiler</option>
               <option value="Emprendimiento">Emprendimiento</option>
             </select>
