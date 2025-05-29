@@ -48,10 +48,10 @@ a{
 }
 
 .prop-data {
-  width: 180px;
+  width: 190px;
   position: absolute;
-  bottom: 0px;
-  left: 10px;
+  bottom: -5px;
+  left: 0px;
   z-index: 5;
   display: flex;
   gap: 5px;
@@ -63,9 +63,9 @@ a{
 }
 
 .prop-data2{
-  width: 180px;
+  width: 190px;
   position: absolute;
-  bottom: 0px;
+  bottom: -5px;
   left: 190px;
   z-index: 5;
   display: flex;
@@ -155,4 +155,17 @@ a{
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
+}
+
+
+@media (max-width: 600px) {
+  .prop-data {
+    width: 147px;
+    left: 0px;
+  }
+
+  .prop-data2{
+    width: 147px;
+    left: 147px;
+  }
 }

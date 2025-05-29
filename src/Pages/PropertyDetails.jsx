@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import CarouselDetails from '../Componentes/CarouselDetails';
-import { FaCar, FaPaw, FaSwimmer, FaDumbbell, FaRegSun, FaBuilding, FaWifi, FaHotTub, FaFire, FaTv, FaBath, FaBed, FaLightbulb, FaWater, FaSewage, FaGas, FaRoad, FaPhone, FaSatellite } from 'react-icons/fa';
+import { FaCar, FaPaw, FaSwimmer, FaDumbbell, FaRegSun, FaBuilding, FaWifi, FaHotTub, FaFire, FaTv, FaBath, FaBed, FaLightbulb, FaWater, FaRoad, FaPhone, FaSatellite } from 'react-icons/fa';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import EmailIcon from '@mui/icons-material/Email';
 import Button from '@mui/material/Button';
@@ -45,6 +45,10 @@ const PropertyDetails = () => {
     }
   };
 
+  console.log("API Key:", process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
+  console.log('Coordenadas de ubicación:', location);
+
+
   useEffect(() => {
     const fetchPropertyDetails = async () => {
       try {
@@ -53,13 +57,19 @@ const PropertyDetails = () => {
 
         setProperty(propertyData);
 
-        const coords = await fetchCoordinates(propertyData.ubicacion);
+        const direccionCompleta = `${propertyData.ubicacion}, ${propertyData.ciudad?.name || ''}, Argentina`;
+        const coords = await fetchCoordinates(direccionCompleta);
+        console.log("Dirección a buscar:", direccionCompleta);
+
         setLocation(coords);
         setLoading(false);
       } catch (error) {
         console.error('Error al cargar los detalles de la propiedad:', error);
         setLoading(false);
+        
       }
+            
+
     };
 
     fetchPropertyDetails();

@@ -17,7 +17,7 @@ import ResetPassword from './Componentes/ResetPassword';
 function Cancemi() {
   const [properties, setProperties] = useState([]);
   const [filterType, setFilterType] = useState('');
-  const [loadingProperties, setLoadingProperties] = useState(true); // Estado de carga
+  const [loadingProperties, setLoadingProperties] = useState(true); 
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -27,7 +27,7 @@ function Cancemi() {
       } catch (error) {
         console.error('Error al obtener propiedades:', error);
       } finally {
-        setLoadingProperties(false); // Actualizar el estado de carga
+        setLoadingProperties(false); 
       }
     };
 
@@ -52,7 +52,7 @@ function Cancemi() {
     if (filterType === 'emprendimiento') {
       return property.estado?.toLowerCase() === 'emprendimiento';
     }
-    return true; // Mostrar todas las propiedades si no hay filtro
+    return true; 
   });
 
   const isAdminLoggedIn = localStorage.getItem('token');
@@ -67,7 +67,7 @@ function Cancemi() {
   );
 
   if (loadingProperties) {
-    return <div>Cargando propiedades...</div>; // Mostrar mensaje de carga
+    return <div>Cargando propiedades...</div>; 
   }
 
   return (

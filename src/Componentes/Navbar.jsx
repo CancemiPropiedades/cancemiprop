@@ -95,7 +95,7 @@ function Navbar() {
 
           <Box sx={{ flexGrow: 1 }}>
             <RouterLink to="/">
-              <img src={Logo} alt="Logo" style={{ maxWidth: '150px', height: 'auto' }} />
+              <img src={Logo} alt="Logo" style={{ maxWidth: '200px', height: 'auto' }} />
             </RouterLink>
           </Box>
 

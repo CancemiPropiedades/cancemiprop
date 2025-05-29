@@ -69,8 +69,6 @@
     text-decoration: underline; 
 }
 
-
-/* Estilos para ser responsive */
 @media (max-width: 600px) {
     #contacto-forms{
         flex-direction: column;

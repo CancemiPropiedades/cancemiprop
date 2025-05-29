@@ -1,7 +1,24 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, Button, Stepper, Step, StepLabel, TextField, Typography, MenuItem, Select, FormControl, InputLabel, FormControlLabel, Checkbox, FormGroup, Modal } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stepper,
+  Step,
+  StepLabel,
+  TextField,
+  Typography,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  FormControlLabel,
+  Checkbox,
+  FormGroup,
+  Modal,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AutocompleteAddressInput from "./AutocompleteAddressInput"; // 👈 Ajustá este path si es necesario
 
 const ResidentialPropertyForm = ({ onPropertyAdded }) => {
   const steps = ["Datos Principales", "Características", "Cargar Imágenes", "Descripción"];
@@ -48,9 +65,8 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
       seguridad: false,
       alumbrado: false,
     }
-    
   });
-  
+
   const caracteristicasLista = [
     "agua", "cloaca", "gas", "internet", "electricidad",
     "pavimento", "telefono", "cable", "gimnasio", "parrilla",
@@ -58,8 +74,7 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
     "laundry", "seguridad", "alumbrado", "cochera", "mascotas",
     "ascensor"
   ];
-  
-  
+
   const [cities, setCities] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [modalMessage, setModalMessage] = useState([]);
@@ -76,7 +91,7 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
     };
     fetchCities();
 
-    const fetchPropertyTypes = async () => { // Nueva función para cargar los tipos de propiedad
+    const fetchPropertyTypes = async () => {
       try {
         const response = await axios.get("https://cancemi-inmobiliaria-backend-admin.vercel.app/api/types-propiedad");
         setPropertyTypes(response.data);
@@ -84,7 +99,7 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
         console.error("Error al cargar los tipos de propiedad:", error);
       }
     };
-    fetchPropertyTypes(); // Llama a la nueva función dentro del useEffect
+    fetchPropertyTypes();
   }, []);
 
   const handleChange = (e) => {
@@ -104,6 +119,7 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
       }));
     }
   };
+
   const handleCaracteristicasChange = (e) => {
     const { name, type, value, checked } = e.target;
     setPropertyData((prevData) => ({
@@ -131,7 +147,7 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
       ...propertyData,
       tipoPropiedad: propertyData.tipoPropiedad,
     };
-  
+
     formData.append("caracteristicas", JSON.stringify(finalPropertyData.caracteristicas));
     formData.append("ubicacion", propertyData.ubicacion);
     formData.append("precio", finalPropertyData.precio);
@@ -145,12 +161,12 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
     selectedImages.forEach((file) => {
       formData.append("fotos", file);
     });
-  
+
     try {
       await axios.post("https://cancemi-inmobiliaria-backend-admin.vercel.app/api/propiedades", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-  
+
       setModalMessage("Propiedad agregada con éxito");
       setOpenModal(true);
       onPropertyAdded();
@@ -160,7 +176,6 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
       setOpenModal(true);
     }
   };
-  
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -179,8 +194,30 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
       {activeStep === 0 ? (
         <Box sx={{ mb: 2 }}>
           <Typography variant="h6">Datos Principales</Typography>
-          <TextField name="ubicacion" label="Ubicación" value={propertyData.ubicacion} onChange={handleChange} required fullWidth margin="normal" />
-          <TextField type="number" name="precio" label="Precio" value={propertyData.precio} onChange={handleChange} fullWidth margin="normal" />
+
+          <Typography variant="subtitle1" sx={{ mt: 2, mb: 1 }}>
+            Dirección
+          </Typography>
+          <AutocompleteAddressInput
+            value={propertyData.ubicacion}
+            onPlaceSelected={(value) =>
+              setPropertyData((prevData) => ({
+                ...prevData,
+                ubicacion: value,
+              }))
+            }
+          />
+
+          <TextField
+            type="number"
+            name="precio"
+            label="Precio"
+            value={propertyData.precio}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+
           <FormControl fullWidth margin="normal">
             <InputLabel id="tipo-propiedad-label">Tipo de Propiedad</InputLabel>
             <Select labelId="tipo-propiedad-label" name="tipoPropiedad" value={propertyData.tipoPropiedad} onChange={handleChange}>
@@ -189,6 +226,7 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
               ))}
             </Select>
           </FormControl>
+
           <FormControl fullWidth margin="normal">
             <InputLabel id="estado-label">Estado De la Propiedad</InputLabel>
             <Select labelId="estado-label" name="estado" value={propertyData.estado} onChange={handleChange}>
@@ -226,18 +264,17 @@ const ResidentialPropertyForm = ({ onPropertyAdded }) => {
             <Typography variant="h6">Características</Typography>
             <FormGroup>
               {caracteristicasLista.map((caracteristica) => (
-               <FormControlLabel
-               key={caracteristica}
-               control={
-                 <Checkbox
-                   checked={propertyData.caracteristicas[caracteristica] || false}
-                   onChange={handleCaracteristicasChange}
-                   name={caracteristica}
-                 />
-               }
-               label={caracteristica.charAt(0).toUpperCase() + caracteristica.slice(1).replace(/([A-Z])/g, " $1")}
-             />
-             
+                <FormControlLabel
+                  key={caracteristica}
+                  control={
+                    <Checkbox
+                      checked={propertyData.caracteristicas[caracteristica] || false}
+                      onChange={handleCaracteristicasChange}
+                      name={caracteristica}
+                    />
+                  }
+                  label={caracteristica.charAt(0).toUpperCase() + caracteristica.slice(1).replace(/([A-Z])/g, " $1")}
+                />
               ))}
             </FormGroup>
           </Box>
